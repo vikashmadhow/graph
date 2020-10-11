@@ -3,7 +3,7 @@
  */
 
 /**
- * Base algos, data structures and utility functions.
+ * Graph data structure and algorithms.
  *
  * @author Vikash Madhow (vikash.madhow@gmail.com)
  */
@@ -28,24 +28,24 @@ repositories {
   jcenter()
 }
 
-//sourceSets {
-//  main {
-//    java {
-//      srcDirs = ['src/main/java']
-//    }
-//    resources {
-//      srcDirs = ['src/main/resources']
-//    }
-//  }
-//  test {
-//    java {
-//      srcDirs = ['src/test/java']
-//    }
-//    resources {
-//      srcDirs = ['src/test/resources']
-//    }
-//  }
-//}
+sourceSets {
+  main {
+    java {
+      srcDirs = ['src/main/java']
+    }
+    resources {
+      srcDirs = ['src/main/resources']
+    }
+  }
+  test {
+    java {
+      srcDirs = ['src/test/java']
+    }
+    resources {
+      srcDirs = ['src/test/resources']
+    }
+  }
+}
 
 dependencies {
   compile "com.vikmad:base:latest.release"
@@ -63,9 +63,9 @@ test {
 }
 
 group = 'com.vikmad'
-archivesBaseName = 'base'
+archivesBaseName = 'graph'
 sourceCompatibility = JavaVersion.VERSION_14
-version = "0.1.2"
+version = "0.1.3"
 ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 
 java {
@@ -91,10 +91,10 @@ publishing {
       from components.java
       pom {
         groupId = 'com.vikmad'
-        artifactId = 'base'
-        name = "Base algos and utils"
-        description = 'Base algos, data structures and utilities'
-        url = 'https://github.com/vikashmadhow/base'
+        artifactId = 'graph'
+        name = 'Graph data structure and algorithms'
+        description = 'Graph data structure and algorithms'
+        url = 'https://github.com/vikashmadhow/graph'
         licenses {
           license {
             name = 'The Apache License, Version 2.0'
@@ -110,9 +110,9 @@ publishing {
           }
         }
         scm {
-          url = 'https://github.com/vikashmadhow/base'
-          connection = 'scm:https://github.com/vikashmadhow/base.git'
-          developerConnection = 'scm:git://github.com/vikashmadhow/base.git'
+          url = 'https://github.com/vikashmadhow/graph'
+          connection = 'scm:https://github.com/vikashmadhow/graph.git'
+          developerConnection = 'scm:git://github.com/vikashmadhow/graph.git'
         }
       }
     }

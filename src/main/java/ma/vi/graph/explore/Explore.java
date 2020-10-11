@@ -24,7 +24,7 @@ public class Explore {
    *
    * The return value of this function is interpreted by the explore function as follows:
    * <ul>
-   * <li>a null value signifies that the path should be expanded further (and exploration
+   * <li>a null value signifies that the path should not be expanded further (and exploration
    *     should continue by backtracking to the next unexplored vertex and continue from there);</li>
    * <li>an empty set means that the exploration should continue by expanding the path;</li>
    * <li>finally a non-empty set means that the exploration is completed and the set
@@ -113,21 +113,27 @@ public class Explore {
    * </p>
    *
    * @param graph       The graph to explore.
+   *
    * @param startVertex The vertex to start the exploration at.
-   * @param pathQueue   The path_queue to use, controlling the exploration behavior.
-   * @param exploreOp   The function taking a graph and a path invoked for every path
-   *                    explored for the graph. The accumulator parameter is passed as the
-   *                    last parameter to this function and can be used to accumulate certain
-   *                    information during the exploration. It could be used, for instance,
-   *                    to construct a spanning subgraph of this graph.
-   * @param accumulator A value supplied to the explore_op to accumulate data during the exploration.
+   *
+   * @param pathQueue   The path queue to use, controlling the exploration behaviour.
+   *
+   * @param exploreOp   The function taking a graph and a path invoked for every path explored for the
+   *                    graph. The accumulator parameter is passed as the last parameter to this function
+   *                    and can be used to accumulate certain information during the exploration. It could
+   *                    be used, for instance, to construct a spanning subgraph of this graph.
+   *
+   * @param accumulator A value supplied to the exploreOp to accumulate data during the exploration.
    *                    Could be used by custom graph algorithms.
+   *
    * @param expandOp    A function taking as parameters the graph and current exploring path and
    *                    returning the successor edges to explore. The default function returns
    *                    all outgoing edges of the current path.
+   *
    * @param pathCostOp  The optional function to compute the cost of a new path, invoked
-   *                    with the graph, path to be extended and half-edge with which the
+   *                    with the graph, path to be extended and edge with which the
    *                    path is being extended.
+   *
    * @return The result of the exploration which is the result returned by the exploreOp function,
    *         or null if the exploration completed without the exploreOp function returning any
    *         result (other than null).

@@ -18,6 +18,10 @@ public class Path<V> extends T2<List<V>, Integer> implements Comparable<Path<V>>
     this(Collections.singletonList(vertex));
   }
 
+  public Path(V vertex, Integer cost) {
+    this(Collections.singletonList(vertex), cost);
+  }
+
   public Path(List<V> vertices) {
     this(vertices, null);
   }
@@ -32,6 +36,10 @@ public class Path<V> extends T2<List<V>, Integer> implements Comparable<Path<V>>
 
   public Integer cost() {
     return b;
+  }
+
+  public int length() {
+    return a.size();
   }
 
   public Optional<V> start() {

@@ -33,10 +33,10 @@ public class Explore {
    * </ul>
    */
   @FunctionalInterface
-  public interface ExploreOp {
-    <V, W, E extends Edge<V, W>> Set<V> op(Graph<V, W, E> graph,
-                                           Path<V> path,
-                                           Collection<V> accumulator);
+  public interface ExploreOp<V, W, E extends Edge<V, W>> {
+     Set<V> op(Graph<V, W, E> graph,
+               Path<V> path,
+               Collection<V> accumulator);
   }
 
   /**
@@ -44,19 +44,35 @@ public class Explore {
    * by which the path should be expanded.
    */
   @FunctionalInterface
-  public interface ExpandOp {
-    <V, W, E extends Edge<V, W>> Set<E> op(Graph<V, W, E> graph,
-                                           Path<V> path);
+  public interface ExpandOp<V, W, E extends Edge<V, W>> {
+    Set<E> op(Graph<V, W, E> graph,
+              Path<V> path);
   }
 
   /**
    * This function computes the cost of the path extended the given edge.
    */
   @FunctionalInterface
-  public interface PathCostOp {
-    <V, W, E extends Edge<V, W>> Integer op(Graph<V, W, E> graph,
-                                            Path<V> path,
-                                            E edge);
+  public interface PathCostOp<V, W, E extends Edge<V, W>> {
+    Integer op(Graph<V, W, E> graph,
+               Path<V> path,
+               E edge);
+
+    static <V, W, E extends Edge<V, W>> Integer byLength(Graph<V, W, E> graph,
+                                                         Path<V> path,
+                                                         E edge) {
+      return path.length() + 1;
+    }
+
+    static <V, W, E extends Edge<V, W>> Integer byWeight(Graph<V, W, E> graph,
+                                                         Path<V> path,
+                                                         E edge) {
+      int cost = path.cost() == null ? 0 : path.cost();
+      if (edge.weight() instanceof Number) {
+        cost += ((Number)edge.weight()).intValue();
+      }
+      return cost;
+    }
   }
 
   /**
@@ -105,11 +121,11 @@ public class Explore {
   public static <V, W, E extends Edge<V, W>> Set<V> explore(Graph<V, W, E> graph,
                                                             V startVertex,
                                                             PathQueue<V> pathQueue,
-                                                            ExploreOp exploreOp,
+                                                            ExploreOp<V, W, E> exploreOp,
                                                             Set<V> accumulator,
-                                                            ExpandOp expandOp,
-                                                            PathCostOp pathCostOp) {
-    pathQueue.add(new Path<>(startVertex));
+                                                            ExpandOp<V, W, E> expandOp,
+                                                            PathCostOp<V, W, E> pathCostOp) {
+    pathQueue.add(new Path<>(startVertex, 0));
     return explore(graph,
                    pathQueue,
                    exploreOp,
@@ -121,14 +137,14 @@ public class Explore {
   public static <V, W, E extends Edge<V, W>> Set<V> explore(Graph<V, W, E> graph,
                                                             V startVertex,
                                                             PathQueue<V> pathQueue,
-                                                            ExploreOp exploreOp) {
-    pathQueue.add(new Path<>(startVertex));
+                                                            ExploreOp<V, W, E> exploreOp) {
+    pathQueue.add(new Path<>(startVertex, 0));
     return explore(graph,
                    pathQueue,
                    exploreOp,
                    null,
                    Explore::defaultPathExpand,
-                   null);
+                   PathCostOp::byWeight);
   }
 
   /**
@@ -147,42 +163,40 @@ public class Explore {
 
   private static <V, W, E extends Edge<V, W>> Set<V> explore(Graph<V, W, E> graph,
                                                              PathQueue<V> pathQueue,
-                                                             ExploreOp exploreOp,
+                                                             ExploreOp<V, W, E> exploreOp,
                                                              Set<V> accumulator,
-                                                             ExpandOp expandOp,
-                                                             PathCostOp pathCostOp) {
+                                                             ExpandOp<V, W, E> expandOp,
+                                                             PathCostOp<V, W, E> pathCostOp) {
     Set<V> explored = new HashSet<>();
-    if (pathQueue.hasNext()) {
-      while (pathQueue.hasNext()) {
-        Path<V> path = pathQueue.next();
-        Optional<V> f = path.end();
-        if (f.isPresent()) {
-          V frontier = f.get();
-          if (!explored.contains(frontier)) {
-            explored.add(frontier);
-            Set<V> result = exploreOp.op(graph, path, accumulator);
-            if (result != null) {
-              /*
-               * null result from the exploreOp signifies that this path should be ignored
-               * (and exploration should continue from the next); an empty set of vertices
-               * means that the exploration should expand this path; finally a non-empty
-               * set means that the exploration is completed and the set should be returned
-               * as its result.
-               */
-              if (result.isEmpty()) {
-                Set<E> successors = expandOp.op(graph, path);
-                if (!successors.isEmpty()) {
-                  for (E edge: successors) {
-                    if (!explored.contains(edge.endPoint2())) {
-                      pathQueue.add(
-                        path.extend(edge.endPoint2(),
-                                    pathCostOp == null ? null : pathCostOp.op(graph, path, edge)));
-                    }
+    while (pathQueue.hasNext()) {
+      Path<V> path = pathQueue.next();
+      Optional<V> f = path.end();
+      if (f.isPresent()) {
+        V frontier = f.get();
+        if (!explored.contains(frontier)) {
+          explored.add(frontier);
+          Set<V> result = exploreOp.op(graph, path, accumulator);
+          if (result != null) {
+            /*
+             * null result from the exploreOp signifies that this path should be ignored
+             * (and exploration should continue from the next); an empty set of vertices
+             * means that the exploration should expand this path; finally a non-empty
+             * set means that the exploration is completed and the set should be returned
+             * as its result.
+             */
+            if (result.isEmpty()) {
+              Set<E> successors = expandOp.op(graph, path);
+              if (!successors.isEmpty()) {
+                for (E edge: successors) {
+                  if (!explored.contains(edge.endPoint2())) {
+                    pathQueue.add(
+                      path.extend(edge.endPoint2(),
+                                  pathCostOp == null ? null : pathCostOp.op(graph, path, edge)));
                   }
                 }
-              } else {
-                return result;
               }
+            } else {
+              return result;
             }
           }
         }
@@ -196,21 +210,21 @@ public class Explore {
    */
   public static <V, W, E extends Edge<V, W>> Set<V> breadthFirst(Graph<V, W, E> graph,
                                                                  V startVertex,
-                                                                 ExploreOp exploreOp,
+                                                                 ExploreOp<V, W, E> exploreOp,
                                                                  Set<V> accumulator,
-                                                                 ExpandOp expandOp) {
+                                                                 ExpandOp<V, W, E> expandOp) {
     return explore(graph,
                    startVertex,
                    new FifoPathQueue<>(),
                    exploreOp,
                    accumulator,
                    expandOp,
-                   null);
+                   PathCostOp::byWeight);
   }
 
   public static <V, W, E extends Edge<V, W>> Set<V> breadthFirst(Graph<V, W, E> graph,
                                                                  V startVertex,
-                                                                 ExploreOp exploreOp) {
+                                                                 ExploreOp<V, W, E> exploreOp) {
     return breadthFirst(graph,
                    startVertex,
                    exploreOp,
@@ -223,21 +237,21 @@ public class Explore {
    */
   public static <V, W, E extends Edge<V, W>> Set<V> depthFirst(Graph<V, W, E> graph,
                                                                V startVertex,
-                                                               ExploreOp exploreOp,
+                                                               ExploreOp<V, W, E> exploreOp,
                                                                Set<V> accumulator,
-                                                               ExpandOp expandOp) {
+                                                               ExpandOp<V, W, E> expandOp) {
     return explore(graph,
                    startVertex,
                    new LifoPathQueue<>(),
                    exploreOp,
                    accumulator,
                    expandOp,
-                   null);
+                   PathCostOp::byWeight);
   }
 
   public static <V, W, E extends Edge<V, W>> Set<V> depthFirst(Graph<V, W, E> graph,
                                                                V startVertex,
-                                                               ExploreOp exploreOp) {
+                                                               ExploreOp<V, W, E> exploreOp) {
     return depthFirst(graph,
                       startVertex,
                       exploreOp,
@@ -250,21 +264,21 @@ public class Explore {
    */
   public static <V, W, E extends Edge<V, W>> Set<V> minCostFirst(Graph<V, W, E> graph,
                                                                  V startVertex,
-                                                                 ExploreOp exploreOp,
+                                                                 ExploreOp<V, W, E> exploreOp,
                                                                  Set<V> accumulator,
-                                                                 ExpandOp expandOp) {
+                                                                 ExpandOp<V, W, E> expandOp) {
     return explore(graph,
                    startVertex,
                    new PriorityPathQueue<>(),
                    exploreOp,
                    accumulator,
                    expandOp,
-                   null);
+                   PathCostOp::byWeight);
   }
 
   public static <V, W, E extends Edge<V, W>> Set<V> minCostFirst(Graph<V, W, E> graph,
                                                                  V startVertex,
-                                                                 ExploreOp exploreOp) {
+                                                                 ExploreOp<V, W, E> exploreOp) {
     return minCostFirst(graph,
                         startVertex,
                         exploreOp,

@@ -28,30 +28,38 @@ repositories {
   jcenter()
 }
 
-sourceSets {
-  main {
-    java {
-      srcDirs = ['src/main/java']
-    }
-    resources {
-      srcDirs = ['src/main/resources']
-    }
-  }
-  test {
-    java {
-      srcDirs = ['src/test/java']
-    }
-    resources {
-      srcDirs = ['src/test/resources']
-    }
-  }
-}
+//sourceSets {
+//  main {
+//    java {
+//      srcDirs = ['src/main/java']
+//    }
+//    resources {
+//      srcDirs = ['src/main/resources']
+//    }
+//  }
+//  test {
+//    java {
+//      srcDirs = ['src/test/java']
+//    }
+//    resources {
+//      srcDirs = ['src/test/resources']
+//    }
+//  }
+//}
 
 dependencies {
   compile "com.vikmad:base:latest.release"
 
   // Use JUnit test framework
-  testImplementation 'junit:junit:4.12'
+  testImplementation(platform('org.junit:junit-bom:5.7.0'))
+  testImplementation('org.junit.jupiter:junit-jupiter:5.7.0')
+}
+
+test {
+  useJUnitPlatform()
+  testLogging {
+    events "passed", "skipped", "failed"
+  }
 }
 
 group = 'com.vikmad'

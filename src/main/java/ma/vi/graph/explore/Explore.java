@@ -4,7 +4,6 @@ import ma.vi.graph.Edge;
 import ma.vi.graph.Graph;
 import ma.vi.graph.Path;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -21,7 +20,7 @@ public class Explore {
 
   /**
    * This function is invoked on every path visited by the
-   * {@link #explore(Graph, Object, PathQueue, ExploreOp, Set, ExpandOp, PathCostOp)} functions}.
+   * {@link #explore(Graph, Object, PathQueue, ExploreOp, Object, ExpandOp, PathCostOp)} functions}.
    *
    * The return value of this function is interpreted by the explore function as follows:
    * <ul>
@@ -134,12 +133,12 @@ public class Explore {
    *         result (other than null).
    */
   public static <V, W, E extends Edge<V, W>, A> Set<V> explore(Graph<V, W, E> graph,
-                                                            V startVertex,
-                                                            PathQueue<V> pathQueue,
-                                                            ExploreOp<V, W, E, A> exploreOp,
-                                                            A accumulator,
-                                                            ExpandOp<V, W, E> expandOp,
-                                                            PathCostOp<V, W, E> pathCostOp) {
+                                                               V startVertex,
+                                                               PathQueue<V> pathQueue,
+                                                               ExploreOp<V, W, E, A> exploreOp,
+                                                               A accumulator,
+                                                               ExpandOp<V, W, E> expandOp,
+                                                               PathCostOp<V, W, E> pathCostOp) {
     pathQueue.add(new Path<>(startVertex, 0));
     return explore(graph,
                    pathQueue,
@@ -163,11 +162,11 @@ public class Explore {
   }
 
   private static <V, W, E extends Edge<V, W>, A> Set<V> explore(Graph<V, W, E> graph,
-                                                             PathQueue<V> pathQueue,
-                                                             ExploreOp<V, W, E, A> exploreOp,
-                                                             A accumulator,
-                                                             ExpandOp<V, W, E> expandOp,
-                                                             PathCostOp<V, W, E> pathCostOp) {
+                                                                PathQueue<V> pathQueue,
+                                                                ExploreOp<V, W, E, A> exploreOp,
+                                                                A accumulator,
+                                                                ExpandOp<V, W, E> expandOp,
+                                                                PathCostOp<V, W, E> pathCostOp) {
     Set<V> explored = new HashSet<>();
     while (pathQueue.hasNext()) {
       Path<V> path = pathQueue.next();
@@ -210,10 +209,10 @@ public class Explore {
    * Explores the graph breadth-first.
    */
   public static <V, W, E extends Edge<V, W>, A> Set<V> breadthFirst(Graph<V, W, E> graph,
-                                                                 V startVertex,
-                                                                 ExploreOp<V, W, E, A> exploreOp,
-                                                                 A accumulator,
-                                                                 ExpandOp<V, W, E> expandOp) {
+                                                                    V startVertex,
+                                                                    ExploreOp<V, W, E, A> exploreOp,
+                                                                    A accumulator,
+                                                                    ExpandOp<V, W, E> expandOp) {
     return explore(graph,
                    startVertex,
                    new FifoPathQueue<>(),
@@ -224,9 +223,9 @@ public class Explore {
   }
 
   public static <V, W, E extends Edge<V, W>, A> Set<V> breadthFirst(Graph<V, W, E> graph,
-                                                                 V startVertex,
-                                                                 ExploreOp<V, W, E, A> exploreOp,
-                                                                 A accumulator) {
+                                                                    V startVertex,
+                                                                    ExploreOp<V, W, E, A> exploreOp,
+                                                                    A accumulator) {
     return breadthFirst(graph,
                    startVertex,
                    exploreOp,
@@ -235,8 +234,8 @@ public class Explore {
   }  
   
   public static <V, W, E extends Edge<V, W>> Set<V> breadthFirst(Graph<V, W, E> graph,
-                                                                    V startVertex,
-                                                                    ExploreOp<V, W, E, ?> exploreOp) {
+                                                                 V startVertex,
+                                                                 ExploreOp<V, W, E, ?> exploreOp) {
     return breadthFirst(graph,
                         startVertex,
                         exploreOp,
@@ -249,10 +248,10 @@ public class Explore {
    * Explores the graph depth-first.
    */
   public static <V, W, E extends Edge<V, W>, A> Set<V> depthFirst(Graph<V, W, E> graph,
-                                                               V startVertex,
-                                                               ExploreOp<V, W, E, A> exploreOp,
-                                                               A accumulator,
-                                                               ExpandOp<V, W, E> expandOp) {
+                                                                  V startVertex,
+                                                                  ExploreOp<V, W, E, A> exploreOp,
+                                                                  A accumulator,
+                                                                  ExpandOp<V, W, E> expandOp) {
     return explore(graph,
                    startVertex,
                    new LifoPathQueue<>(),
@@ -263,9 +262,9 @@ public class Explore {
   }
 
   public static <V, W, E extends Edge<V, W>, A> Set<V> depthFirst(Graph<V, W, E> graph,
-                                                               V startVertex,
-                                                               ExploreOp<V, W, E, A> exploreOp,
-                                                               A accumulator) {
+                                                                  V startVertex,
+                                                                  ExploreOp<V, W, E, A> exploreOp,
+                                                                  A accumulator) {
     return depthFirst(graph,
                       startVertex,
                       exploreOp,
@@ -287,10 +286,10 @@ public class Explore {
    * Explores the graph in order of minimum cost pth.
    */
   public static <V, W, E extends Edge<V, W>, A> Set<V> minCostFirst(Graph<V, W, E> graph,
-                                                                 V startVertex,
-                                                                 ExploreOp<V, W, E, A> exploreOp,
-                                                                 A accumulator,
-                                                                 ExpandOp<V, W, E> expandOp) {
+                                                                    V startVertex,
+                                                                    ExploreOp<V, W, E, A> exploreOp,
+                                                                    A accumulator,
+                                                                    ExpandOp<V, W, E> expandOp) {
     return explore(graph,
                    startVertex,
                    new PriorityPathQueue<>(),
@@ -301,9 +300,9 @@ public class Explore {
   }
 
   public static <V, W, E extends Edge<V, W>, A> Set<V> minCostFirst(Graph<V, W, E> graph,
-                                                                 V startVertex,
-                                                                 ExploreOp<V, W, E, A> exploreOp,
-                                                                 A accumulator) {
+                                                                    V startVertex,
+                                                                    ExploreOp<V, W, E, A> exploreOp,
+                                                                    A accumulator) {
     return minCostFirst(graph,
                         startVertex,
                         exploreOp,

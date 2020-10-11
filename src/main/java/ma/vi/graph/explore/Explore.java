@@ -47,6 +47,21 @@ public class Explore {
   public interface ExpandOp<V, W, E extends Edge<V, W>> {
     Set<E> op(Graph<V, W, E> graph,
               Path<V> path);
+
+    /**
+     * The default path expansion function returns all outgoing edges of the last
+     * vertex in the path.
+     *
+     * @param graph The graph being explored.
+     * @param path  The path to expand.
+     * @return All outgoing edges of the path to expand.
+     */
+    static <V, W, E extends Edge<V, W>> Set<E> outgoingEdges(Graph<V, W, E> graph,
+                                                             Path<V> path) {
+      V pathEnd = path.end().orElse(null);
+      return pathEnd == null ? emptySet() : graph.outgoing(pathEnd);
+    }
+
   }
 
   /**
@@ -143,22 +158,8 @@ public class Explore {
                    pathQueue,
                    exploreOp,
                    null,
-                   Explore::defaultPathExpand,
+                   ExpandOp::outgoingEdges,
                    PathCostOp::byWeight);
-  }
-
-  /**
-   * The default path expansion function returns all outgoing edges of the last
-   * vertex in the path.
-   *
-   * @param graph The graph being explored.
-   * @param path  The path to expand.
-   * @return All outgoing edges of the path to expand.
-   */
-  public static <V, W, E extends Edge<V, W>> Set<E> defaultPathExpand(Graph<V, W, E> graph,
-                                                                      Path<V> path) {
-    V pathEnd = path.end().orElse(null);
-    return pathEnd == null ? emptySet() : graph.outgoing(pathEnd);
   }
 
   private static <V, W, E extends Edge<V, W>> Set<V> explore(Graph<V, W, E> graph,
@@ -229,7 +230,7 @@ public class Explore {
                    startVertex,
                    exploreOp,
                    null,
-                   Explore::defaultPathExpand);
+                   ExpandOp::outgoingEdges);
   }
 
   /**
@@ -256,7 +257,7 @@ public class Explore {
                       startVertex,
                       exploreOp,
                      null,
-                     Explore::defaultPathExpand);
+                      ExpandOp::outgoingEdges);
   }
 
   /**
@@ -283,6 +284,6 @@ public class Explore {
                         startVertex,
                         exploreOp,
                         null,
-                        Explore::defaultPathExpand);
+                        ExpandOp::outgoingEdges);
   }
 }

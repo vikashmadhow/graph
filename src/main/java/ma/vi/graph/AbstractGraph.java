@@ -9,14 +9,14 @@ import java.util.Set;
 /**
  * A partial implementation of the generic methods of the {@link Graph} interface.
  *
- * @param <N> The node type of the graph
+ * @param <V> The vertex type of the graph
  * @param <E> The edge type of the graph. This must be a subclass of
  *            {@link ma.vi.graph.Edge} specialised on current the node
  *            type of the graph.
  * @param <W> The weight type on the edges of the graph.
  * @author vikash.madhow@gmail.com
  */
-public abstract class AbstractGraph<N, W, E extends Edge<N, W>> implements Graph<N, W, E> {
+public abstract class AbstractGraph<V, W, E extends Edge<V, W>> implements Graph<V, W, E> {
   /**
    * Creates a graph from the set of edges.
    */
@@ -27,10 +27,10 @@ public abstract class AbstractGraph<N, W, E extends Edge<N, W>> implements Graph
   /**
    * Creates a graph from a node map.
    */
-  protected AbstractGraph(NodeMap<N, W> nodeMap) {
-    edges = new HashSet<E>();
-    for (Map.Entry<N, Set<T2<N, W>>> entry: nodeMap.entrySet()) {
-      for (T2<N, W> to: entry.getValue()) {
+  protected AbstractGraph(VertexMap<V, W> nodeMap) {
+    edges = new HashSet<>();
+    for (Map.Entry<V, Set<T2<V, W>>> entry: nodeMap.entrySet()) {
+      for (T2<V, W> to: entry.getValue()) {
         edges.add(newEdge(entry.getKey(), to.a(), to.b()));
       }
     }
@@ -40,15 +40,15 @@ public abstract class AbstractGraph<N, W, E extends Edge<N, W>> implements Graph
    * Returns the set of all nodes in the graph.
    */
   @Override
-  public Set<N> nodes() {
-    if (nodes == null) {
-      nodes = new HashSet<N>();
+  public Set<V> vertices() {
+    if (vertices == null) {
+      vertices = new HashSet<>();
       for (E e: edges) {
-        nodes.add(e.endPoint1());
-        nodes.add(e.endPoint2());
+        vertices.add(e.endPoint1());
+        vertices.add(e.endPoint2());
       }
     }
-    return nodes;
+    return vertices;
   }
 
   /**
@@ -63,7 +63,7 @@ public abstract class AbstractGraph<N, W, E extends Edge<N, W>> implements Graph
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o instanceof Graph) {
-      Graph<N, W, E> that = (Graph<N, W, E>)o;
+      Graph<V, W, E> that = (Graph<V, W, E>)o;
       return edges().equals(that.edges());
     }
     return false;
@@ -83,7 +83,7 @@ public abstract class AbstractGraph<N, W, E extends Edge<N, W>> implements Graph
    * Produces a GraphViz representation of this graph in the DOT language.
    */
   public String toGraphViz() {
-    StringBuffer spec = new StringBuffer("digraph G {\n");
+    StringBuilder spec = new StringBuilder("digraph G {\n");
 
 //    // nodes
 //    for (N node: nodes()) {
@@ -93,17 +93,17 @@ public abstract class AbstractGraph<N, W, E extends Edge<N, W>> implements Graph
     // edges
     for (E edge: edges) {
       spec.append('\t')
-          .append('"').append(nodeToString(edge.endPoint1())).append('"')
+          .append('"').append(vertexToString(edge.endPoint1())).append('"')
           .append(edge instanceof DirectedEdge ? " -> " : " -- ")
-          .append('"').append(nodeToString(edge.endPoint2())).append('"')
+          .append('"').append(vertexToString(edge.endPoint2())).append('"')
           .append(" [label=\"").append(weightToString(edge.weight())).append("\"];\n");
     }
     spec.append("}");
     return spec.toString();
   }
 
-  protected String nodeToString(N node) {
-    return String.valueOf(node);
+  protected String vertexToString(V vertex) {
+    return String.valueOf(vertex);
   }
 
   protected String weightToString(W weight) {
@@ -116,7 +116,7 @@ public abstract class AbstractGraph<N, W, E extends Edge<N, W>> implements Graph
   protected final Set<E> edges;
 
   /**
-   * Nodes in the graph.
+   * Vertices in the graph.
    */
-  protected Set<N> nodes;
+  protected Set<V> vertices;
 }

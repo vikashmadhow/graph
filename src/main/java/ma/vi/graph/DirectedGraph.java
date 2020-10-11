@@ -2,94 +2,86 @@ package ma.vi.graph;
 
 import java.util.*;
 
-/** A Directed graph.
+/**
+ * A Directed graph.
  *
- * @param <N> The node type.
+ * @param <V> The vertex type.
  * @param <W> The weight type.
- *
  * @author vikash.madhow@gmail.com
  */
-public class DirectedGraph<N, W> extends AbstractGraph<N, W, DirectedEdge<N, W>>
-{
-    public DirectedGraph(Set<DirectedEdge<N, W>> edges)
-    {
-       super(edges);
+public class DirectedGraph<V, W> extends AbstractGraph<V, W, DirectedEdge<V, W>> {
+  public DirectedGraph(Set<DirectedEdge<V, W>> edges) {
+    super(edges);
+  }
+
+  public DirectedGraph(VertexMap<V, W> vertexMap) {
+    super(vertexMap);
+  }
+
+  private Map<V, Set<DirectedEdge<V, W>>> verticesToEdges() {
+    if (verticesToEdges == null) {
+      verticesToEdges = new HashMap<>();
+      for (DirectedEdge<V, W> e: edges) {
+        Set<DirectedEdge<V, W>> targets = verticesToEdges.computeIfAbsent(e.endPoint1(), k -> new HashSet<>());
+        targets.add(e);
+      }
     }
+    return verticesToEdges;
+  }
 
-    public DirectedGraph(NodeMap<N, W> nodeMap)
-    {
-        super(nodeMap);
+  private Map<V, Set<DirectedEdge<V, W>>> nodesToIncomingEdges() {
+    if (nodesToIncomingEdges == null) {
+      nodesToIncomingEdges = new HashMap<>();
+      for (DirectedEdge<V, W> e: edges) {
+        Set<DirectedEdge<V, W>> targets = nodesToIncomingEdges.computeIfAbsent(e.endPoint2(), k -> new HashSet<>());
+        targets.add(e);
+      }
     }
+    return nodesToIncomingEdges;
+  }
 
-    private Map<N, Set<DirectedEdge<N, W>>> nodesToEdges()
-    {
-        if (nodesToEdges == null)
-        {
-            nodesToEdges = new HashMap<N, Set<DirectedEdge<N, W>>>();
-            for (DirectedEdge<N, W> e : edges)
-            {
-                Set<DirectedEdge<N, W>> targets = nodesToEdges.get(e.endPoint1());
-                if (targets == null)
-                {
-                    targets = new HashSet<DirectedEdge<N, W>>();
-                    nodesToEdges.put(e.endPoint1(), targets);
-                }
-                targets.add(e);
-            }
-        }
-        return nodesToEdges;
-    }
+  /**
+   * Given a node, returns the set of incoming edges.
+   */
+  public Set<DirectedEdge<V, W>> incoming(V node) {
+    Set<DirectedEdge<V, W>> set = nodesToIncomingEdges().get(node);
+    return set == null ? Collections.emptySet() : set;
+  }
 
-    private Map<N, Set<DirectedEdge<N, W>>> nodesToIncomingEdges()
-    {
-        if (nodesToIncomingEdges == null)
-        {
-            nodesToIncomingEdges = new HashMap<N, Set<DirectedEdge<N, W>>>();
-            for (DirectedEdge<N, W> e : edges)
-            {
-                Set<DirectedEdge<N, W>> targets = nodesToIncomingEdges.get(e.endPoint2());
-                if (targets == null)
-                {
-                    targets = new HashSet<DirectedEdge<N, W>>();
-                    nodesToIncomingEdges.put(e.endPoint2(), targets);
-                }
-                targets.add(e);
-            }
-        }
-        return nodesToIncomingEdges;
-    }
+  /**
+   * Given a node, returns the set of outgoing edges.
+   */
+  public Set<DirectedEdge<V, W>> outgoing(V node) {
+    Set<DirectedEdge<V, W>> set = verticesToEdges().get(node);
+    return set == null ? Collections.emptySet() : set;
+  }
 
-    /** Given a node, returns the set of incoming edges. */
-    public Set<DirectedEdge<N, W>> incoming(N node)
-    {
-        Set<DirectedEdge<N, W>> set = nodesToIncomingEdges().get(node);
-        return set == null ? Collections.<DirectedEdge<N, W>>emptySet() : set;
-    }
+  @Override
+  public int degree(V vertex) {
+    return incoming(vertex).size() + outgoing(vertex).size();
+  }
 
-    /** Given a node, returns the set of outgoing edges. */
-    public Set<DirectedEdge<N, W>> outgoing(N node)
-    {
-        Set<DirectedEdge<N, W>> set = nodesToEdges().get(node);
-        return set == null ? Collections.<DirectedEdge<N, W>>emptySet() : set;
-    }
+  /**
+   * Given a node, returns the set of incoming and outgoing edges.
+   */
+  public Set<DirectedEdge<V, W>> edges(V node) {
+    Set<DirectedEdge<V, W>> set = new HashSet<>();
+    set.addAll(incoming(node));
+    set.addAll(outgoing(node));
+    return set;
+  }
 
-    /** Given a node, returns the set of incoming and outgoing edges. */
-    public Set<DirectedEdge<N, W>> edges(N node)
-    {
-        Set<DirectedEdge<N, W>> set = new HashSet<DirectedEdge<N, W>>();
-        set.addAll(incoming(node));
-        set.addAll(outgoing(node));
-        return set;
-    }
+  public DirectedEdge<V, W> newEdge(V endPoint1, V endPoint2, W weight) {
+    return DirectedEdge.from(endPoint1, endPoint2, weight);
+  }
 
-    public DirectedEdge<N, W> newEdge(N endPoint1, N endPoint2, W weight)
-    {
-        return DirectedEdge.with(endPoint1, endPoint2, weight);
-    }
+  /**
+   * Nodes to outgoing edges.
+   */
+  private Map<V, Set<DirectedEdge<V, W>>> verticesToEdges;
 
-    /** Nodes to outgoing edges. */
-    private Map<N, Set<DirectedEdge<N, W>>> nodesToEdges;
-
-    /** Nodes to incoming edges. */
-    private Map<N, Set<DirectedEdge<N, W>>> nodesToIncomingEdges;
+  /**
+   * Nodes to incoming edges.
+   */
+  private Map<V, Set<DirectedEdge<V, W>>> nodesToIncomingEdges;
 }

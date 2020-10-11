@@ -1,30 +1,30 @@
 package ma.vi.graph;
 
 /**
- * An edge in a graph is simply an unordered pair of nodes.
+ * An undirected edge in a graph is an unordered pair of vertices.
  *
- * @param <N> The node type.
+ * @param <V> The vertex type.
  * @param <W> The weight type.
  * @author vikash.madhow@gmail.com
  */
-public class UndirectedEdge<N, W> implements Edge<N, W> {
-  public UndirectedEdge(N endPoint1, N endPoint2, W weight) {
+public class UndirectedEdge<V, W> implements Edge<V, W> {
+  public UndirectedEdge(V endPoint1, V endPoint2, W weight) {
     this.endPoint1 = endPoint1;
     this.endPoint2 = endPoint2;
     this.weight = weight;
   }
 
-  public static <N, W> UndirectedEdge<N, W> with(N endPoint1, N endPoint2, W weight) {
-    return new UndirectedEdge<N, W>(endPoint1, endPoint2, weight);
+  public static <V, W> UndirectedEdge<V, W> with(V endPoint1, V endPoint2, W weight) {
+    return new UndirectedEdge<>(endPoint1, endPoint2, weight);
   }
 
   @Override
-  public N endPoint1() {
+  public V endPoint1() {
     return endPoint1;
   }
 
   @Override
-  public N endPoint2() {
+  public V endPoint2() {
     return endPoint2;
   }
 
@@ -43,7 +43,7 @@ public class UndirectedEdge<N, W> implements Edge<N, W> {
       return true;
     }
     if (other instanceof UndirectedEdge) {
-      UndirectedEdge<N, W> that = (UndirectedEdge<N, W>)other;
+      UndirectedEdge<V, W> that = (UndirectedEdge<V, W>)other;
       return (endPoint1.equals(that.endPoint1) && endPoint2.equals(that.endPoint2)) ||
           (endPoint1.equals(that.endPoint2) && endPoint2.equals(that.endPoint1));
     }
@@ -65,7 +65,7 @@ public class UndirectedEdge<N, W> implements Edge<N, W> {
     return "(" + endPoint1 + "-<" + weight + ">-" + endPoint2 + ')';
   }
 
-  public final N endPoint1;
-  public final N endPoint2;
+  public final V endPoint1;
+  public final V endPoint2;
   public final W weight;
 }

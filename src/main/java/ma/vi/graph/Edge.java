@@ -1,7 +1,7 @@
 package ma.vi.graph;
 
 /**
- * An edge links two nodes, known as the source and target. Edges comes in two varieties:
+ * An edge links two vertices, known as the source and target. Edges comes in two varieties:
  * Directed and Undirected. Directed edges discriminate between the source and target
  * nodes with the edge akin to a one-way road where traffic can only move from the source to
  * the target; undirected edges have no such restrictions and movement can be construed as
@@ -10,20 +10,20 @@ package ma.vi.graph;
  * source B and target A, i.e., an undirected edge is an unordered pair; a directed edge,
  * meanwhile, behaves as an ordered pair.
  *
- * @param <N> The type of nodes that this edge connects.
+ * @param <V> The type of vertex that this edge connects.
  * @param <W> The weight type of the edge.
  * @author vikash.madhow@gmail.com
  */
-public interface Edge<N, W> {
+public interface Edge<V, W> {
   /**
-   * The first endpoint (node) of the edge.
+   * The first endpoint (vertex) of the edge.
    */
-  N endPoint1();
+  V endPoint1();
 
   /**
-   * The second endpoint (node) of the edge.
+   * The second endpoint (vertex) of the edge.
    */
-  N endPoint2();
+  V endPoint2();
 
   /**
    * The weight of the edge.

@@ -5,18 +5,18 @@ import java.util.Set;
 /**
  * Defines the common state and behaviour of a graph.
  *
- * @param <N> The node type of the graph
+ * @param <V> The vertex type of the graph
  * @param <E> The edge type of the graph. This must be a subclass of
  *            {@link ma.vi.graph.Edge} specialised on current the node
  *            type of the graph.
  * @param <W> The weight type on the edges of the graph.
  * @author vikash.madhow@gmail.com
  */
-public interface Graph<N, W, E extends Edge<N, W>> {
+public interface Graph<V, W, E extends Edge<V, W>> {
   /**
-   * The set of nodes in the graph.
+   * The set of vertices of the graph.
    */
-  Set<N> nodes();
+  Set<V> vertices();
 
   /**
    * The set of edges in the graph.
@@ -24,25 +24,39 @@ public interface Graph<N, W, E extends Edge<N, W>> {
   Set<E> edges();
 
   /**
-   * Given a node, returns the set of incoming edges.
+   * Returns the set of incoming edges for the given vertex.
    */
-  Set<E> incoming(N node);
+  Set<E> incoming(V vertex);
 
   /**
-   * Given a node, returns the set of outgoing edges.
+   * Returns the set of outgoing edges for the given vertex.
    */
-  Set<E> outgoing(N node);
+  Set<E> outgoing(V vertex);
 
   /**
-   * Given a node, returns the set of incoming and outgoing edges.
+   * Returns the set of incoming and outgoing edges for the vertex.
    */
-  Set<E> edges(N node);
+  Set<E> edges(V vertex);
+
+  /**
+   * Returns the degree of a vertex (number of edges having the vertex
+   * as an endpoint).
+   */
+  int degree(V vertex);
+
+  default int inDegree(V vertex) {
+    return incoming(vertex).size();
+  }
+
+  default int outDegree(V vertex) {
+    return outgoing(vertex).size();
+  }
 
   /**
    * Creates a new edge connecting the two specified nodes appropriate for
    * the current type of graph.
    */
-  E newEdge(N endPoint1, N endPoint2, W weight);
+  E newEdge(V endPoint1, V endPoint2, W weight);
 
   /**
    * Produces a GraphViz representation of this graph in the DOT language.

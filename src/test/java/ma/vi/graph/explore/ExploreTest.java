@@ -3,8 +3,7 @@ package ma.vi.graph.explore;
 import org.junit.jupiter.api.Test;
 import ma.vi.graph.*;
 
-import java.util.Collections;
-import java.util.HashSet;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,23 +25,40 @@ class ExploreTest {
     );
     System.out.println(graph.toGraphViz());
 
+    List<Integer> acc = new ArrayList<>();
     Explore.breadthFirst(
       graph, 1, (g, p, a) -> {
         System.out.println(p);
-        return new HashSet<Integer>();
-      }
+        acc.add(p.end().orElse(0));
+        return Collections.emptySet();
+      },
+      acc
     );
+    System.out.println(acc);
+    System.out.println();
+
+    acc.clear();
     Explore.depthFirst(
-      graph, 1, (g, p, a) -> {
-        System.out.println(p);
-        return new HashSet<Integer>();
-      }
+        graph, 1, (g, p, a) -> {
+          System.out.println(p);
+          acc.add(p.end().orElse(0));
+          return Collections.emptySet();
+        },
+        acc
     );
+    System.out.println(acc);
+    System.out.println();
+
+    acc.clear();
     Explore.minCostFirst(
-      graph, 1, (g, p, a) -> {
-        System.out.println(p);
-        return new HashSet<Integer>();
-      }
+        graph, 1, (g, p, a) -> {
+          System.out.println(p);
+          acc.add(p.end().orElse(0));
+          return Collections.emptySet();
+        },
+        acc
     );
+    System.out.println(acc);
+    System.out.println();
   }
 }

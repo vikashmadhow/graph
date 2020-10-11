@@ -1,4 +1,4 @@
-package ma.vi.graph;
+package ma.vi.graph.explore;
 
 /**
  * Search algorithm on graph

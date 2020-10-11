@@ -33,10 +33,10 @@ public class Explore {
    * </ul>
    */
   @FunctionalInterface
-  public interface ExploreOp<V, W, E extends Edge<V, W>> {
+  public interface ExploreOp<V, W, E extends Edge<V, W>, A> {
      Set<V> op(Graph<V, W, E> graph,
                Path<V> path,
-               Collection<V> accumulator);
+               A accumulator);
   }
 
   /**
@@ -133,11 +133,11 @@ public class Explore {
    *         or null if the exploration completed without the exploreOp function returning any
    *         result (other than null).
    */
-  public static <V, W, E extends Edge<V, W>> Set<V> explore(Graph<V, W, E> graph,
+  public static <V, W, E extends Edge<V, W>, A> Set<V> explore(Graph<V, W, E> graph,
                                                             V startVertex,
                                                             PathQueue<V> pathQueue,
-                                                            ExploreOp<V, W, E> exploreOp,
-                                                            Set<V> accumulator,
+                                                            ExploreOp<V, W, E, A> exploreOp,
+                                                            A accumulator,
                                                             ExpandOp<V, W, E> expandOp,
                                                             PathCostOp<V, W, E> pathCostOp) {
     pathQueue.add(new Path<>(startVertex, 0));
@@ -152,7 +152,7 @@ public class Explore {
   public static <V, W, E extends Edge<V, W>> Set<V> explore(Graph<V, W, E> graph,
                                                             V startVertex,
                                                             PathQueue<V> pathQueue,
-                                                            ExploreOp<V, W, E> exploreOp) {
+                                                            ExploreOp<V, W, E, ?> exploreOp) {
     pathQueue.add(new Path<>(startVertex, 0));
     return explore(graph,
                    pathQueue,
@@ -162,10 +162,10 @@ public class Explore {
                    PathCostOp::byWeight);
   }
 
-  private static <V, W, E extends Edge<V, W>> Set<V> explore(Graph<V, W, E> graph,
+  private static <V, W, E extends Edge<V, W>, A> Set<V> explore(Graph<V, W, E> graph,
                                                              PathQueue<V> pathQueue,
-                                                             ExploreOp<V, W, E> exploreOp,
-                                                             Set<V> accumulator,
+                                                             ExploreOp<V, W, E, A> exploreOp,
+                                                             A accumulator,
                                                              ExpandOp<V, W, E> expandOp,
                                                              PathCostOp<V, W, E> pathCostOp) {
     Set<V> explored = new HashSet<>();
@@ -209,10 +209,10 @@ public class Explore {
   /**
    * Explores the graph breadth-first.
    */
-  public static <V, W, E extends Edge<V, W>> Set<V> breadthFirst(Graph<V, W, E> graph,
+  public static <V, W, E extends Edge<V, W>, A> Set<V> breadthFirst(Graph<V, W, E> graph,
                                                                  V startVertex,
-                                                                 ExploreOp<V, W, E> exploreOp,
-                                                                 Set<V> accumulator,
+                                                                 ExploreOp<V, W, E, A> exploreOp,
+                                                                 A accumulator,
                                                                  ExpandOp<V, W, E> expandOp) {
     return explore(graph,
                    startVertex,
@@ -223,23 +223,35 @@ public class Explore {
                    PathCostOp::byWeight);
   }
 
-  public static <V, W, E extends Edge<V, W>> Set<V> breadthFirst(Graph<V, W, E> graph,
+  public static <V, W, E extends Edge<V, W>, A> Set<V> breadthFirst(Graph<V, W, E> graph,
                                                                  V startVertex,
-                                                                 ExploreOp<V, W, E> exploreOp) {
+                                                                 ExploreOp<V, W, E, A> exploreOp,
+                                                                 A accumulator) {
     return breadthFirst(graph,
                    startVertex,
                    exploreOp,
-                   null,
+                   accumulator,
                    ExpandOp::outgoingEdges);
+  }  
+  
+  public static <V, W, E extends Edge<V, W>> Set<V> breadthFirst(Graph<V, W, E> graph,
+                                                                    V startVertex,
+                                                                    ExploreOp<V, W, E, ?> exploreOp) {
+    return breadthFirst(graph,
+                        startVertex,
+                        exploreOp,
+                        null,
+                        ExpandOp::outgoingEdges);
   }
+
 
   /**
    * Explores the graph depth-first.
    */
-  public static <V, W, E extends Edge<V, W>> Set<V> depthFirst(Graph<V, W, E> graph,
+  public static <V, W, E extends Edge<V, W>, A> Set<V> depthFirst(Graph<V, W, E> graph,
                                                                V startVertex,
-                                                               ExploreOp<V, W, E> exploreOp,
-                                                               Set<V> accumulator,
+                                                               ExploreOp<V, W, E, A> exploreOp,
+                                                               A accumulator,
                                                                ExpandOp<V, W, E> expandOp) {
     return explore(graph,
                    startVertex,
@@ -250,9 +262,20 @@ public class Explore {
                    PathCostOp::byWeight);
   }
 
+  public static <V, W, E extends Edge<V, W>, A> Set<V> depthFirst(Graph<V, W, E> graph,
+                                                               V startVertex,
+                                                               ExploreOp<V, W, E, A> exploreOp,
+                                                               A accumulator) {
+    return depthFirst(graph,
+                      startVertex,
+                      exploreOp,
+                      accumulator,
+                      ExpandOp::outgoingEdges);
+  }
+
   public static <V, W, E extends Edge<V, W>> Set<V> depthFirst(Graph<V, W, E> graph,
                                                                V startVertex,
-                                                               ExploreOp<V, W, E> exploreOp) {
+                                                               ExploreOp<V, W, E, ?> exploreOp) {
     return depthFirst(graph,
                       startVertex,
                       exploreOp,
@@ -263,10 +286,10 @@ public class Explore {
   /**
    * Explores the graph in order of minimum cost pth.
    */
-  public static <V, W, E extends Edge<V, W>> Set<V> minCostFirst(Graph<V, W, E> graph,
+  public static <V, W, E extends Edge<V, W>, A> Set<V> minCostFirst(Graph<V, W, E> graph,
                                                                  V startVertex,
-                                                                 ExploreOp<V, W, E> exploreOp,
-                                                                 Set<V> accumulator,
+                                                                 ExploreOp<V, W, E, A> exploreOp,
+                                                                 A accumulator,
                                                                  ExpandOp<V, W, E> expandOp) {
     return explore(graph,
                    startVertex,
@@ -277,9 +300,20 @@ public class Explore {
                    PathCostOp::byWeight);
   }
 
+  public static <V, W, E extends Edge<V, W>, A> Set<V> minCostFirst(Graph<V, W, E> graph,
+                                                                 V startVertex,
+                                                                 ExploreOp<V, W, E, A> exploreOp,
+                                                                 A accumulator) {
+    return minCostFirst(graph,
+                        startVertex,
+                        exploreOp,
+                        accumulator,
+                        ExpandOp::outgoingEdges);
+  }
+
   public static <V, W, E extends Edge<V, W>> Set<V> minCostFirst(Graph<V, W, E> graph,
                                                                  V startVertex,
-                                                                 ExploreOp<V, W, E> exploreOp) {
+                                                                 ExploreOp<V, W, E, ?> exploreOp) {
     return minCostFirst(graph,
                         startVertex,
                         exploreOp,

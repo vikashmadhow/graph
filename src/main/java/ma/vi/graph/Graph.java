@@ -1,9 +1,15 @@
 package ma.vi.graph;
 
+import java.util.Optional;
 import java.util.Set;
 
 /**
- * Defines the common state and behaviour of a graph.
+ * <p>
+ * Represents a graph consisting of a set of vertices of type V, connected
+ * by edges of type E which can have a weight of type W. Graphs can be directed
+ * in which case their edges are of type {@link DirectedEdge} or, undirected
+ * with edge type {@link UndirectedEdge}.
+ * </p>
  *
  * @param <V> The vertex type of the graph
  * @param <E> The edge type of the graph. This must be a subclass of
@@ -19,22 +25,46 @@ public interface Graph<V, W, E extends Edge<V, W>> {
   Set<V> vertices();
 
   /**
+   * Returns the edge between v1 and v2 in the graph or
+   * empty if not found.
+   */
+  default Optional<E> edge(V v1, V v2) {
+    for (E edge: edges(v1)) {
+      if (edge.endPoint2().equals(v2)) {
+        return Optional.of(edge);
+      }
+    }
+    return Optional.empty();
+  }
+
+  /**
    * The set of edges in the graph.
    */
   Set<E> edges();
 
   /**
-   * Returns the set of incoming edges for the given vertex.
+   * Returns whether the graph is directed or not.
+   */
+  boolean directed();
+
+  /**
+   * Returns the set of incoming edges into a given vertex. For undirected
+   * graphs this is the same as the {@link #outgoing(Object)} edges from the
+   * vertex.
    */
   Set<E> incoming(V vertex);
 
   /**
-   * Returns the set of outgoing edges for the given vertex.
+   * Returns the set of outgoing edges from a given vertex. For undirected
+   * graphs this is the same as the {@link #incoming(Object)} edges into the
+   * vertex.
    */
   Set<E> outgoing(V vertex);
 
   /**
-   * Returns the set of incoming and outgoing edges for the vertex.
+   * Returns the set of incoming and outgoing edges for the vertex. For directed
+   * graphs edges(Object) = {@link #incoming(Object)} + {@link #outgoing(Object)},
+   * while for undirected graphs, edges(Object) == {@link #incoming(Object)} == {@link #outgoing(Object)}
    */
   Set<E> edges(V vertex);
 
@@ -44,10 +74,18 @@ public interface Graph<V, W, E extends Edge<V, W>> {
    */
   int degree(V vertex);
 
+  /**
+   * Returns the in-degree of a vertex (number of edges pointing to this vertex).
+   * For undirected graphs this is the same as the degree.
+   */
   default int inDegree(V vertex) {
     return incoming(vertex).size();
   }
 
+  /**
+   * Returns the out-degree of a vertex (number of edges out of this vertex).
+   * For undirected graphs this is the same as the degree.
+   */
   default int outDegree(V vertex) {
     return outgoing(vertex).size();
   }

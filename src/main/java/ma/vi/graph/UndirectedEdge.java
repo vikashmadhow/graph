@@ -44,8 +44,8 @@ public class UndirectedEdge<V, W> implements Edge<V, W> {
     }
     if (other instanceof UndirectedEdge) {
       UndirectedEdge<V, W> that = (UndirectedEdge<V, W>)other;
-      return (endPoint1.equals(that.endPoint1) && endPoint2.equals(that.endPoint2)) ||
-          (endPoint1.equals(that.endPoint2) && endPoint2.equals(that.endPoint1));
+      return (endPoint1.equals(that.endPoint1) && endPoint2.equals(that.endPoint2))
+          || (endPoint1.equals(that.endPoint2) && endPoint2.equals(that.endPoint1));
     }
     return false;
   }

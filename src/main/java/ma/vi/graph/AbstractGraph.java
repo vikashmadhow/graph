@@ -29,9 +29,12 @@ public abstract class AbstractGraph<V, W, E extends Edge<V, W>> implements Graph
    */
   protected AbstractGraph(VertexMap<V, W> nodeMap) {
     edges = new HashSet<>();
+    vertices = new HashSet<>();
     for (Map.Entry<V, Set<T2<V, W>>> entry: nodeMap.entrySet()) {
       for (T2<V, W> to: entry.getValue()) {
         edges.add(newEdge(entry.getKey(), to.a(), to.b()));
+        vertices.add(entry.getKey());
+        vertices.add(to.a());
       }
     }
   }

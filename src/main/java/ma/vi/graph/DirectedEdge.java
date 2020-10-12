@@ -34,6 +34,23 @@ public class DirectedEdge<V, W> extends T3<V, V, W> implements Edge<V, W> {
   }
 
   @Override
+  public boolean equals(Object other) {
+    if (other == this) {
+      return true;
+    }
+    if (other instanceof DirectedEdge) {
+      DirectedEdge<V, W> that = (DirectedEdge<V, W>)other;
+      return (endPoint1().equals(that.endPoint1()) && endPoint2().equals(that.endPoint2()));
+    }
+    return false;
+  }
+
+  @Override
+  public int hashCode() {
+    return 13 * (53 + endPoint1().hashCode()) + endPoint2().hashCode();
+  }
+
+  @Override
   public String toString() {
     return "(" + endPoint1() + "-<" + weight() + ">-" + endPoint2() + ')';
   }

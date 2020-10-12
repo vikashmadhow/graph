@@ -18,20 +18,9 @@ public class UndirectedGraph<V, W> extends AbstractGraph<V, W, UndirectedEdge<V,
     super(vertexMap);
   }
 
-  /**
-   * Build the nodesToEdges map to facilitate graph navigation.
-   */
-  private Map<V, Set<UndirectedEdge<V, W>>> verticesToEdges() {
-    if (verticesToEdges == null) {
-      verticesToEdges = new HashMap<>();
-      for (UndirectedEdge<V, W> e: edges) {
-        Set<UndirectedEdge<V, W>> targets = verticesToEdges.computeIfAbsent(e.endPoint1, k -> new HashSet<>());
-        targets.add(e);
-        targets = verticesToEdges.computeIfAbsent(e.endPoint2, k -> new HashSet<>());
-        targets.add(newEdge(e.endPoint2, e.endPoint1, e.weight));
-      }
-    }
-    return verticesToEdges;
+  @Override
+  public boolean directed() {
+    return false;
   }
 
   /**
@@ -49,16 +38,16 @@ public class UndirectedGraph<V, W> extends AbstractGraph<V, W, UndirectedEdge<V,
     return incoming(vertex);
   }
 
-  @Override
-  public int degree(V vertex) {
-    return incoming(vertex).size();
-  }
-
   /**
    * Given a node, returns the set of incoming and outgoing edges.
    */
   public Set<UndirectedEdge<V, W>> edges(V vertex) {
     return incoming(vertex);
+  }
+
+  @Override
+  public int degree(V vertex) {
+    return incoming(vertex).size();
   }
 
   /**
@@ -67,6 +56,22 @@ public class UndirectedGraph<V, W> extends AbstractGraph<V, W, UndirectedEdge<V,
    */
   public UndirectedEdge<V, W> newEdge(V endPoint1, V endPoint2, W weight) {
     return UndirectedEdge.with(endPoint1, endPoint2, weight);
+  }
+
+  /**
+   * Build the nodesToEdges map to facilitate graph navigation.
+   */
+  private Map<V, Set<UndirectedEdge<V, W>>> verticesToEdges() {
+    if (verticesToEdges == null) {
+      verticesToEdges = new HashMap<>();
+      for (UndirectedEdge<V, W> e: edges) {
+        Set<UndirectedEdge<V, W>> targets = verticesToEdges.computeIfAbsent(e.endPoint1, k -> new HashSet<>());
+        targets.add(e);
+        targets = verticesToEdges.computeIfAbsent(e.endPoint2, k -> new HashSet<>());
+        targets.add(newEdge(e.endPoint2, e.endPoint1, e.weight));
+      }
+    }
+    return verticesToEdges;
   }
 
   /**

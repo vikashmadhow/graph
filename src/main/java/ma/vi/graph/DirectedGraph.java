@@ -18,6 +18,46 @@ public class DirectedGraph<V, W> extends AbstractGraph<V, W, DirectedEdge<V, W>>
     super(vertexMap);
   }
 
+  @Override
+  public boolean directed() {
+    return true;
+  }
+
+  /**
+   * Given a node, returns the set of incoming edges.
+   */
+  public Set<DirectedEdge<V, W>> incoming(V node) {
+    Set<DirectedEdge<V, W>> set = nodesToIncomingEdges().get(node);
+    return set == null ? Collections.emptySet() : set;
+  }
+
+  /**
+   * Given a node, returns the set of outgoing edges.
+   */
+  public Set<DirectedEdge<V, W>> outgoing(V node) {
+    Set<DirectedEdge<V, W>> set = verticesToEdges().get(node);
+    return set == null ? Collections.emptySet() : set;
+  }
+
+  /**
+   * Given a node, returns the set of incoming and outgoing edges.
+   */
+  public Set<DirectedEdge<V, W>> edges(V node) {
+    Set<DirectedEdge<V, W>> set = new HashSet<>();
+    set.addAll(incoming(node));
+    set.addAll(outgoing(node));
+    return set;
+  }
+
+  @Override
+  public int degree(V vertex) {
+    return incoming(vertex).size() + outgoing(vertex).size();
+  }
+
+  public DirectedEdge<V, W> newEdge(V endPoint1, V endPoint2, W weight) {
+    return DirectedEdge.from(endPoint1, endPoint2, weight);
+  }
+
   private Map<V, Set<DirectedEdge<V, W>>> verticesToEdges() {
     if (verticesToEdges == null) {
       verticesToEdges = new HashMap<>();
@@ -38,41 +78,6 @@ public class DirectedGraph<V, W> extends AbstractGraph<V, W, DirectedEdge<V, W>>
       }
     }
     return nodesToIncomingEdges;
-  }
-
-  /**
-   * Given a node, returns the set of incoming edges.
-   */
-  public Set<DirectedEdge<V, W>> incoming(V node) {
-    Set<DirectedEdge<V, W>> set = nodesToIncomingEdges().get(node);
-    return set == null ? Collections.emptySet() : set;
-  }
-
-  /**
-   * Given a node, returns the set of outgoing edges.
-   */
-  public Set<DirectedEdge<V, W>> outgoing(V node) {
-    Set<DirectedEdge<V, W>> set = verticesToEdges().get(node);
-    return set == null ? Collections.emptySet() : set;
-  }
-
-  @Override
-  public int degree(V vertex) {
-    return incoming(vertex).size() + outgoing(vertex).size();
-  }
-
-  /**
-   * Given a node, returns the set of incoming and outgoing edges.
-   */
-  public Set<DirectedEdge<V, W>> edges(V node) {
-    Set<DirectedEdge<V, W>> set = new HashSet<>();
-    set.addAll(incoming(node));
-    set.addAll(outgoing(node));
-    return set;
-  }
-
-  public DirectedEdge<V, W> newEdge(V endPoint1, V endPoint2, W weight) {
-    return DirectedEdge.from(endPoint1, endPoint2, weight);
   }
 
   /**

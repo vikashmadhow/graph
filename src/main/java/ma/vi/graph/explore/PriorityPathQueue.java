@@ -1,5 +1,6 @@
 package ma.vi.graph.explore;
 
+import ma.vi.graph.Edge;
 import ma.vi.graph.Path;
 
 import java.util.PriorityQueue;
@@ -11,9 +12,9 @@ import java.util.PriorityQueue;
  *
  * @author Vikash Madhow (vikash.madhow@gmail.com)
  */
-public class PriorityPathQueue<N> implements PathQueue<N> {
+public class PriorityPathQueue<V, W, E extends Edge<V, W>> implements PathQueue<V, W, E> {
   @Override
-  public void add(Path<N> path) {
+  public void add(Path<V, W, E> path) {
     paths.add(path);
   }
 
@@ -28,9 +29,9 @@ public class PriorityPathQueue<N> implements PathQueue<N> {
   }
 
   @Override
-  public Path<N> next() {
+  public Path<V, W, E> next() {
     return paths.remove();
   }
 
-  private final PriorityQueue<Path<N>> paths = new PriorityQueue<>();
+  private final PriorityQueue<Path<V, W, E>> paths = new PriorityQueue<>();
 }

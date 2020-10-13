@@ -21,8 +21,7 @@ class ExploreTest {
           .add(6, 4, 9)
           .add(8, 1, 9)
           .add(8, 20, 10)
-          .add(9, 2, 10)
-  );
+          .add(9, 2, 10));
 
   @BeforeAll
   static void print() {
@@ -36,7 +35,7 @@ class ExploreTest {
       graph, 1, (g, p, a) -> {
         System.out.println(p);
         acc.add(p.end().orElse(0));
-        return Collections.emptySet();
+        return Optional.empty();
       },
       acc
     );
@@ -57,28 +56,28 @@ class ExploreTest {
 
   @Test
   void depthFirst() {
-    Set<Path<Integer>> acc = new HashSet<>();
+    Set<Path<Integer, Integer, DirectedEdge<Integer, Integer>>> acc = new HashSet<>();
     Explore.depthFirst(
       graph, 1, (g, p, a) -> {
         System.out.println(p);
         acc.add(p);
-        return Collections.emptySet();
+        return Optional.empty();
       },
       acc
     );
     System.out.println(acc);
     System.out.println();
-    Set<Path<Integer>> exp = new HashSet<>(asList(
-        new Path<>(1, 0),
-        new Path<>(asList(1, 5), 1),
-        new Path<>(asList(1, 5, 7), 3),
-        new Path<>(asList(1, 5, 6), 3),
-        new Path<>(asList(1, 5, 6, 9), 7),
-        new Path<>(asList(1, 5, 6, 9, 10), 9),
-        new Path<>(asList(1, 5, 6, 8), 4),
-        new Path<>(asList(1, 4), 1),
-        new Path<>(asList(1, 3), 1),
-        new Path<>(asList(1, 2), 1)));
+    Set<Path<Integer, Integer, DirectedEdge<Integer, Integer>>> exp = new HashSet<>(asList(
+        new Path<>(graph, 1, 0),
+        new Path<>(graph, asList(1, 5), 1),
+        new Path<>(graph, asList(1, 5, 7), 3),
+        new Path<>(graph, asList(1, 5, 6), 3),
+        new Path<>(graph, asList(1, 5, 6, 9), 7),
+        new Path<>(graph, asList(1, 5, 6, 9, 10), 9),
+        new Path<>(graph, asList(1, 5, 6, 8), 4),
+        new Path<>(graph, asList(1, 4), 1),
+        new Path<>(graph, asList(1, 3), 1),
+        new Path<>(graph, asList(1, 2), 1)));
 
     assertEquals(acc, exp);
   }
@@ -90,7 +89,7 @@ class ExploreTest {
       graph, 1, (g, p, a) -> {
         System.out.println(p);
         acc.add(p.end().orElse(0));
-        return Collections.emptySet();
+        return Optional.empty();
       },
       acc
     );

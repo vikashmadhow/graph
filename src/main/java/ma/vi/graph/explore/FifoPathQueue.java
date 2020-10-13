@@ -1,5 +1,6 @@
 package ma.vi.graph.explore;
 
+import ma.vi.graph.Edge;
 import ma.vi.graph.Path;
 
 import java.util.ArrayDeque;
@@ -12,9 +13,9 @@ import java.util.Deque;
  *
  * @author Vikash Madhow (vikash.madhow@gmail.com)
  */
-public class FifoPathQueue<N> implements PathQueue<N> {
+public class FifoPathQueue<V, W, E extends Edge<V, W>> implements PathQueue<V, W, E> {
   @Override
-  public void add(Path<N> path) {
+  public void add(Path<V, W, E> path) {
     paths.addFirst(path);
   }
 
@@ -24,7 +25,7 @@ public class FifoPathQueue<N> implements PathQueue<N> {
   }
 
   @Override
-  public Path<N> next() {
+  public Path<V, W, E> next() {
     return paths.removeLast();
   }
 
@@ -33,5 +34,5 @@ public class FifoPathQueue<N> implements PathQueue<N> {
     return paths.size();
   }
 
-  private final Deque<Path<N>> paths = new ArrayDeque<>();
+  private final Deque<Path<V, W, E>> paths = new ArrayDeque<>();
 }

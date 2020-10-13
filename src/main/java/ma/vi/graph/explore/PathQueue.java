@@ -1,5 +1,6 @@
 package ma.vi.graph.explore;
 
+import ma.vi.graph.Edge;
 import ma.vi.graph.Path;
 
 import java.util.Collection;
@@ -14,11 +15,11 @@ import java.util.Iterator;
  *
  * @author Vikash Madhow (vikash.madhow@gmail.com)
  */
-public interface PathQueue<V> extends Iterator<Path<V>> {
-  void add(Path<V> path);
+public interface PathQueue<V, W, E extends Edge<V, W>> extends Iterator<Path<V, W, E>> {
+  void add(Path<V, W, E> path);
 
-  default void addAll(Collection<Path<V>> paths) {
-    for (Path<V> path: paths) {
+  default void addAll(Collection<Path<V, W, E>> paths) {
+    for (Path<V, W, E> path: paths) {
       add(path);
     }
   }

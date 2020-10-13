@@ -86,7 +86,7 @@ public abstract class AbstractGraph<V, W, E extends Edge<V, W>> implements Graph
    * Produces a GraphViz representation of this graph in the DOT language.
    */
   public String toGraphViz() {
-    StringBuilder spec = new StringBuilder("digraph G {\n");
+    StringBuilder spec = new StringBuilder(directed() ? "digraph" : "graph").append(" G {\n");
 
 //    // nodes
 //    for (N node: nodes()) {

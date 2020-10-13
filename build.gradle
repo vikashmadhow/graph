@@ -48,7 +48,7 @@ sourceSets {
 }
 
 dependencies {
-  compile "com.vikmad:base:latest.release"
+  compile "com.vikmad:base:0.1.3"
 
   // Use JUnit test framework
   testImplementation(platform('org.junit:junit-bom:5.7.0'))

@@ -2,6 +2,8 @@ package ma.vi.graph;
 
 import java.util.*;
 
+import static java.util.Collections.emptySet;
+
 /**
  * An undirected graph.
  *
@@ -28,7 +30,7 @@ public class UndirectedGraph<V, W> extends AbstractGraph<V, W, UndirectedEdge<V,
    */
   public Set<UndirectedEdge<V, W>> incoming(V vertex) {
     Set<UndirectedEdge<V, W>> incoming = verticesToEdges().get(vertex);
-    return incoming == null ? Collections.emptySet() : incoming;
+    return incoming == null ? emptySet() : incoming;
   }
 
   /**

@@ -20,6 +20,14 @@ public class VertexMap<V, W> extends HashMap<V, Set<T2<V, W>>> {
   }
 
   public VertexMap<V, W> add(V from, W weight, V... tos) {
+    if (start == null) {
+      start = from;
+    }
+    if (tos.length > 0) {
+      end = tos[tos.length - 1];
+    } else if (end == null) {
+      end = from;
+    }
     for (V to: tos) {
       Set<T2<V, W>> targets = get(from);
       if (targets == null) {
@@ -30,4 +38,15 @@ public class VertexMap<V, W> extends HashMap<V, Set<T2<V, W>>> {
     }
     return this;
   }
+
+  public V start() {
+    return start;
+  }
+
+  public V end() {
+    return end;
+  }
+
+  private V start;
+  private V end;
 }

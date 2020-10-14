@@ -2,8 +2,8 @@ package ma.vi.graph;
 
 import ma.vi.base.tuple.T2;
 
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
@@ -14,7 +14,7 @@ import java.util.Set;
  * @param <W> The type of weight on the edges.
  * @author vikash.madhow@gmail.com
  */
-public class VertexMap<V, W> extends HashMap<V, Set<T2<V, W>>> {
+public class VertexMap<V, W> extends LinkedHashMap<V, Set<T2<V, W>>> {
   public VertexMap<V, W> add(V vertex1, V vertex2) {
     return add(vertex1, null, vertex2);
   }
@@ -31,7 +31,7 @@ public class VertexMap<V, W> extends HashMap<V, Set<T2<V, W>>> {
     for (V to: tos) {
       Set<T2<V, W>> targets = get(from);
       if (targets == null) {
-        targets = new HashSet<>();
+        targets = new LinkedHashSet<>();
         put(from, targets);
       }
       targets.add(T2.of(to, weight));

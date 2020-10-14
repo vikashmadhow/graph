@@ -4,19 +4,17 @@ import ma.vi.graph.DirectedEdge;
 import ma.vi.graph.DirectedGraph;
 import ma.vi.graph.VertexMap;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Vikash Madhow (vikash.madhow@gmail.com)
  */
 class DirectedPath<V, W> extends DirectedGraph<V, W> implements Path<V, W, DirectedEdge<V, W>> {
-  public DirectedPath(List<DirectedEdge<V, W>> directedEdges) {
-    super(new HashSet<>(directedEdges));
-    this.start = directedEdges.isEmpty() ? null : directedEdges.get(0).endPoint1();
-    this.end = directedEdges.isEmpty() ? null : directedEdges.get(directedEdges.size() - 1).endPoint2();
+  public DirectedPath(LinkedHashSet<DirectedEdge<V, W>> directedEdges) {
+    super(directedEdges);
+    List<DirectedEdge<V, W>> e = new ArrayList<>(directedEdges);
+    this.start = e.isEmpty() ? null : e.get(0).endPoint1();
+    this.end = e.isEmpty() ? null : e.get(e.size() - 1).endPoint2();
   }
 
   public DirectedPath(VertexMap<V, W> vertexMap) {

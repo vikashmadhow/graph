@@ -2,9 +2,9 @@ package ma.vi.graph;
 
 import ma.vi.base.tuple.T2;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+
+import static java.util.Collections.unmodifiableSet;
 
 /**
  * A partial implementation of the generic methods of the {@link Graph} interface.
@@ -28,7 +28,7 @@ public abstract class AbstractGraph<V, W, E extends Edge<V, W>> implements Graph
    * Creates a graph from a node map.
    */
   protected AbstractGraph(VertexMap<V, W> nodeMap) {
-    edges = new HashSet<>();
+    edges = new LinkedHashSet<>();
     vertices = new HashSet<>();
     for (Map.Entry<V, Set<T2<V, W>>> entry: nodeMap.entrySet()) {
       for (T2<V, W> to: entry.getValue()) {
@@ -51,7 +51,7 @@ public abstract class AbstractGraph<V, W, E extends Edge<V, W>> implements Graph
         vertices.add(e.endPoint2());
       }
     }
-    return vertices;
+    return unmodifiableSet(vertices);
   }
 
   /**
@@ -59,7 +59,7 @@ public abstract class AbstractGraph<V, W, E extends Edge<V, W>> implements Graph
    */
   @Override
   public Set<E> edges() {
-    return edges;
+    return unmodifiableSet(edges);
   }
 
   @Override

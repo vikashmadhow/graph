@@ -1,5 +1,6 @@
 package ma.vi.graph;
 
+import ma.vi.base.tuple.T2;
 import ma.vi.graph.path.Path;
 
 import java.util.LinkedHashSet;
@@ -93,18 +94,48 @@ public interface Graph<V, W, E extends Edge<V, W>> {
     return outgoing(vertex).size();
   }
 
+  /**
+   * Construct a path with the same edge type as this graph.
+   *
+   * @param cost  The cost of the path
+   * @param edges The edges of the path in the right order as the first and last
+   *              edges will be used to set the start and end  the path.
+   */
   Path<V, W, E> path(Integer cost, LinkedHashSet<E> edges);
 
+  /**
+   * Construct a path with a single vertex and no edge.
+   */
   Path<V, W, E> path(Integer cost, V vertex);
 
+  /**
+   * Construct a path with a single vertex and no edge. The
+   * cost of the path is set to 0.
+   */
   default Path<V, W, E> path(V vertex) {
     return path(0, vertex);
   }
 
+  /**
+   * Construct a path of the vertices in the given order. The
+   * weight on the edges are set to null.
+   */
   default Path<V, W, E> path(Integer cost, V... vertices) {
     Path<V, W, E> path = path(vertices[0]);
     for (int i = 1; i < vertices.length; i++) {
       path = path.extend(vertices[i], null, cost);
+    }
+    return path;
+  }
+
+  /**
+   * Construct a path of the vertices, starting from the first vertex and
+   * extended by adding an edge from the vertices array in the given order.
+   */
+  default Path<V, W, E> path(Integer cost, V first, T2<V, W>... vertices) {
+    Path<V, W, E> path = path(first);
+    for (T2<V, W> v: vertices) {
+      path = path.extend(v.a(), v.b(), cost);
     }
     return path;
   }

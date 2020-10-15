@@ -46,22 +46,6 @@ public class DirectedPath<V, W> extends DirectedGraph<V, W> implements Path<V, W
   }
 
   @Override
-  public Optional<DirectedEdge<V, W>> next(V from) {
-    Set<DirectedEdge<V, W>> outgoing = outgoing(from);
-    return outgoing == null || outgoing.isEmpty()
-              ? Optional.empty()
-              : Optional.of(outgoing.iterator().next());
-  }
-
-  @Override
-  public Optional<DirectedEdge<V, W>> previous(V from) {
-    Set<DirectedEdge<V, W>> incoming = incoming(from);
-    return incoming == null || incoming.isEmpty()
-              ? Optional.empty()
-              : Optional.of(incoming.iterator().next());
-  }
-
-  @Override
   public Integer cost() {
     return cost;
   }

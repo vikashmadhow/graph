@@ -46,22 +46,6 @@ public class UndirectedPath<V, W> extends UndirectedGraph<V, W> implements Path<
   }
 
   @Override
-  public Optional<UndirectedEdge<V, W>> next(V from) {
-    Set<UndirectedEdge<V, W>> outgoing = outgoing(from);
-    return outgoing == null || outgoing.isEmpty()
-              ? Optional.empty()
-              : Optional.of(outgoing.iterator().next());
-  }
-
-  @Override
-  public Optional<UndirectedEdge<V, W>> previous(V from) {
-    Set<UndirectedEdge<V, W>> incoming = incoming(from);
-    return incoming == null || incoming.isEmpty()
-              ? Optional.empty()
-              : Optional.of(incoming.iterator().next());
-  }
-
-  @Override
   public Integer cost() {
     return cost;
   }

@@ -16,13 +16,13 @@ import static org.junit.jupiter.api.Assertions.*;
 class ExploreTest {
   static DirectedGraph<Integer, Integer> graph = new DirectedGraph<>(
       new VertexMap<Integer, Integer>()
-          .add(1, 1, 2, 3, 4, 5)
-          .add(5, 2, 6, 7)
-          .add(6, 1, 8)
-          .add(6, 4, 9)
-          .add(8, 1, 9)
+          .add(1, 1,  2, 3, 4, 5)
+          .add(5, 2,  6, 7)
+          .add(6, 1,  8)
+          .add(6, 4,  9)
+          .add(8, 1,  9)
           .add(8, 20, 10)
-          .add(9, 2, 10));
+          .add(9, 2,  10));
 
   @BeforeAll
   static void print() {

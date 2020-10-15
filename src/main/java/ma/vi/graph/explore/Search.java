@@ -2,7 +2,7 @@ package ma.vi.graph.explore;
 
 import ma.vi.graph.Edge;
 import ma.vi.graph.Graph;
-import ma.vi.graph.Path;
+import ma.vi.graph.path.Path;
 
 import java.util.Optional;
 
@@ -43,8 +43,8 @@ public class Search {
     class SearchExploreOp implements ExploreOp<V, W, E, Void, Path<V, W, E>> {
       @Override
       public Optional<Path<V, W, E>> op(Graph<V, W, E> graph,
-                                        Path<V, W, E> path,
-                                        Void accumulator) {
+                                         Path<V, W, E> path,
+                                         Void accumulator) {
         return goalOp.op(graph, path) ? Optional.of(path) : Optional.empty();
       }
     }
@@ -58,9 +58,9 @@ public class Search {
   }
 
   public static <V, W, E extends Edge<V, W>> Path<V, W, E> search(Graph<V, W, E> graph,
-                                                                  V startVertex,
-                                                                  PathQueue<V, W, E> pathQueue,
-                                                                  GoalOp<V, W, E> goalOp) {
+                                                                   V startVertex,
+                                                                   PathQueue<V, W, E> pathQueue,
+                                                                   GoalOp<V, W, E> goalOp) {
     return search(graph,
                   startVertex,
                   pathQueue,
@@ -72,7 +72,7 @@ public class Search {
   /**
    * Breadth-first search.
    */
-  public static <V, W, E extends Edge<V, W>> Path<V, W, E>  breadthFirst(Graph<V, W, E> graph,
+  public static <V, W, E extends Edge<V, W>> Path<V, W, E> breadthFirst(Graph<V, W, E> graph,
                                                                          V startVertex,
                                                                          GoalOp<V, W, E> goalOp,
                                                                          ExpandOp<V, W, E> expandOp,
@@ -88,7 +88,7 @@ public class Search {
   /**
    * Breadth-first search.
    */
-  public static <V, W, E extends Edge<V, W>> Path<V, W, E>  breadthFirst(Graph<V, W, E> graph,
+  public static <V, W, E extends Edge<V, W>> Path<V, W, E> breadthFirst(Graph<V, W, E> graph,
                                                                          V startVertex,
                                                                          GoalOp<V, W, E> goalOp) {
     return search(graph,
@@ -102,7 +102,7 @@ public class Search {
   /**
    * Breadth-first search.
    */
-  public static <V, W, E extends Edge<V, W>> Path<V, W, E>  breadthFirst(Graph<V, W, E> graph,
+  public static <V, W, E extends Edge<V, W>> Path<V, W, E> breadthFirst(Graph<V, W, E> graph,
                                                                          V startVertex,
                                                                          V goalVertex) {
     return search(graph,
@@ -116,11 +116,11 @@ public class Search {
   /**
    * Depth-first search.
    */
-  public static <V, W, E extends Edge<V, W>> Path<V, W, E>  depthFirst(Graph<V, W, E> graph,
-                                                                         V startVertex,
-                                                                         GoalOp<V, W, E> goalOp,
-                                                                         ExpandOp<V, W, E> expandOp,
-                                                                         PathCostOp<V, W, E> pathCostOp) {
+  public static <V, W, E extends Edge<V, W>> Path<V, W, E> depthFirst(Graph<V, W, E> graph,
+                                                                       V startVertex,
+                                                                       GoalOp<V, W, E> goalOp,
+                                                                       ExpandOp<V, W, E> expandOp,
+                                                                       PathCostOp<V, W, E> pathCostOp) {
     return search(graph,
                   startVertex,
                   new LifoPathQueue<>(),
@@ -132,7 +132,7 @@ public class Search {
   /**
    * Depth-first search.
    */
-  public static <V, W, E extends Edge<V, W>> Path<V, W, E>  depthFirst(Graph<V, W, E> graph,
+  public static <V, W, E extends Edge<V, W>> Path<V, W, E> depthFirst(Graph<V, W, E> graph,
                                                                        V startVertex,
                                                                        GoalOp<V, W, E> goalOp) {
     return search(graph,
@@ -146,7 +146,7 @@ public class Search {
   /**
    * Depth-first search.
    */
-  public static <V, W, E extends Edge<V, W>> Path<V, W, E>  depthFirst(Graph<V, W, E> graph,
+  public static <V, W, E extends Edge<V, W>> Path<V, W, E> depthFirst(Graph<V, W, E> graph,
                                                                        V startVertex,
                                                                        V goalVertex) {
     return search(graph,
@@ -160,7 +160,7 @@ public class Search {
   /**
    * Min-cost search.
    */
-  public static <V, W, E extends Edge<V, W>> Path<V, W, E>  minCost(Graph<V, W, E> graph,
+  public static <V, W, E extends Edge<V, W>> Path<V, W, E> minCost(Graph<V, W, E> graph,
                                                                     V startVertex,
                                                                     GoalOp<V, W, E> goalOp,
                                                                     ExpandOp<V, W, E> expandOp,
@@ -176,7 +176,7 @@ public class Search {
   /**
    * Min-cost search.
    */
-  public static <V, W, E extends Edge<V, W>> Path<V, W, E>  minCost(Graph<V, W, E> graph,
+  public static <V, W, E extends Edge<V, W>> Path<V, W, E> minCost(Graph<V, W, E> graph,
                                                                     V startVertex,
                                                                     GoalOp<V, W, E> goalOp) {
     return search(graph,
@@ -190,7 +190,7 @@ public class Search {
   /**
    * Min-cost search.
    */
-  public static <V, W, E extends Edge<V, W>> Path<V, W, E>  minCost(Graph<V, W, E> graph,
+  public static <V, W, E extends Edge<V, W>> Path<V, W, E> minCost(Graph<V, W, E> graph,
                                                                     V startVertex,
                                                                     V goalVertex) {
     return search(graph,

@@ -1,5 +1,8 @@
 package ma.vi.graph;
 
+import ma.vi.graph.path.DirectedPath;
+import ma.vi.graph.path.Path;
+
 import java.util.*;
 
 /**
@@ -54,8 +57,18 @@ public class DirectedGraph<V, W> extends AbstractGraph<V, W, DirectedEdge<V, W>>
     return incoming(vertex).size() + outgoing(vertex).size();
   }
 
-  public DirectedEdge<V, W> newEdge(V endPoint1, V endPoint2, W weight) {
-    return DirectedEdge.from(endPoint1, endPoint2, weight);
+  public DirectedEdge<V, W> newEdge(V endPoint1, W weight, V endPoint2) {
+    return DirectedEdge.from(endPoint1, weight, endPoint2);
+  }
+
+  @Override
+  public Path<V, W, DirectedEdge<V, W>> path(Integer cost, V vertex) {
+    return new DirectedPath<>(cost, vertex);
+  }
+
+  @Override
+  public Path<V, W, DirectedEdge<V, W>> path(Integer cost, LinkedHashSet<DirectedEdge<V, W>> edges) {
+    return new DirectedPath<>(cost, edges);
   }
 
   private Map<V, Set<DirectedEdge<V, W>>> verticesToEdges() {

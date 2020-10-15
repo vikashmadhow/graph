@@ -1,5 +1,8 @@
 package ma.vi.graph;
 
+import ma.vi.graph.path.Path;
+import ma.vi.graph.path.UndirectedPath;
+
 import java.util.*;
 
 import static java.util.Collections.emptySet;
@@ -56,8 +59,18 @@ public class UndirectedGraph<V, W> extends AbstractGraph<V, W, UndirectedEdge<V,
    * Creates a new edge connecting the two specified nodes appropriate for
    * the current type of graph.
    */
-  public UndirectedEdge<V, W> newEdge(V endPoint1, V endPoint2, W weight) {
-    return UndirectedEdge.with(endPoint1, endPoint2, weight);
+  public UndirectedEdge<V, W> newEdge(V endPoint1, W weight, V endPoint2) {
+    return UndirectedEdge.with(endPoint1, weight, endPoint2);
+  }
+
+  @Override
+  public Path<V, W, UndirectedEdge<V, W>> path(Integer cost, V vertex) {
+    return new UndirectedPath<>(cost, vertex);
+  }
+
+  @Override
+  public Path<V, W, UndirectedEdge<V, W>> path(Integer cost, LinkedHashSet<UndirectedEdge<V, W>> edges) {
+    return new UndirectedPath<>(cost, edges);
   }
 
   /**
@@ -70,7 +83,7 @@ public class UndirectedGraph<V, W> extends AbstractGraph<V, W, UndirectedEdge<V,
         Set<UndirectedEdge<V, W>> targets = verticesToEdges.computeIfAbsent(e.endPoint1, k -> new HashSet<>());
         targets.add(e);
         targets = verticesToEdges.computeIfAbsent(e.endPoint2, k -> new HashSet<>());
-        targets.add(newEdge(e.endPoint2, e.endPoint1, e.weight));
+        targets.add(newEdge(e.endPoint2, e.weight, e.endPoint1));
       }
     }
     return verticesToEdges;

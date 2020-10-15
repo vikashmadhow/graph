@@ -9,13 +9,13 @@ import ma.vi.base.tuple.T3;
  * @param <W> The weight type.
  * @author vikash.madhow@gmail.com
  */
-public class DirectedEdge<V, W> extends T3<V, V, W> implements Edge<V, W> {
-  public DirectedEdge(V endPoint1, V endPoint2, W weight) {
-    super(endPoint1, endPoint2, weight);
+public class DirectedEdge<V, W> extends T3<V, W, V> implements Edge<V, W> {
+  public DirectedEdge(V endPoint1, W weight, V endPoint2) {
+    super(endPoint1, weight, endPoint2);
   }
 
-  public static <V, W> DirectedEdge<V, W> from(V endPoint1, V endPoint2, W weight) {
-    return new DirectedEdge<>(endPoint1, endPoint2, weight);
+  public static <V, W> DirectedEdge<V, W> from(V endPoint1, W weight, V endPoint2) {
+    return new DirectedEdge<>(endPoint1, weight, endPoint2);
   }
 
   @Override
@@ -24,12 +24,12 @@ public class DirectedEdge<V, W> extends T3<V, V, W> implements Edge<V, W> {
   }
 
   @Override
-  public V endPoint2() {
+  public W weight() {
     return b();
   }
 
   @Override
-  public W weight() {
+  public V endPoint2() {
     return c();
   }
 

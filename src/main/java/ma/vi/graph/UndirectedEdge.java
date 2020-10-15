@@ -8,14 +8,14 @@ package ma.vi.graph;
  * @author vikash.madhow@gmail.com
  */
 public class UndirectedEdge<V, W> implements Edge<V, W> {
-  public UndirectedEdge(V endPoint1, V endPoint2, W weight) {
+  public UndirectedEdge(V endPoint1, W weight, V endPoint2) {
     this.endPoint1 = endPoint1;
     this.endPoint2 = endPoint2;
     this.weight = weight;
   }
 
-  public static <V, W> UndirectedEdge<V, W> with(V endPoint1, V endPoint2, W weight) {
-    return new UndirectedEdge<>(endPoint1, endPoint2, weight);
+  public static <V, W> UndirectedEdge<V, W> with(V endPoint1, W weight, V endPoint2) {
+    return new UndirectedEdge<>(endPoint1, weight, endPoint2);
   }
 
   @Override

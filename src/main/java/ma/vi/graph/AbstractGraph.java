@@ -2,7 +2,10 @@ package ma.vi.graph;
 
 import ma.vi.base.tuple.T2;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
 
 import static java.util.Collections.unmodifiableSet;
 
@@ -32,7 +35,7 @@ public abstract class AbstractGraph<V, W, E extends Edge<V, W>> implements Graph
     vertices = new HashSet<>();
     for (Map.Entry<V, Set<T2<V, W>>> entry: nodeMap.entrySet()) {
       for (T2<V, W> to: entry.getValue()) {
-        edges.add(newEdge(entry.getKey(), to.a(), to.b()));
+        edges.add(newEdge(entry.getKey(), to.b(), to.a()));
         vertices.add(entry.getKey());
         vertices.add(to.a());
       }

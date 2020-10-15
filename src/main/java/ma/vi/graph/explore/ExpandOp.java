@@ -2,7 +2,7 @@ package ma.vi.graph.explore;
 
 import ma.vi.graph.Edge;
 import ma.vi.graph.Graph;
-import ma.vi.graph.Path;
+import ma.vi.graph.path.Path;
 
 import java.util.Set;
 
@@ -29,5 +29,4 @@ public interface ExpandOp<V, W, E extends Edge<V, W>> {
     V pathEnd = path.end().orElse(null);
     return pathEnd == null ? emptySet() : graph.outgoing(pathEnd);
   }
-
 }

@@ -2,7 +2,7 @@ package ma.vi.graph.explore;
 
 import ma.vi.graph.Edge;
 import ma.vi.graph.Graph;
-import ma.vi.graph.Path;
+import ma.vi.graph.path.Path;
 
 import java.util.Optional;
 

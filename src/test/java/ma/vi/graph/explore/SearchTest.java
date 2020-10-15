@@ -1,9 +1,9 @@
 package ma.vi.graph.explore;
 
-import ma.vi.graph.Path;
 import ma.vi.graph.UndirectedEdge;
 import ma.vi.graph.UndirectedGraph;
 import ma.vi.graph.VertexMap;
+import ma.vi.graph.path.Path;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -49,20 +49,20 @@ class SearchTest {
   void breadthFirst() {
     Path<String, Integer, UndirectedEdge<String, Integer>> path = Search.breadthFirst(graph, "Arad", "Bucharest");
     System.out.println(path);
-    assertEquals(path, new Path<>(graph, 450, "Arad", "Sibiu", "Fagaras", "Bucharest"));
+    assertEquals(path, graph.path( 450, "Arad", "Sibiu", "Fagaras", "Bucharest"));
   }
 
   @Test
   void depthFirst() {
     Path<String, Integer, UndirectedEdge<String, Integer>> path = Search.depthFirst(graph, "Arad", "Bucharest");
     System.out.println(path);
-    assertEquals(path, new Path<>(graph, 607, "Arad", "Zerind", "Oradea", "Sibiu", "Fagaras", "Bucharest"));
+    assertEquals(path, graph.path( 607, "Arad", "Zerind", "Oradea", "Sibiu", "Fagaras", "Bucharest"));
   }
 
   @Test
   void minCost() {
     Path<String, Integer, UndirectedEdge<String, Integer>> path = Search.minCost(graph, "Arad", "Bucharest");
     System.out.println(path);
-    assertEquals(path, new Path<>(graph, 418, "Arad", "Sibiu", "Rimnicu Vilcea", "Pitesti", "Bucharest"));
+    assertEquals(path, graph.path( 418, "Arad", "Sibiu", "Rimnicu Vilcea", "Pitesti", "Bucharest"));
   }
 }

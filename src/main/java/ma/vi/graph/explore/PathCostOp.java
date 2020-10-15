@@ -2,7 +2,7 @@ package ma.vi.graph.explore;
 
 import ma.vi.graph.Edge;
 import ma.vi.graph.Graph;
-import ma.vi.graph.Path;
+import ma.vi.graph.path.Path;
 
 /**
  * This function computes the cost of the path extended the given edge.
@@ -16,7 +16,7 @@ public interface PathCostOp<V, W, E extends Edge<V, W>> {
   static <V, W, E extends Edge<V, W>> Integer byLength(Graph<V, W, E> graph,
                                                        Path<V, W, E> path,
                                                        E edge) {
-    return path.length() + 1;
+    return path.edges().size() + 1;
   }
 
   static <V, W, E extends Edge<V, W>> Integer byWeight(Graph<V, W, E> graph,

@@ -2,7 +2,7 @@ package ma.vi.graph.explore;
 
 import ma.vi.graph.Edge;
 import ma.vi.graph.Graph;
-import ma.vi.graph.Path;
+import ma.vi.graph.path.Path;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -65,13 +65,13 @@ public class Explore {
    *         result (other than null).
    */
   public static <V, W, E extends Edge<V, W>, A, R> R explore(Graph<V, W, E> graph,
-                                                               V startVertex,
-                                                               PathQueue<V, W, E> pathQueue,
-                                                               ExploreOp<V, W, E, A, R> exploreOp,
-                                                               A accumulator,
-                                                               ExpandOp<V, W, E> expandOp,
-                                                               PathCostOp<V, W, E> pathCostOp) {
-    pathQueue.add(new Path<>(graph, startVertex, 0));
+                                                             V startVertex,
+                                                             PathQueue<V, W, E> pathQueue,
+                                                             ExploreOp<V, W, E, A, R> exploreOp,
+                                                             A accumulator,
+                                                             ExpandOp<V, W, E> expandOp,
+                                                             PathCostOp<V, W, E> pathCostOp) {
+    pathQueue.add(graph.path(startVertex));
     return explore(graph,
                    pathQueue,
                    exploreOp,
@@ -84,7 +84,7 @@ public class Explore {
                                                             V startVertex,
                                                             PathQueue<V, W, E> pathQueue,
                                                             ExploreOp<V, W, E, ?, R> exploreOp) {
-    pathQueue.add(new Path<>(graph, startVertex, 0));
+    pathQueue.add(graph.path(startVertex));
     return explore(graph,
                    pathQueue,
                    exploreOp,
@@ -121,7 +121,7 @@ public class Explore {
                 for (E edge: successors) {
                   if (!explored.contains(edge.endPoint2())) {
                     pathQueue.add(
-                        path.extend(edge.endPoint2(),
+                        path.extend(edge.endPoint2(), edge.weight(),
                                     pathCostOp == null ? null : pathCostOp.op(graph, path, edge)));
                   }
                 }
@@ -154,9 +154,9 @@ public class Explore {
   }
 
   public static <V, W, E extends Edge<V, W>, A, R> R breadthFirst(Graph<V, W, E> graph,
-                                                               V startVertex,
-                                                               ExploreOp<V, W, E, A, R> exploreOp,
-                                                               A accumulator) {
+                                                                  V startVertex,
+                                                                  ExploreOp<V, W, E, A, R> exploreOp,
+                                                                  A accumulator) {
     return breadthFirst(graph,
                    startVertex,
                    exploreOp,
@@ -165,8 +165,8 @@ public class Explore {
   }  
   
   public static <V, W, E extends Edge<V, W>, R> R breadthFirst(Graph<V, W, E> graph,
-                                                                 V startVertex,
-                                                                 ExploreOp<V, W, E, ?, R> exploreOp) {
+                                                               V startVertex,
+                                                               ExploreOp<V, W, E, ?, R> exploreOp) {
     return breadthFirst(graph,
                         startVertex,
                         exploreOp,

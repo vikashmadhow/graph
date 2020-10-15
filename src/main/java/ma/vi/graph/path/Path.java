@@ -19,9 +19,7 @@ public interface Path<V, W, E extends Edge<V, W>> extends Graph<V, W, E>, Compar
 
   Integer cost();
 
-  int length();
-
-  Path<V, W, E> extend(V vertex, Integer newPathCost);
+  Path<V, W, E> extend(V vertex, W weight, Integer newPathCost);
 
   @Override
   default int compareTo(Path<V, W, E> path) {

@@ -1,5 +1,8 @@
 package ma.vi.graph;
 
+import ma.vi.graph.path.Path;
+
+import java.util.LinkedHashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -90,11 +93,27 @@ public interface Graph<V, W, E extends Edge<V, W>> {
     return outgoing(vertex).size();
   }
 
+  Path<V, W, E> path(Integer cost, LinkedHashSet<E> edges);
+
+  Path<V, W, E> path(Integer cost, V vertex);
+
+  default Path<V, W, E> path(V vertex) {
+    return path(0, vertex);
+  }
+
+  default Path<V, W, E> path(Integer cost, V... vertices) {
+    Path<V, W, E> path = path(vertices[0]);
+    for (int i = 1; i < vertices.length; i++) {
+      path = path.extend(vertices[i], null, cost);
+    }
+    return path;
+  }
+
   /**
    * Creates a new edge connecting the two specified nodes appropriate for
    * the current type of graph.
    */
-  E newEdge(V endPoint1, V endPoint2, W weight);
+  E newEdge(V endPoint1, W weight, V endPoint2);
 
   /**
    * Produces a GraphViz representation of this graph in the DOT language.

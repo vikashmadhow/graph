@@ -1,15 +1,16 @@
 package ma.vi.graph.algo.explore;
 
-import ma.vi.graph.algo.explore.Explore;
+import ma.vi.graph.DirectedEdge;
+import ma.vi.graph.DirectedGraph;
+import ma.vi.graph.VertexMap;
 import ma.vi.graph.path.Path;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import ma.vi.graph.*;
 
 import java.util.*;
 
 import static java.util.Arrays.asList;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Vikash Madhow (vikash.madhow@gmail.com)
@@ -33,14 +34,17 @@ class ExploreTest {
   @Test
   void breadthFirst() {
     List<Integer> acc = new ArrayList<>();
-    Explore.breadthFirst(
-      graph, 1, (g, p, a) -> {
-        System.out.println(p);
-        acc.add(p.end().orElse(0));
-        return Optional.empty();
-      },
-      acc
-                        );
+    graph.apply(
+        new BreadthFirstExplore<Integer, Integer, DirectedEdge<Integer, Integer>, List<Integer>, Void>(1)
+          .accumulator(acc)
+          .exploreOp(
+              (g, p, a) -> {
+                System.out.println(p);
+                acc.add(p.end().orElse(0));
+                return Optional.empty();
+              }
+          )
+    );
     System.out.println(acc);
     System.out.println();
     List<Integer> exp = asList(1, 4, 2, 5, 3, 6, 7, 8, 9, 10);
@@ -59,13 +63,16 @@ class ExploreTest {
   @Test
   void depthFirst() {
     Set<Path<Integer, Integer, DirectedEdge<Integer, Integer>>> acc = new HashSet<>();
-    Explore.depthFirst(
-      graph, 1, (g, p, a) -> {
-        System.out.println(p);
-        acc.add(p);
-        return Optional.empty();
-      },
-      acc
+    graph.apply(
+        new DepthFirstExplore<Integer, Integer, DirectedEdge<Integer, Integer>, Set<Path<Integer, Integer, DirectedEdge<Integer, Integer>>>, Void>(1)
+            .accumulator(acc)
+            .exploreOp(
+                (g, p, a) -> {
+                  System.out.println(p);
+                  acc.add(p);
+                  return Optional.empty();
+                }
+            )
     );
     System.out.println(acc);
     System.out.println();
@@ -87,14 +94,18 @@ class ExploreTest {
   @Test
   void minCostFirst() {
     List<Integer> acc = new ArrayList<>();
-    Explore.minCostFirst(
-      graph, 1, (g, p, a) -> {
-        System.out.println(p);
-        acc.add(p.end().orElse(0));
-        return Optional.empty();
-      },
-      acc
+    graph.apply(
+        new MinCostExplore<Integer, Integer, DirectedEdge<Integer, Integer>, List<Integer>, Void>(1)
+            .accumulator(acc)
+            .exploreOp(
+                (g, p, a) -> {
+                  System.out.println(p);
+                  acc.add(p.end().orElse(0));
+                  return Optional.empty();
+                }
+            )
     );
+
     System.out.println(acc);
     System.out.println();
     List<Integer> exp = asList(1, 4, 2, 5, 3, 6, 7, 8, 9, 10);

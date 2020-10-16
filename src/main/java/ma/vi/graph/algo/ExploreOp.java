@@ -1,14 +1,14 @@
-package ma.vi.graph.algo.explore;
+package ma.vi.graph.algo;
 
 import ma.vi.graph.Edge;
 import ma.vi.graph.Graph;
+import ma.vi.graph.algo.explore.Explore;
 import ma.vi.graph.path.Path;
 
 import java.util.Optional;
 
 /**
- * This function is invoked on every path visited by the
- * {@link Explore#explore(Graph, Object, PathQueue, ExploreOp, Object, ExpandOp, PathCostOp)} functions}.
+ * This function is invoked on every path visited by the {@link Explore} algorithms.
  * <p>
  * The return value of this function is interpreted by the explore function as follows:
  * <ul>

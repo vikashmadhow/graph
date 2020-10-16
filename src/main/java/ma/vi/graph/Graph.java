@@ -1,6 +1,7 @@
 package ma.vi.graph;
 
 import ma.vi.base.tuple.T2;
+import ma.vi.graph.algo.Algorithm;
 import ma.vi.graph.path.Path;
 
 import java.util.LinkedHashSet;
@@ -145,6 +146,10 @@ public interface Graph<V, W, E extends Edge<V, W>> {
    * the current type of graph.
    */
   E newEdge(V endPoint1, W weight, V endPoint2);
+
+  default <R> R apply(Algorithm<V, W, E, R> algo) {
+    return algo.execute(this);
+  }
 
   /**
    * Produces a GraphViz representation of this graph in the DOT language.

@@ -1,4 +1,4 @@
-package ma.vi.graph.explore;
+package ma.vi.graph.algo.explore;
 
 import ma.vi.graph.Edge;
 import ma.vi.graph.Graph;

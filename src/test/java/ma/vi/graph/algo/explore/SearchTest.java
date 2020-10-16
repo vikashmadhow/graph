@@ -1,8 +1,9 @@
-package ma.vi.graph.explore;
+package ma.vi.graph.algo.explore;
 
 import ma.vi.graph.UndirectedEdge;
 import ma.vi.graph.UndirectedGraph;
 import ma.vi.graph.VertexMap;
+import ma.vi.graph.algo.search.Search;
 import ma.vi.graph.path.Path;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

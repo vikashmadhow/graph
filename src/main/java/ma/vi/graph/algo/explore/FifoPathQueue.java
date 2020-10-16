@@ -1,4 +1,4 @@
-package ma.vi.graph.explore;
+package ma.vi.graph.algo.explore;
 
 import ma.vi.graph.Edge;
 import ma.vi.graph.path.Path;
@@ -7,16 +7,16 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 /**
- * A path-queue returning paths in last-in-first-out order. Using this
- * path-queue in the search and explore functions produces depth-first
+ * A path-queue returning paths in first-in-first-out order. Using this
+ * path-queue in the search and explore functions produces breadth-first
  * exploration behaviour.
  *
  * @author Vikash Madhow (vikash.madhow@gmail.com)
  */
-public class LifoPathQueue<V, W, E extends Edge<V, W>> implements PathQueue<V, W, E> {
+public class FifoPathQueue<V, W, E extends Edge<V, W>> implements PathQueue<V, W, E> {
   @Override
   public void add(Path<V, W, E> path) {
-    paths.push(path);
+    paths.addFirst(path);
   }
 
   @Override
@@ -26,7 +26,7 @@ public class LifoPathQueue<V, W, E extends Edge<V, W>> implements PathQueue<V, W
 
   @Override
   public Path<V, W, E> next() {
-    return paths.pop();
+    return paths.removeLast();
   }
 
   @Override

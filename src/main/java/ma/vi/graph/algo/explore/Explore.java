@@ -1,12 +1,15 @@
-package ma.vi.graph.explore;
+package ma.vi.graph.algo.explore;
 
 import ma.vi.graph.Edge;
 import ma.vi.graph.Graph;
+import ma.vi.graph.algo.Algorithm;
 import ma.vi.graph.path.Path;
 
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+
+import static ma.vi.base.lang.Errors.checkArgument;
 
 /**
  * Exploration algorithm on graph, such as depth-first
@@ -14,7 +17,75 @@ import java.util.Set;
  *
  * @author Vikash Madhow (vikash.madhow@gmail.com)
  */
-public class Explore {
+public class Explore<V, W, E extends Edge<V, W>, R> implements Algorithm<R> {
+
+  public Explore(Graph<V, W, E> graph, V startVertex) {
+    checkArgument(graph != null, "Graph cannot be null");
+    this.graph = graph;
+    this.startVertex = startVertex;
+  }
+
+  public Explore<V, W, E, R> pathQueue(PathQueue<V, W, E> pathQueue) {
+    this.pathQueue = pathQueue;
+    return this;
+  }
+
+  public Explore<V, W, E, R> startVertex(V startVertex) {
+    this.startVertex = startVertex;
+    return this;
+  }
+
+  @Override
+  public R build() {
+    Set<V> explored = new HashSet<>();
+    if (pathQueue == null) {
+      pathQueue = new FifoPathQueue<>();
+    }
+    if (startVertex != null) {
+      pathQueue.add(graph.path(startVertex));
+    } else {
+      throw new IllegalArgumentException("Start vertex to explore from not provided");
+    }
+    while (pathQueue.hasNext()) {
+      Path<V, W, E> path = pathQueue.next();
+      Optional<V> f = path.end();
+      if (f.isPresent()) {
+        V frontier = f.get();
+        if (!explored.contains(frontier)) {
+          explored.add(frontier);
+          Optional<R> result = exploreOp.op(graph, path, accumulator);
+          if (result != null) {
+            /*
+             * null returned from the exploreOp signifies that this path should be ignored
+             * (and exploration should continue from the next); an empty Optional means that
+             * the exploration should expand this path; finally a value in the Optional means
+             * that exploration is completed and the value should be returned as its result.
+             */
+            if (result.isEmpty()) {
+              Set<E> successors = expandOp.op(graph, path);
+              if (!successors.isEmpty()) {
+                for (E edge: successors) {
+                  if (!explored.contains(edge.endPoint2())) {
+                    pathQueue.add(
+                        path.extend(edge.endPoint2(), edge.weight(),
+                                    pathCostOp == null ? null : pathCostOp.op(graph, path, edge, null)));
+                  }
+                }
+              }
+            } else {
+              return result.get();
+            }
+          }
+        }
+      }
+    }
+    return null;
+  }
+
+  private Graph<V, W, E> graph;
+  private V startVertex;
+  private PathQueue<V, W, E> pathQueue;
+
   /**
    * <p>
    * Explores the vertices in the graph starting from start_vertex. For every path from
@@ -81,9 +152,9 @@ public class Explore {
   }
 
   public static <V, W, E extends Edge<V, W>, R> R explore(Graph<V, W, E> graph,
-                                                            V startVertex,
-                                                            PathQueue<V, W, E> pathQueue,
-                                                            ExploreOp<V, W, E, ?, R> exploreOp) {
+                                                          V startVertex,
+                                                          PathQueue<V, W, E> pathQueue,
+                                                          ExploreOp<V, W, E, ?, R> exploreOp) {
     pathQueue.add(graph.path(startVertex));
     return explore(graph,
                    pathQueue,
@@ -122,7 +193,7 @@ public class Explore {
                   if (!explored.contains(edge.endPoint2())) {
                     pathQueue.add(
                         path.extend(edge.endPoint2(), edge.weight(),
-                                    pathCostOp == null ? null : pathCostOp.op(graph, path, edge)));
+                                    pathCostOp == null ? null : pathCostOp.op(graph, path, edge, null)));
                   }
                 }
               }

@@ -1,5 +1,6 @@
-package ma.vi.graph.explore;
+package ma.vi.graph.algo.explore;
 
+import ma.vi.graph.algo.explore.Explore;
 import ma.vi.graph.path.Path;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -39,7 +40,7 @@ class ExploreTest {
         return Optional.empty();
       },
       acc
-    );
+                        );
     System.out.println(acc);
     System.out.println();
     List<Integer> exp = asList(1, 4, 2, 5, 3, 6, 7, 8, 9, 10);

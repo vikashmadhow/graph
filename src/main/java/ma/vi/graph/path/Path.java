@@ -32,14 +32,29 @@ public interface Path<V, W, E extends Edge<V, W>> extends Graph<V, W, E>,
               : Optional.of(incoming.iterator().next());
   }
 
-  Integer cost();
+  Long cost();
 
-  Path<V, W, E> extend(V vertex, W weight, Integer newPathCost);
+  /**
+   * Returns the total weight of the path by summing up the weight
+   * of the each edge in the path, if the edge weights are numbers.
+   */
+  default long weight() {
+    long weight = 0;
+    for (E edge: edges()) {
+      W w = edge.weight();
+      if (w instanceof Number) {
+        weight += ((Number)w).longValue();
+      }
+    }
+    return weight;
+  }
+
+  Path<V, W, E> extend(V vertex, W weight, Long newPathCost);
 
   @Override
   default int compareTo(Path<V, W, E> path) {
-    return (this.cost() == null ? 0 : this.cost())
-         - (path.cost() == null ? 0 : path.cost());
+    return (int)((this.cost() == null ? 0 : this.cost())
+               - (path.cost() == null ? 0 : path.cost()));
   }
 
   @Override
@@ -47,20 +62,20 @@ public interface Path<V, W, E extends Edge<V, W>> extends Graph<V, W, E>,
     return new Iterator<>() {
       @Override
       public boolean hasNext() {
-        return last.isPresent() && !outgoing(last.get()).isEmpty();
+        return last != null && !outgoing(last).isEmpty();
       }
 
       @Override
       public E next() {
-        if (last.isPresent()) {
-          E next = outgoing(last.get()).iterator().next();
-          last = Optional.of(next.endPoint2());
+        if (last != null) {
+          E next = outgoing(last).iterator().next();
+          last = next.endPoint2();
           return next;
         }
         throw new NoSuchElementException("No more edges");
       }
 
-      private transient Optional<V> last = start();
+      private transient V last = start().orElse(null);
     };
   }
 }

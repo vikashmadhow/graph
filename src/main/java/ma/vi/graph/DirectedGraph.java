@@ -62,12 +62,12 @@ public class DirectedGraph<V, W> extends AbstractGraph<V, W, DirectedEdge<V, W>>
   }
 
   @Override
-  public Path<V, W, DirectedEdge<V, W>> path(Integer cost, V vertex) {
+  public Path<V, W, DirectedEdge<V, W>> path(Long cost, V vertex) {
     return new DirectedPath<>(cost, vertex);
   }
 
   @Override
-  public Path<V, W, DirectedEdge<V, W>> path(Integer cost, LinkedHashSet<DirectedEdge<V, W>> edges) {
+  public Path<V, W, DirectedEdge<V, W>> path(Long cost, LinkedHashSet<DirectedEdge<V, W>> edges) {
     return new DirectedPath<>(cost, edges);
   }
 

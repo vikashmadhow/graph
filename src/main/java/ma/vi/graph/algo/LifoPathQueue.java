@@ -13,10 +13,15 @@ import java.util.Deque;
  *
  * @author Vikash Madhow (vikash.madhow@gmail.com)
  */
-public class LifoPathQueue<V, W, E extends Edge<V, W>> implements PathQueue<V, W, E> {
+public class LifoPathQueue<V, W, E extends Edge<V, W>> extends AbstractPathQueue<V, W, E> {
   @Override
-  public void add(Path<V, W, E> path) {
+  protected void addToQueue(Path<V, W, E> path) {
     paths.push(path);
+  }
+
+  @Override
+  public boolean removeFromQueue(Path<V, W, E> path) {
+    return paths.remove(path);
   }
 
   @Override

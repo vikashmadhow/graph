@@ -11,16 +11,16 @@ import java.util.*;
  */
 public class UndirectedPath<V, W> extends UndirectedGraph<V, W> implements Path<V, W, UndirectedEdge<V, W>> {
   public UndirectedPath(V vertex) {
-    this(0, vertex);
+    this(0L, vertex);
   }
 
-  public UndirectedPath(Integer cost, V vertex) {
+  public UndirectedPath(Long cost, V vertex) {
     super(Collections.emptySet());
     this.start = this.end = vertex;
     this.cost = cost;
   }
 
-  public UndirectedPath(Integer cost, LinkedHashSet<UndirectedEdge<V, W>> undirectedEdges) {
+  public UndirectedPath(Long cost, LinkedHashSet<UndirectedEdge<V, W>> undirectedEdges) {
     super(undirectedEdges);
     List<UndirectedEdge<V, W>> e = new ArrayList<>(undirectedEdges);
     this.start = e.isEmpty() ? null : e.get(0).endPoint1();
@@ -28,7 +28,7 @@ public class UndirectedPath<V, W> extends UndirectedGraph<V, W> implements Path<
     this.cost = cost;
   }
 
-  public UndirectedPath(Integer cost, VertexMap<V, W> vertexMap) {
+  public UndirectedPath(Long cost, VertexMap<V, W> vertexMap) {
     super(vertexMap);
     this.start = vertexMap.start();
     this.end = vertexMap.end();
@@ -46,12 +46,12 @@ public class UndirectedPath<V, W> extends UndirectedGraph<V, W> implements Path<
   }
 
   @Override
-  public Integer cost() {
+  public Long cost() {
     return cost;
   }
 
   @Override
-  public Path<V, W, UndirectedEdge<V, W>> extend(V vertex, W weight, Integer newPathCost) {
+  public Path<V, W, UndirectedEdge<V, W>> extend(V vertex, W weight, Long newPathCost) {
     LinkedHashSet<UndirectedEdge<V, W>> es = new LinkedHashSet<>(edges());
     es.add(newEdge(end, weight, vertex));
     return new UndirectedPath<>(newPathCost, es);
@@ -64,5 +64,5 @@ public class UndirectedPath<V, W> extends UndirectedGraph<V, W> implements Path<
 
   protected final V start;
   protected final V end;
-  protected final Integer cost;
+  protected final Long cost;
 }

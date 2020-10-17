@@ -102,26 +102,26 @@ public interface Graph<V, W, E extends Edge<V, W>> {
    * @param edges The edges of the path in the right order as the first and last
    *              edges will be used to set the start and end  the path.
    */
-  Path<V, W, E> path(Integer cost, LinkedHashSet<E> edges);
+  Path<V, W, E> path(Long cost, LinkedHashSet<E> edges);
 
   /**
    * Construct a path with a single vertex and no edge.
    */
-  Path<V, W, E> path(Integer cost, V vertex);
+  Path<V, W, E> path(Long cost, V vertex);
 
   /**
    * Construct a path with a single vertex and no edge. The
    * cost of the path is set to 0.
    */
   default Path<V, W, E> path(V vertex) {
-    return path(0, vertex);
+    return path(0L, vertex);
   }
 
   /**
    * Construct a path of the vertices in the given order. The
    * weight on the edges are set to null.
    */
-  default Path<V, W, E> path(Integer cost, V... vertices) {
+  default Path<V, W, E> path(Long cost, V... vertices) {
     Path<V, W, E> path = path(vertices[0]);
     for (int i = 1; i < vertices.length; i++) {
       path = path.extend(vertices[i], null, cost);
@@ -133,7 +133,7 @@ public interface Graph<V, W, E extends Edge<V, W>> {
    * Construct a path of the vertices, starting from the first vertex and
    * extended by adding an edge from the vertices array in the given order.
    */
-  default Path<V, W, E> path(Integer cost, V first, T2<V, W>... vertices) {
+  default Path<V, W, E> path(Long cost, V first, T2<V, W>... vertices) {
     Path<V, W, E> path = path(first);
     for (T2<V, W> v: vertices) {
       path = path.extend(v.a(), v.b(), cost);

@@ -58,5 +58,5 @@ public class DepthFirstExplore<V, W, E extends Edge<V, W>, R> implements Algorit
   protected final V startVertex;
   protected ExpandOp<V, W, E> expandOp = ExpandOp::outgoingEdges;
   protected ExploreOp<V, W, E, R> exploreOp;
-  protected PathCostOp<V, W, E> pathCostOp = PathCostOp::byWeight;
+  protected PathCostOp<V, W, E> pathCostOp;
 }

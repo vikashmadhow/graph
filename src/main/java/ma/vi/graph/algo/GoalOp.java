@@ -7,13 +7,23 @@ import ma.vi.graph.path.Path;
 import java.util.Optional;
 
 /**
+ * <p>
  * This function is called during search to expand a path. It returns the set of edges
  * by which the path should be expanded.
+ * </p>
  *
+ * <p>
  * This function called during a search with the graph and the current path
  * and, if it returns true, the search ends returning the current path. Use
  * {@link MatchVertex} to create a GoalOp which matches a specific vertex in
  * the graph.
+ * </p>
+ *
+ * @param <V> The vertex type of the graph
+ * @param <E> The edge type of the graph.
+ * @param <W> The weight type on the edges of the graph.
+ *
+ * @author vikash.madhow@gmail.com
  */
 @FunctionalInterface
 public interface GoalOp<V, W, E extends Edge<V, W>> {

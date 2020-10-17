@@ -115,6 +115,7 @@ public class Explore<V, W, E extends Edge<V, W>, R> implements Algorithm<V, W, E
     Set<V> explored = new HashSet<>();
     while (pathQueue.hasNext()) {
       Path<V, W, E> path = pathQueue.next();
+      // System.out.println("# Exploring " + path);
       Optional<V> f = path.end();
       if (f.isPresent()) {
         V frontier = f.get();
@@ -132,10 +133,24 @@ public class Explore<V, W, E extends Edge<V, W>, R> implements Algorithm<V, W, E
               Set<E> successors = expandOp.op(graph, path);
               if (!successors.isEmpty()) {
                 for (E edge: successors) {
-                  if (!explored.contains(edge.endPoint2())) {
-                    pathQueue.add(
-                        path.extend(edge.endPoint2(), edge.weight(),
-                                    pathCostOp == null ? null : pathCostOp.op(graph, path, edge, null)));
+                  V newVertex = edge.endPoint2();
+                  if (!explored.contains(newVertex)) {
+                    if (pathCostOp == null) {
+                      pathQueue.add(path.extend(newVertex, edge.weight(), null));
+                    } else {
+                      long cost = pathCostOp.op(graph, path, edge);
+                      if (pathQueue.hasPathEndingAt(newVertex)) {
+                        Path<V, W, E> existing = pathQueue.pathEndingAt(newVertex);
+                        if (existing.cost() > cost) {
+                          pathQueue.remove(existing);
+                          Path<V, W, E> newPath = path.extend(newVertex, edge.weight(), cost);
+                          pathQueue.add(newPath);
+                        }
+                      } else {
+                        Path<V, W, E> newPath = path.extend(newVertex, edge.weight(), cost);
+                        pathQueue.add(newPath);
+                      }
+                    }
                   }
                 }
               }
@@ -153,5 +168,5 @@ public class Explore<V, W, E extends Edge<V, W>, R> implements Algorithm<V, W, E
   protected PathQueue<V, W, E> pathQueue;
   protected ExpandOp<V, W, E> expandOp = ExpandOp::outgoingEdges;
   protected ExploreOp<V, W, E, R> exploreOp;
-  protected PathCostOp<V, W, E> pathCostOp = PathCostOp::byWeight;
+  protected PathCostOp<V, W, E> pathCostOp;
 }

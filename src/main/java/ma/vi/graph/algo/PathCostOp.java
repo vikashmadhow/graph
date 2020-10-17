@@ -9,26 +9,19 @@ import ma.vi.graph.path.Path;
  */
 @FunctionalInterface
 public interface PathCostOp<V, W, E extends Edge<V, W>> {
-  Integer op(Graph<V, W, E> graph,
-             Path<V, W, E> path,
-             E edge,
-             E goal);
+  Long op(Graph<V, W, E> graph,
+          Path<V, W, E> path,
+          E edge);
 
-  static <V, W, E extends Edge<V, W>> Integer byLength(Graph<V, W, E> graph,
-                                                       Path<V, W, E> path,
-                                                       E edge,
-                                                       E goal) {
-    return path.edges().size() + 1;
+  static <V, W, E extends Edge<V, W>> Long byLength(Graph<V, W, E> graph,
+                                                    Path<V, W, E> path,
+                                                    E edge) {
+    return path.edges().size() + 1L;
   }
 
-  static <V, W, E extends Edge<V, W>> Integer byWeight(Graph<V, W, E> graph,
-                                                       Path<V, W, E> path,
-                                                       E edge,
-                                                       E goal) {
-    int cost = path.cost() == null ? 0 : path.cost();
-    if (edge.weight() instanceof Number) {
-      cost += ((Number)edge.weight()).intValue();
-    }
-    return cost;
+  static <V, W, E extends Edge<V, W>> Long byWeight(Graph<V, W, E> graph,
+                                                    Path<V, W, E> path,
+                                                    E edge) {
+    return path.weight() + (edge.weight() instanceof Number ? ((Number)edge.weight()).longValue() : 0L);
   }
 }

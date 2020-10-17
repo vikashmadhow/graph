@@ -64,12 +64,12 @@ public class UndirectedGraph<V, W> extends AbstractGraph<V, W, UndirectedEdge<V,
   }
 
   @Override
-  public Path<V, W, UndirectedEdge<V, W>> path(Integer cost, V vertex) {
+  public Path<V, W, UndirectedEdge<V, W>> path(Long cost, V vertex) {
     return new UndirectedPath<>(cost, vertex);
   }
 
   @Override
-  public Path<V, W, UndirectedEdge<V, W>> path(Integer cost, LinkedHashSet<UndirectedEdge<V, W>> edges) {
+  public Path<V, W, UndirectedEdge<V, W>> path(Long cost, LinkedHashSet<UndirectedEdge<V, W>> edges) {
     return new UndirectedPath<>(cost, edges);
   }
 

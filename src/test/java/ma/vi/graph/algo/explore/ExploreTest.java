@@ -75,16 +75,16 @@ class ExploreTest {
     System.out.println(acc);
     System.out.println();
     Set<Path<Integer, Integer, DirectedEdge<Integer, Integer>>> exp = new HashSet<>(asList(
-        graph.path(1, 0),
-        graph.path( 1,1, 5),
-        graph.path( 3,1, 5, 7),
-        graph.path( 3,1, 5, 6),
-        graph.path( 7,1, 5, 6, 9),
-        graph.path( 9,1, 5, 6, 9, 10),
-        graph.path( 4,1, 5, 6, 8),
-        graph.path( 1,1, 4),
-        graph.path( 1,1, 3),
-        graph.path( 1,1, 2)));
+        graph.path(1L, 0),
+        graph.path(1L, 1, 5),
+        graph.path(3L, 1, 5, 7),
+        graph.path(3L, 1, 5, 6),
+        graph.path(7L, 1, 5, 6, 9),
+        graph.path(9L, 1, 5, 6, 9, 10),
+        graph.path(4L, 1, 5, 6, 8),
+        graph.path(1L, 1, 4),
+        graph.path(1L, 1, 3),
+        graph.path(1L, 1, 2)));
 
     assertEquals(acc, exp);
   }

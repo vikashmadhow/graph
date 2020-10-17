@@ -24,11 +24,11 @@ public interface PathQueue<V, W, E extends Edge<V, W>> extends Iterator<Path<V, 
     }
   }
 
+  boolean remove(Path<V, W, E> path);
+
   boolean hasPathEndingAt(V vertex);
 
   Path<V, W, E> pathEndingAt(V vertex);
-
-  boolean removePathEnd(V vertex);
 
   int size();
 }

@@ -11,16 +11,16 @@ import java.util.*;
  */
 public class DirectedPath<V, W> extends DirectedGraph<V, W> implements Path<V, W, DirectedEdge<V, W>> {
   public DirectedPath(V vertex) {
-    this(0, vertex);
+    this(0L, vertex);
   }
 
-  public DirectedPath(Integer cost, V vertex) {
+  public DirectedPath(Long cost, V vertex) {
     super(Collections.emptySet());
     this.start = this.end = vertex;
     this.cost = cost;
   }
 
-  public DirectedPath(Integer cost, LinkedHashSet<DirectedEdge<V, W>> directedEdges) {
+  public DirectedPath(Long cost, LinkedHashSet<DirectedEdge<V, W>> directedEdges) {
     super(directedEdges);
     List<DirectedEdge<V, W>> e = new ArrayList<>(directedEdges);
     this.start = e.isEmpty() ? null : e.get(0).endPoint1();
@@ -28,7 +28,7 @@ public class DirectedPath<V, W> extends DirectedGraph<V, W> implements Path<V, W
     this.cost = cost;
   }
 
-  public DirectedPath(VertexMap<V, W> vertexMap, Integer cost) {
+  public DirectedPath(VertexMap<V, W> vertexMap, Long cost) {
     super(vertexMap);
     this.start = vertexMap.start();
     this.end = vertexMap.end();
@@ -46,12 +46,12 @@ public class DirectedPath<V, W> extends DirectedGraph<V, W> implements Path<V, W
   }
 
   @Override
-  public Integer cost() {
+  public Long cost() {
     return cost;
   }
 
   @Override
-  public Path<V, W, DirectedEdge<V, W>> extend(V vertex, W weight, Integer newPathCost) {
+  public Path<V, W, DirectedEdge<V, W>> extend(V vertex, W weight, Long newPathCost) {
     LinkedHashSet<DirectedEdge<V, W>> es = new LinkedHashSet<>(edges());
     es.add(newEdge(end, weight, vertex));
     return new DirectedPath<>(newPathCost, es);
@@ -63,5 +63,5 @@ public class DirectedPath<V, W> extends DirectedGraph<V, W> implements Path<V, W
   }
   protected final V start;
   protected final V end;
-  protected final Integer cost;
+  protected final Long cost;
 }

@@ -1,9 +1,8 @@
-package ma.vi.graph.algo.explore;
+package ma.vi.graph.algo.search;
 
 import ma.vi.graph.UndirectedEdge;
 import ma.vi.graph.UndirectedGraph;
 import ma.vi.graph.VertexMap;
-import ma.vi.graph.algo.search.Search;
 import ma.vi.graph.path.Path;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -48,21 +47,25 @@ class SearchTest {
 
   @Test
   void breadthFirst() {
-    Path<String, Integer, UndirectedEdge<String, Integer>> path = Search.breadthFirst(graph, "Arad", "Bucharest");
+    Path<String, Integer, UndirectedEdge<String, Integer>> path =
+        graph.apply(new BreadthFirstSearch<String, Integer, UndirectedEdge<String, Integer>>("Arad").goalVertex("Bucharest"));
+
     System.out.println(path);
     assertEquals(path, graph.path( 450, "Arad", "Sibiu", "Fagaras", "Bucharest"));
   }
 
   @Test
   void depthFirst() {
-    Path<String, Integer, UndirectedEdge<String, Integer>> path = Search.depthFirst(graph, "Arad", "Bucharest");
+    Path<String, Integer, UndirectedEdge<String, Integer>> path =
+        graph.apply(new DepthFirstSearch<String, Integer, UndirectedEdge<String, Integer>>("Arad").goalVertex("Bucharest"));
     System.out.println(path);
     assertEquals(path, graph.path( 607, "Arad", "Zerind", "Oradea", "Sibiu", "Fagaras", "Bucharest"));
   }
 
   @Test
   void minCost() {
-    Path<String, Integer, UndirectedEdge<String, Integer>> path = Search.minCost(graph, "Arad", "Bucharest");
+    Path<String, Integer, UndirectedEdge<String, Integer>> path =
+        graph.apply(new MinCostSearch<String, Integer, UndirectedEdge<String, Integer>>("Arad").goalVertex("Bucharest"));
     System.out.println(path);
     assertEquals(path, graph.path( 418, "Arad", "Sibiu", "Rimnicu Vilcea", "Pitesti", "Bucharest"));
   }

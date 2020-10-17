@@ -44,8 +44,8 @@ import java.util.Set;
  * </pre>
  *
  * @param <V> The vertex type of the graph to explore.
- * @param <E> The edge type of the graph to explore.
  * @param <W> The weight type on the edges of the graph to explore.
+ * @param <E> The edge type of the graph to explore.
  * @param <A> The type of accumulator passed to the exploreOp for accumulating partial results.
  * @param <R> The result of the exploration which is the result returned by the exploreOp function.
  *

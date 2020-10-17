@@ -24,7 +24,6 @@ public class DepthFirstExplore<V, W, E extends Edge<V, W>, R> implements Algorit
                 .execute(graph);
   }
 
-
   /**
    * The function taking a graph and a path invoked for every path explored for the
    * graph. The accumulator parameter is passed as the last parameter to this function

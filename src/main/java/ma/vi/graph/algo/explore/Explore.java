@@ -46,12 +46,11 @@ import java.util.Set;
  * @param <V> The vertex type of the graph to explore.
  * @param <W> The weight type on the edges of the graph to explore.
  * @param <E> The edge type of the graph to explore.
- * @param <A> The type of accumulator passed to the exploreOp for accumulating partial results.
  * @param <R> The result of the exploration which is the result returned by the exploreOp function.
  *
  * @author Vikash Madhow (vikash.madhow@gmail.com)
  */
-public class Explore<V, W, E extends Edge<V, W>, A, R> implements Algorithm<V, W, E, R> {
+public class Explore<V, W, E extends Edge<V, W>, R> implements Algorithm<V, W, E, R> {
 
   /**
    * Create a new instance of the algorithm.
@@ -67,7 +66,7 @@ public class Explore<V, W, E extends Edge<V, W>, A, R> implements Algorithm<V, W
    * {@link LifoPathQueue} will result in depth-first while {@link PriorityPathQueue}
    * will explore path in order of costs.
    */
-  public Explore<V, W, E, A, R> pathQueue(PathQueue<V, W, E> pathQueue) {
+  public Explore<V, W, E, R> pathQueue(PathQueue<V, W, E> pathQueue) {
     this.pathQueue = pathQueue;
     return this;
   }
@@ -78,7 +77,7 @@ public class Explore<V, W, E extends Edge<V, W>, A, R> implements Algorithm<V, W
    * and can be used to accumulate certain information during the exploration. It could
    * be used, for instance, to construct a spanning subgraph of this graph.
    */
-  public Explore<V, W, E, A, R> exploreOp(ExploreOp<V, W, E, A, R> exploreOp) {
+  public Explore<V, W, E, R> exploreOp(ExploreOp<V, W, E, R> exploreOp) {
     this.exploreOp = exploreOp;
     return this;
   }
@@ -88,7 +87,7 @@ public class Explore<V, W, E extends Edge<V, W>, A, R> implements Algorithm<V, W
    * returning the successor edges to explore. The default function returns
    * all outgoing edges of the current path.
    */
-  public Explore<V, W, E, A, R> expandOp(ExpandOp<V, W, E> expandOp) {
+  public Explore<V, W, E, R> expandOp(ExpandOp<V, W, E> expandOp) {
     this.expandOp = expandOp;
     return this;
   }
@@ -98,17 +97,8 @@ public class Explore<V, W, E extends Edge<V, W>, A, R> implements Algorithm<V, W
    * to be extended, the edge with which the path is being extended and, optionally,
    * a goal vertex.
    */
-  public Explore<V, W, E, A, R> pathCostOp(PathCostOp<V, W, E> pathCostOp) {
+  public Explore<V, W, E, R> pathCostOp(PathCostOp<V, W, E> pathCostOp) {
     this.pathCostOp = pathCostOp;
-    return this;
-  }
-
-  /**
-   * A value supplied to the exploreOp to accumulate data during the exploration.
-   * Could be used by custom graph algorithms.
-   */
-  public Explore<V, W, E, A, R> accumulator(A accumulator) {
-    this.accumulator = accumulator;
     return this;
   }
 
@@ -130,7 +120,7 @@ public class Explore<V, W, E extends Edge<V, W>, A, R> implements Algorithm<V, W
         V frontier = f.get();
         if (!explored.contains(frontier)) {
           explored.add(frontier);
-          Optional<R> result = exploreOp.op(graph, path, accumulator);
+          Optional<R> result = exploreOp.op(graph, path);
           if (result != null) {
             /*
              * null returned from the exploreOp signifies that this path should be ignored
@@ -162,7 +152,6 @@ public class Explore<V, W, E extends Edge<V, W>, A, R> implements Algorithm<V, W
   protected final V startVertex;
   protected PathQueue<V, W, E> pathQueue;
   protected ExpandOp<V, W, E> expandOp = ExpandOp::outgoingEdges;
-  protected ExploreOp<V, W, E, A, R> exploreOp;
-  protected A accumulator;
+  protected ExploreOp<V, W, E, R> exploreOp;
   protected PathCostOp<V, W, E> pathCostOp = PathCostOp::byWeight;
 }

@@ -70,7 +70,7 @@ public class MinCostSearch<V, W, E extends Edge<V, W>> implements Algorithm<V, W
 
   @Override
   public Path<V, W, E> execute(Graph<V, W, E> graph) {
-    return new Explore<V, W, E, Void, Path<V, W, E>>(startVertex)
+    return new Explore<V, W, E, Path<V, W, E>>(startVertex)
                 .pathQueue(new PriorityPathQueue<>())
                 .exploreOp(new SearchExploreOp<>(goalOp))
                 .expandOp(expandOp)

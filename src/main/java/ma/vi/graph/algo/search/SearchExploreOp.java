@@ -13,15 +13,14 @@ import java.util.Optional;
  *
  * @author Vikash Madhow (vikash.madhow@gmail.com)
  */
-public class SearchExploreOp<V, W, E extends Edge<V, W>> implements ExploreOp<V, W, E, Void, Path<V, W, E>> {
+public class SearchExploreOp<V, W, E extends Edge<V, W>> implements ExploreOp<V, W, E, Path<V, W, E>> {
   public SearchExploreOp(GoalOp<V, W, E> goalOp) {
     this.goalOp = goalOp;
   }
 
   @Override
   public Optional<Path<V, W, E>> op(Graph<V, W, E> graph,
-                                    Path<V, W, E> path,
-                                    Void accumulator) {
+                                    Path<V, W, E> path) {
     return goalOp.op(graph, path) ? Optional.of(path) : Optional.empty();
   }
 

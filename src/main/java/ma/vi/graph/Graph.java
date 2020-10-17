@@ -147,6 +147,9 @@ public interface Graph<V, W, E extends Edge<V, W>> {
    */
   E newEdge(V endPoint1, W weight, V endPoint2);
 
+  /**
+   * Applies an algorithm to the graph and returns the value produced.
+   */
   default <R> R apply(Algorithm<V, W, E, R> algo) {
     return algo.execute(this);
   }

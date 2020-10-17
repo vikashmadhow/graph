@@ -9,19 +9,18 @@ import ma.vi.graph.algo.*;
  *
  * @author Vikash Madhow (vikash.madhow@gmail.com)
  */
-public class BreadthFirstExplore<V, W, E extends Edge<V, W>, A, R> implements Algorithm<V, W, E, R> {
+public class BreadthFirstExplore<V, W, E extends Edge<V, W>, R> implements Algorithm<V, W, E, R> {
   public BreadthFirstExplore(V startVertex) {
     this.startVertex = startVertex;
   }
 
   @Override
   public R execute(Graph<V, W, E> graph) {
-    return new Explore<V, W, E, A, R>(startVertex)
+    return new Explore<V, W, E, R>(startVertex)
                 .pathQueue(new FifoPathQueue<>())
                 .exploreOp(exploreOp)
                 .expandOp(expandOp)
                 .pathCostOp(pathCostOp)
-                .accumulator(accumulator)
                 .execute(graph);
   }
 
@@ -31,7 +30,7 @@ public class BreadthFirstExplore<V, W, E extends Edge<V, W>, A, R> implements Al
    * and can be used to accumulate certain information during the exploration. It could
    * be used, for instance, to construct a spanning subgraph of this graph.
    */
-  public BreadthFirstExplore<V, W, E, A, R> exploreOp(ExploreOp<V, W, E, A, R> exploreOp) {
+  public BreadthFirstExplore<V, W, E, R> exploreOp(ExploreOp<V, W, E, R> exploreOp) {
     this.exploreOp = exploreOp;
     return this;
   }
@@ -41,7 +40,7 @@ public class BreadthFirstExplore<V, W, E extends Edge<V, W>, A, R> implements Al
    * returning the successor edges to explore. The default function returns
    * all outgoing edges of the current path.
    */
-  public BreadthFirstExplore<V, W, E, A, R> expandOp(ExpandOp<V, W, E> expandOp) {
+  public BreadthFirstExplore<V, W, E, R> expandOp(ExpandOp<V, W, E> expandOp) {
     this.expandOp = expandOp;
     return this;
   }
@@ -51,23 +50,14 @@ public class BreadthFirstExplore<V, W, E extends Edge<V, W>, A, R> implements Al
    * to be extended, the edge with which the path is being extended and, optionally,
    * a goal vertex.
    */
-  public BreadthFirstExplore<V, W, E, A, R> pathCostOp(PathCostOp<V, W, E> pathCostOp) {
+  public BreadthFirstExplore<V, W, E, R> pathCostOp(PathCostOp<V, W, E> pathCostOp) {
     this.pathCostOp = pathCostOp;
     return this;
   }
 
-  /**
-   * A value supplied to the exploreOp to accumulate data during the exploration.
-   * Could be used by custom graph algorithms.
-   */
-  public BreadthFirstExplore<V, W, E, A, R> accumulator(A accumulator) {
-    this.accumulator = accumulator;
-    return this;
-  }
 
   protected final V startVertex;
   protected ExpandOp<V, W, E> expandOp = ExpandOp::outgoingEdges;
-  protected ExploreOp<V, W, E, A, R> exploreOp;
-  protected A accumulator;
+  protected ExploreOp<V, W, E, R> exploreOp;
   protected PathCostOp<V, W, E> pathCostOp = PathCostOp::byWeight;
 }

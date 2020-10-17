@@ -35,10 +35,9 @@ class ExploreTest {
   void breadthFirst() {
     List<Integer> acc = new ArrayList<>();
     graph.apply(
-        new BreadthFirstExplore<Integer, Integer, DirectedEdge<Integer, Integer>, List<Integer>, Void>(1)
-          .accumulator(acc)
+        new BreadthFirstExplore<Integer, Integer, DirectedEdge<Integer, Integer>, Void>(1)
           .exploreOp(
-              (g, p, a) -> {
+              (g, p) -> {
                 System.out.println(p);
                 acc.add(p.end().orElse(0));
                 return Optional.empty();
@@ -64,10 +63,9 @@ class ExploreTest {
   void depthFirst() {
     Set<Path<Integer, Integer, DirectedEdge<Integer, Integer>>> acc = new HashSet<>();
     graph.apply(
-        new DepthFirstExplore<Integer, Integer, DirectedEdge<Integer, Integer>, Set<Path<Integer, Integer, DirectedEdge<Integer, Integer>>>, Void>(1)
-            .accumulator(acc)
+        new DepthFirstExplore<Integer, Integer, DirectedEdge<Integer, Integer>, Void>(1)
             .exploreOp(
-                (g, p, a) -> {
+                (g, p) -> {
                   System.out.println(p);
                   acc.add(p);
                   return Optional.empty();
@@ -95,10 +93,9 @@ class ExploreTest {
   void minCostFirst() {
     List<Integer> acc = new ArrayList<>();
     graph.apply(
-        new MinCostExplore<Integer, Integer, DirectedEdge<Integer, Integer>, List<Integer>, Void>(1)
-            .accumulator(acc)
+        new MinCostExplore<Integer, Integer, DirectedEdge<Integer, Integer>, Void>(1)
             .exploreOp(
-                (g, p, a) -> {
+                (g, p) -> {
                   System.out.println(p);
                   acc.add(p.end().orElse(0));
                   return Optional.empty();

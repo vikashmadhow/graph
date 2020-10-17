@@ -20,8 +20,6 @@ import java.util.Optional;
  * </ul>
  */
 @FunctionalInterface
-public interface ExploreOp<V, W, E extends Edge<V, W>, A, R> {
-  Optional<R> op(Graph<V, W, E> graph,
-                 Path<V, W, E> path,
-                 A accumulator);
+public interface ExploreOp<V, W, E extends Edge<V, W>, R> {
+  Optional<R> op(Graph<V, W, E> graph, Path<V, W, E> path);
 }

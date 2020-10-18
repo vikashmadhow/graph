@@ -34,6 +34,10 @@ public interface Path<V, W, E extends Edge<V, W>> extends Graph<V, W, E>,
 
   Long cost();
 
+  default int length() {
+    return edges().size();
+  }
+
   /**
    * Returns the total weight of the path by summing up the weight
    * of the each edge in the path, if the edge weights are numbers.

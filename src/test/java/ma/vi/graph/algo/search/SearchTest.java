@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * @author Vikash Madhow (vikash.madhow@gmail.com)
@@ -107,5 +108,37 @@ class SearchTest {
         ));
     System.out.println(path);
     assertEquals(path, graph.path( 418L, "Arad", "Sibiu", "Rimnicu Vilcea", "Pitesti", "Bucharest"));
+  }
+
+  @Test
+  void iterativeDeepening() {
+    Path<String, Integer, UndirectedEdge<String, Integer>> path =
+        graph.apply(new IterativeDeepeningSearch<String, Integer, UndirectedEdge<String, Integer>>("Arad").goalVertex("Bucharest"));
+    System.out.println(path);
+    assertEquals(path, graph.path( 607L, "Arad", "Zerind", "Oradea", "Sibiu", "Fagaras", "Bucharest"));
+  }
+
+  @Test
+  void iterativeDeepeningNotFound() {
+    Path<String, Integer, UndirectedEdge<String, Integer>> path =
+        graph.apply(new IterativeDeepeningSearch<String, Integer, UndirectedEdge<String, Integer>>("Arad").goalVertex("Unknown"));
+    System.out.println(path);
+    assertNull(path);
+  }
+
+  @Test
+  void depthLimited() {
+    Path<String, Integer, UndirectedEdge<String, Integer>> path =
+        graph.apply(new DepthLimitedSearch<String, Integer, UndirectedEdge<String, Integer>>("Arad", 5).goalVertex("Bucharest"));
+    System.out.println(path);
+    assertEquals(path, graph.path( 607L, "Arad", "Zerind", "Oradea", "Sibiu", "Fagaras", "Bucharest"));
+  }
+
+  @Test
+  void depthLimitedNotFound() {
+    Path<String, Integer, UndirectedEdge<String, Integer>> path =
+        graph.apply(new DepthLimitedSearch<String, Integer, UndirectedEdge<String, Integer>>("Arad", 4).goalVertex("Bucharest"));
+    System.out.println(path);
+    assertNull(path);
   }
 }

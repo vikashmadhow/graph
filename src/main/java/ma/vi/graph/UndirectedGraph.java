@@ -63,6 +63,10 @@ public class UndirectedGraph<V, W> extends AbstractGraph<V, W, UndirectedEdge<V,
     return UndirectedEdge.with(endPoint1, weight, endPoint2);
   }
 
+  public UndirectedGraph<V, W> newGraph(Set<UndirectedEdge<V, W>> edges) {
+    return new UndirectedGraph<>(edges);
+  }
+
   @Override
   public Path<V, W, UndirectedEdge<V, W>> path(Long cost, V vertex) {
     return new UndirectedPath<>(cost, vertex);

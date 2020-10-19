@@ -136,7 +136,7 @@ public class Explore<V, W, E extends Edge<V, W>, R> implements Algorithm<V, W, E
                   V newVertex = edge.endPoint2();
                   if (!explored.contains(newVertex)) {
                     if (pathCostOp == null) {
-                      pathQueue.add(path.extend(newVertex, edge.weight(), null));
+                      pathQueue.add(path.extend(newVertex, edge.weight(), path.length() + 1L));
                     } else {
                       long cost = pathCostOp.op(graph, path, edge);
                       if (pathQueue.hasPathEndingAt(newVertex)) {

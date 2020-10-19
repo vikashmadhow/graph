@@ -30,27 +30,9 @@ public interface Graph<V, W, E extends Edge<V, W>> {
   Set<V> vertices();
 
   /**
-   * Returns the edge between v1 and v2 in the graph or
-   * empty if not found.
-   */
-  default Optional<E> edge(V v1, V v2) {
-    for (E edge: edges(v1)) {
-      if (edge.endPoint2().equals(v2)) {
-        return Optional.of(edge);
-      }
-    }
-    return Optional.empty();
-  }
-
-  /**
    * The set of edges in the graph.
    */
   Set<E> edges();
-
-  /**
-   * Returns whether the graph is directed or not.
-   */
-  boolean directed();
 
   /**
    * Returns the set of incoming edges into a given vertex. For undirected
@@ -74,6 +56,24 @@ public interface Graph<V, W, E extends Edge<V, W>> {
   Set<E> edges(V vertex);
 
   /**
+   * Returns whether the graph is directed or not.
+   */
+  boolean directed();
+
+  /**
+   * Returns the edge between v1 and v2 in the graph or
+   * empty if not found.
+   */
+  default Optional<E> edge(V v1, V v2) {
+    for (E edge: edges(v1)) {
+      if (edge.endPoint2().equals(v2)) {
+        return Optional.of(edge);
+      }
+    }
+    return Optional.empty();
+  }
+
+  /**
    * Returns the degree of a vertex (number of edges having the vertex
    * as an endpoint).
    */
@@ -94,6 +94,17 @@ public interface Graph<V, W, E extends Edge<V, W>> {
   default int outDegree(V vertex) {
     return outgoing(vertex).size();
   }
+
+  /**
+   * Creates a new edge connecting the two specified nodes appropriate for
+   * the current type of graph.
+   */
+  E newEdge(V endPoint1, W weight, V endPoint2);
+
+  /**
+   * Creates a new graph of the current type.
+   */
+  Graph<V, W, E> newGraph(Set<E> edges);
 
   /**
    * Construct a path with the same edge type as this graph.
@@ -140,12 +151,6 @@ public interface Graph<V, W, E extends Edge<V, W>> {
     }
     return path;
   }
-
-  /**
-   * Creates a new edge connecting the two specified nodes appropriate for
-   * the current type of graph.
-   */
-  E newEdge(V endPoint1, W weight, V endPoint2);
 
   /**
    * Applies an algorithm to the graph and returns the value produced.

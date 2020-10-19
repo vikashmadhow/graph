@@ -61,6 +61,10 @@ public class DirectedGraph<V, W> extends AbstractGraph<V, W, DirectedEdge<V, W>>
     return DirectedEdge.from(endPoint1, weight, endPoint2);
   }
 
+  public DirectedGraph<V, W> newGraph(Set<DirectedEdge<V, W>> edges) {
+    return new DirectedGraph<>(edges);
+  }
+
   @Override
   public Path<V, W, DirectedEdge<V, W>> path(Long cost, V vertex) {
     return new DirectedPath<>(cost, vertex);

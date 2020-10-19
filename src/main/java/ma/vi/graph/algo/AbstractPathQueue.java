@@ -12,7 +12,7 @@ import java.util.Map;
 public abstract class AbstractPathQueue<V, W, E extends Edge<V, W>> implements PathQueue<V, W, E>  {
   @Override
   public final void add(Path<V, W, E> path) {
-    endToPathMap.put(path.end().orElse(null), path);
+    endToPathMap.put(path.lastVertex().orElse(null), path);
     addToQueue(path);
   }
 
@@ -30,7 +30,7 @@ public abstract class AbstractPathQueue<V, W, E extends Edge<V, W>> implements P
 
   @Override
   public final boolean remove(Path<V, W, E> path) {
-    V vertex = path.end().orElse(null);
+    V vertex = path.lastVertex().orElse(null);
     if (endToPathMap.containsKey(vertex)) {
       removeFromQueue(path);
       endToPathMap.remove(vertex);

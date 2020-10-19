@@ -116,7 +116,7 @@ public class Explore<V, W, E extends Edge<V, W>, R> implements Algorithm<V, W, E
     while (pathQueue.hasNext()) {
       Path<V, W, E> path = pathQueue.next();
       System.out.println("# Exploring " + path + "; length: " + path.length());
-      Optional<V> f = path.end();
+      Optional<V> f = path.lastVertex();
       if (f.isPresent()) {
         V frontier = f.get();
         if (!explored.contains(frontier)) {

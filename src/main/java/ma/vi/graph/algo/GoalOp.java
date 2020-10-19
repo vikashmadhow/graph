@@ -51,7 +51,7 @@ public interface GoalOp<V, W, E extends Edge<V, W>> {
 
     @Override
     public boolean op(Graph<V, W, E> graph, Path<V, W, E> path) {
-      Optional<V> end = path.end();
+      Optional<V> end = path.lastVertex();
       return end.isPresent() && end.get().equals(goal);
     }
 

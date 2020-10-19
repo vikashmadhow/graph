@@ -86,7 +86,7 @@ public class IterativeDeepeningSearch<V, W, E extends Edge<V, W>> implements Alg
                       if (pathLength > maxDepthInCurrentIteration.a) {
                         maxDepthInCurrentIteration.a = pathLength;
                       }
-                      V pathEnd = p.end().orElse(null);
+                      V pathEnd = p.lastVertex().orElse(null);
                       return pathEnd == null ? emptySet() : graph.outgoing(pathEnd);
                     } else {
                       return emptySet();

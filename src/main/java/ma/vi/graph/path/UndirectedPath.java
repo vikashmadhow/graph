@@ -16,33 +16,52 @@ public class UndirectedPath<V, W> extends UndirectedGraph<V, W> implements Path<
 
   public UndirectedPath(Long cost, V vertex) {
     super(Collections.emptySet());
-    this.start = this.end = vertex;
+    this.firstVertex = this.lastVertex = vertex;
+    this.firstEdge = this.lastEdge = null;
     this.cost = cost;
   }
 
   public UndirectedPath(Long cost, LinkedHashSet<UndirectedEdge<V, W>> undirectedEdges) {
     super(undirectedEdges);
     List<UndirectedEdge<V, W>> e = new ArrayList<>(undirectedEdges);
-    this.start = e.isEmpty() ? null : e.get(0).endPoint1();
-    this.end = e.isEmpty() ? null : e.get(e.size() - 1).endPoint2();
+    this.firstVertex = e.isEmpty() ? null : e.get(0).endPoint1();
+    this.lastVertex = e.isEmpty() ? null : e.get(e.size() - 1).endPoint2();
+    this.firstEdge = e.isEmpty() ? null : e.get(0);
+    this.lastEdge = e.isEmpty() ? null : e.get(e.size() - 1);
     this.cost = cost;
   }
 
   public UndirectedPath(Long cost, VertexMap<V, W> vertexMap) {
     super(vertexMap);
-    this.start = vertexMap.start();
-    this.end = vertexMap.end();
+    this.firstVertex = vertexMap.firstVertex();
+    this.lastVertex = vertexMap.lastVertex();
+    if (this.firstVertex != null) {
+      Set<UndirectedEdge<V, W>> outgoing = outgoing(this.firstVertex);
+      this.firstEdge = outgoing == null || outgoing.isEmpty()
+                       ? null
+                       : outgoing.iterator().next();
+    } else {
+      this.firstEdge = null;
+    }
+    if (this.lastVertex != null) {
+      Set<UndirectedEdge<V, W>> incoming = incoming(this.lastVertex);
+      this.lastEdge = incoming == null || incoming.isEmpty()
+                      ? null
+                      : incoming.iterator().next();
+    } else {
+      this.lastEdge = null;
+    }
     this.cost = cost;
   }
 
   @Override
-  public Optional<V> start() {
-    return Optional.ofNullable(start);
+  public Optional<V> firstVertex() {
+    return Optional.ofNullable(firstVertex);
   }
 
   @Override
-  public Optional<V> end() {
-    return Optional.ofNullable(end);
+  public Optional<V> lastVertex() {
+    return Optional.ofNullable(lastVertex);
   }
 
   @Override
@@ -53,7 +72,7 @@ public class UndirectedPath<V, W> extends UndirectedGraph<V, W> implements Path<
   @Override
   public Path<V, W, UndirectedEdge<V, W>> extend(V vertex, W weight, Long newPathCost) {
     LinkedHashSet<UndirectedEdge<V, W>> es = new LinkedHashSet<>(edges());
-    es.add(newEdge(end, weight, vertex));
+    es.add(newEdge(lastVertex, weight, vertex));
     return new UndirectedPath<>(newPathCost, es);
   }
 
@@ -62,7 +81,9 @@ public class UndirectedPath<V, W> extends UndirectedGraph<V, W> implements Path<
     return super.toString() + ", Cost=" + cost;
   }
 
-  protected final V start;
-  protected final V end;
+  protected final V firstVertex;
+  protected final V lastVertex;
+  protected final UndirectedEdge<V, W> firstEdge;
+  protected final UndirectedEdge<V, W> lastEdge;
   protected final Long cost;
 }

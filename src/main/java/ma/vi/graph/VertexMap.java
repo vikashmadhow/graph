@@ -20,13 +20,13 @@ public class VertexMap<V, W> extends LinkedHashMap<V, Set<T2<V, W>>> {
   }
 
   public VertexMap<V, W> add(V from, W weight, V... tos) {
-    if (start == null) {
-      start = from;
+    if (firstVertex == null) {
+      firstVertex = from;
     }
     if (tos.length > 0) {
-      end = tos[tos.length - 1];
-    } else if (end == null) {
-      end = from;
+      lastVertex = tos[tos.length - 1];
+    } else if (lastVertex == null) {
+      lastVertex = from;
     }
     for (V to: tos) {
       Set<T2<V, W>> targets = get(from);
@@ -39,14 +39,14 @@ public class VertexMap<V, W> extends LinkedHashMap<V, Set<T2<V, W>>> {
     return this;
   }
 
-  public V start() {
-    return start;
+  public V firstVertex() {
+    return firstVertex;
   }
 
-  public V end() {
-    return end;
+  public V lastVertex() {
+    return lastVertex;
   }
 
-  private V start;
-  private V end;
+  private V firstVertex;
+  private V lastVertex;
 }

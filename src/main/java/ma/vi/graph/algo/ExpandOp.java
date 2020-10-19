@@ -26,7 +26,7 @@ public interface ExpandOp<V, W, E extends Edge<V, W>> {
    */
   static <V, W, E extends Edge<V, W>> Set<E> outgoingEdges(Graph<V, W, E> graph,
                                                            Path<V, W, E> path) {
-    V pathEnd = path.end().orElse(null);
+    V pathEnd = path.lastVertex().orElse(null);
     return pathEnd == null ? emptySet() : graph.outgoing(pathEnd);
   }
 }

@@ -16,33 +16,62 @@ public class DirectedPath<V, W> extends DirectedGraph<V, W> implements Path<V, W
 
   public DirectedPath(Long cost, V vertex) {
     super(Collections.emptySet());
-    this.start = this.end = vertex;
+    this.firstVertex = this.lastVertex = vertex;
+    this.firstEdge = this.lastEdge = null;
     this.cost = cost;
   }
 
   public DirectedPath(Long cost, LinkedHashSet<DirectedEdge<V, W>> directedEdges) {
     super(directedEdges);
     List<DirectedEdge<V, W>> e = new ArrayList<>(directedEdges);
-    this.start = e.isEmpty() ? null : e.get(0).endPoint1();
-    this.end = e.isEmpty() ? null : e.get(e.size() - 1).endPoint2();
+    this.firstVertex = e.isEmpty() ? null : e.get(0).endPoint1();
+    this.lastVertex = e.isEmpty() ? null : e.get(e.size() - 1).endPoint2();
+    this.firstEdge = e.isEmpty() ? null : e.get(0);
+    this.lastEdge = e.isEmpty() ? null : e.get(e.size() - 1);
     this.cost = cost;
   }
 
   public DirectedPath(VertexMap<V, W> vertexMap, Long cost) {
     super(vertexMap);
-    this.start = vertexMap.start();
-    this.end = vertexMap.end();
+    this.firstVertex = vertexMap.firstVertex();
+    this.lastVertex = vertexMap.lastVertex();
+    if (this.firstVertex != null) {
+        Set<DirectedEdge<V, W>> outgoing = outgoing(this.firstVertex);
+        this.firstEdge = outgoing == null || outgoing.isEmpty()
+                           ? null
+                           : outgoing.iterator().next();
+    } else {
+      this.firstEdge = null;
+    }
+    if (this.lastVertex != null) {
+        Set<DirectedEdge<V, W>> incoming = incoming(this.lastVertex);
+        this.lastEdge = incoming == null || incoming.isEmpty()
+                           ? null
+                           : incoming.iterator().next();
+    } else {
+      this.lastEdge = null;
+    }
     this.cost = cost;
   }
 
   @Override
-  public Optional<V> start() {
-    return Optional.ofNullable(start);
+  public Optional<V> firstVertex() {
+    return Optional.ofNullable(firstVertex);
   }
 
   @Override
-  public Optional<V> end() {
-    return Optional.ofNullable(end);
+  public Optional<V> lastVertex() {
+    return Optional.ofNullable(lastVertex);
+  }
+
+  @Override
+  public Optional<DirectedEdge<V, W>> firstEdge() {
+    return Optional.ofNullable(firstEdge);
+  }
+
+  @Override
+  public Optional<DirectedEdge<V, W>> lastEdge() {
+    return Optional.ofNullable(lastEdge);
   }
 
   @Override
@@ -53,7 +82,7 @@ public class DirectedPath<V, W> extends DirectedGraph<V, W> implements Path<V, W
   @Override
   public Path<V, W, DirectedEdge<V, W>> extend(V vertex, W weight, Long newPathCost) {
     LinkedHashSet<DirectedEdge<V, W>> es = new LinkedHashSet<>(edges());
-    es.add(newEdge(end, weight, vertex));
+    es.add(newEdge(lastVertex, weight, vertex));
     return new DirectedPath<>(newPathCost, es);
   }
 
@@ -61,7 +90,10 @@ public class DirectedPath<V, W> extends DirectedGraph<V, W> implements Path<V, W
   public String toString() {
     return super.toString() + ", Cost=" + cost;
   }
-  protected final V start;
-  protected final V end;
+
+  protected final V firstVertex;
+  protected final V lastVertex;
+  protected final DirectedEdge<V, W> firstEdge;
+  protected final DirectedEdge<V, W> lastEdge;
   protected final Long cost;
 }

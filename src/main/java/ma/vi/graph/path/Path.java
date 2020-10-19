@@ -14,18 +14,36 @@ import java.util.Set;
 public interface Path<V, W, E extends Edge<V, W>> extends Graph<V, W, E>,
                                                           Comparable<Path<V, W, E>>,
                                                           Iterable<E> {
-  Optional<V> start();
+  Optional<V> firstVertex();
 
-  Optional<V> end();
+  Optional<V> lastVertex();
 
-  default Optional<E> next(V from) {
+  default Optional<E> firstEdge() {
+    return firstVertex().map(v -> {
+      Set<E> outgoing = outgoing(v);
+      return outgoing == null || outgoing.isEmpty()
+             ? null
+             : outgoing.iterator().next();
+    });
+  }
+
+  default Optional<E> lastEdge() {
+    return lastVertex().map(v -> {
+      Set<E> incoming = incoming(v);
+      return incoming == null || incoming.isEmpty()
+             ? null
+             : incoming.iterator().next();
+    });
+  }
+
+  default Optional<E> nextEdge(V from) {
     Set<E> outgoing = outgoing(from);
     return outgoing == null || outgoing.isEmpty()
               ? Optional.empty()
               : Optional.of(outgoing.iterator().next());
   }
 
-  default Optional<E> previous(V from) {
+  default Optional<E> previousEdge(V from) {
     Set<E> incoming = incoming(from);
     return incoming == null || incoming.isEmpty()
               ? Optional.empty()
@@ -79,7 +97,7 @@ public interface Path<V, W, E extends Edge<V, W>> extends Graph<V, W, E>,
         throw new NoSuchElementException("No more edges");
       }
 
-      private transient V last = start().orElse(null);
+      private transient V last = firstVertex().orElse(null);
     };
   }
 }

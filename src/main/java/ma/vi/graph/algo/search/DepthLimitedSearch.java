@@ -1,6 +1,5 @@
 package ma.vi.graph.algo.search;
 
-import ma.vi.base.tuple.T1;
 import ma.vi.graph.Edge;
 import ma.vi.graph.Graph;
 import ma.vi.graph.algo.Algorithm;
@@ -73,7 +72,7 @@ public class DepthLimitedSearch<V, W, E extends Edge<V, W>> implements Algorithm
                   .expandOp((g, p) -> {
                     int pathLength = p.length();
                     if (pathLength < maxDepth) {
-                      V pathEnd = p.end().orElse(null);
+                      V pathEnd = p.lastVertex().orElse(null);
                       return pathEnd == null ? emptySet() : graph.outgoing(pathEnd);
                     } else {
                       return emptySet();

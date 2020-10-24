@@ -11,7 +11,7 @@ import java.util.Iterator;
  * how the path-queue returns paths on retrieval, the exploration will proceed as
  * breadth-first, depth-first, etc. The use of different queue types for different
  * search behaviours is described in the book "Artificial intelligence: a modern
- * approach" by Stuart Russell & Peter Norvig.
+ * approach" by Stuart Russell &amp; Peter Norvig.
  *
  * @author Vikash Madhow (vikash.madhow@gmail.com)
  */

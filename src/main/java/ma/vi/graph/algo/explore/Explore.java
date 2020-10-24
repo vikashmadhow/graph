@@ -40,7 +40,7 @@ import java.util.Set;
  * <pre>
  *   graph.apply(
  *     new Explore(startVertex).pathQueue(new LifoPathQueue())
- *                             .exploreOp((graph, path, acc) -> log(path)))
+ *                             .exploreOp((graph, path, acc) -&gt; log(path)))
  * </pre>
  *
  * @param <V> The vertex type of the graph to explore.

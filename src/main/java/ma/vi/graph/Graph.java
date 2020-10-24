@@ -4,6 +4,7 @@ import ma.vi.base.tuple.T2;
 import ma.vi.graph.algo.Algorithm;
 import ma.vi.graph.path.Path;
 
+import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -114,6 +115,18 @@ public interface Graph<V, W, E extends Edge<V, W>> {
    *              edges will be used to set the start and end  the path.
    */
   Path<V, W, E> path(Long cost, LinkedHashSet<E> edges);
+
+  default Path<V, W, E> path(Long cost, E... edges) {
+    return path(cost, new LinkedHashSet<>(Arrays.asList(edges)));
+  }
+
+  default Path<V, W, E> path(Long cost, Optional<E>... edges) {
+    LinkedHashSet<E> edgesSet = new LinkedHashSet<>();
+    for (Optional<E> e: edges) {
+      e.ifPresent(edgesSet::add);
+    }
+    return path(cost, edgesSet);
+  }
 
   /**
    * Construct a path with a single vertex and no edge.

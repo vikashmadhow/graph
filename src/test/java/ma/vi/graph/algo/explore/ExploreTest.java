@@ -1,12 +1,16 @@
 package ma.vi.graph.algo.explore;
 
 import ma.vi.graph.DirectedEdge;
+import ma.vi.graph.Edge;
 import ma.vi.graph.algo.TestGraphs;
 import ma.vi.graph.path.Path;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -50,32 +54,24 @@ class ExploreTest {
 
   @Test
   void depthFirst() {
-    Set<Path<Integer, Integer, DirectedEdge<Integer, Integer>>> acc = new HashSet<>();
+    List<Integer> acc = new ArrayList<>();
     TestGraphs.basicGraph1.apply(
         new DepthFirstExplore<Integer, Integer, DirectedEdge<Integer, Integer>, Void>(1)
             .exploreOp(
                 (g, p) -> {
                   System.out.println(p);
-                  acc.add(p);
+                  Integer i = p.lastVertex().orElse(0);
+                  System.out.println(i);
+                  acc.add(i);
                   return Optional.empty();
                 }
             )
     );
     System.out.println(acc);
     System.out.println();
-    Set<Path<Integer, Integer, DirectedEdge<Integer, Integer>>> exp = new HashSet<>(asList(
-        TestGraphs.basicGraph1.path(1L, 0),
-        TestGraphs.basicGraph1.path(1L, 1, 5),
-        TestGraphs.basicGraph1.path(3L, 1, 5, 7),
-        TestGraphs.basicGraph1.path(3L, 1, 5, 6),
-        TestGraphs.basicGraph1.path(7L, 1, 5, 6, 9),
-        TestGraphs.basicGraph1.path(9L, 1, 5, 6, 9, 10),
-        TestGraphs.basicGraph1.path(4L, 1, 5, 6, 8),
-        TestGraphs.basicGraph1.path(1L, 1, 4),
-        TestGraphs.basicGraph1.path(1L, 1, 3),
-        TestGraphs.basicGraph1.path(1L, 1, 2)));
 
-    assertEquals(acc, exp);
+    assertEquals(10, acc.size());
+    assertEquals(IntStream.range(1, 11).boxed().collect(Collectors.toSet()), new HashSet<>(acc));
   }
 
   @Test

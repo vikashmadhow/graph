@@ -1,5 +1,7 @@
 package ma.vi.graph;
 
+import java.util.Objects;
+
 /**
  * An undirected edge in a graph is an unordered pair of vertices.
  *
@@ -33,6 +35,10 @@ public class UndirectedEdge<V, W> implements Edge<V, W> {
     return weight;
   }
 
+  public static <V, W> UndirectedEdge<V, W> make(V from, W weight, V to) {
+    return new UndirectedEdge<>(from, weight, to);
+  }
+
   /**
    * An undirected edge is equal to another if they have the same source
    * and targets in any order.
@@ -44,8 +50,8 @@ public class UndirectedEdge<V, W> implements Edge<V, W> {
     }
     if (other instanceof UndirectedEdge) {
       UndirectedEdge<V, W> that = (UndirectedEdge<V, W>)other;
-      return (endPoint1.equals(that.endPoint1) && endPoint2.equals(that.endPoint2))
-          || (endPoint1.equals(that.endPoint2) && endPoint2.equals(that.endPoint1));
+      return (endPoint1.equals(that.endPoint1) && endPoint2.equals(that.endPoint2) && Objects.equals(weight(), that.weight()))
+          || (endPoint1.equals(that.endPoint2) && endPoint2.equals(that.endPoint1) && Objects.equals(weight(), that.weight()));
     }
     return false;
   }
@@ -57,7 +63,9 @@ public class UndirectedEdge<V, W> implements Edge<V, W> {
    */
   @Override
   public int hashCode() {
-    return 53 + endPoint1.hashCode() + endPoint2.hashCode();
+    return 13 * (53 + (weight == null ? 0 : weight.hashCode()))
+         + endPoint1.hashCode()
+         + endPoint2.hashCode();
   }
 
   @Override

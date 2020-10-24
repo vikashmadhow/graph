@@ -1,5 +1,7 @@
 package ma.vi.graph;
 
+import java.util.Objects;
+
 /**
  * <p>
  * An edge links two vertices, known informally as the source and target. Edges comes in
@@ -34,4 +36,15 @@ public interface Edge<V, W> {
    * The weight of the edge.
    */
   W weight();
+
+//  /**
+//   * Equality of edges through the {@link #equals(Object)} method only compares
+//   * the endpoints, ignoring the weight. Thus two edges between the same endpoints
+//   * but with different weights would still be considered equal. This is
+//   * True if this edge is equal to the other edge and they have the same weight.
+//   */
+//  default boolean sameEndPoint(Edge<V, W> other) {
+//    return equals(other)
+//        && Objects.equals(weight(), other.weight());
+//  }
 }

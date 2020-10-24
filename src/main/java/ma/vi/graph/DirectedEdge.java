@@ -2,6 +2,8 @@ package ma.vi.graph;
 
 import ma.vi.base.tuple.T3;
 
+import java.util.Objects;
+
 /**
  * A directed edge is an ordered pair of vertices.
  *
@@ -33,6 +35,10 @@ public class DirectedEdge<V, W> extends T3<V, W, V> implements Edge<V, W> {
     return c();
   }
 
+  public static <V, W> DirectedEdge<V, W> make(V from, W weight, V to) {
+    return new DirectedEdge<>(from, weight, to);
+  }
+
   @Override
   public boolean equals(Object other) {
     if (other == this) {
@@ -40,14 +46,20 @@ public class DirectedEdge<V, W> extends T3<V, W, V> implements Edge<V, W> {
     }
     if (other instanceof DirectedEdge) {
       DirectedEdge<V, W> that = (DirectedEdge<V, W>)other;
-      return (endPoint1().equals(that.endPoint1()) && endPoint2().equals(that.endPoint2()));
+      return endPoint1().equals(that.endPoint1())
+          && endPoint2().equals(that.endPoint2())
+          && Objects.equals(weight(), that.weight());
     }
     return false;
   }
 
   @Override
   public int hashCode() {
-    return 13 * (53 + endPoint1().hashCode()) + endPoint2().hashCode();
+    int hash = 5;
+    hash = hash * 13 + (weight() == null ? 0 : weight().hashCode());
+    hash = hash * 13 + endPoint1().hashCode();
+    hash = hash * 13 + endPoint2().hashCode();
+    return hash;
   }
 
   @Override

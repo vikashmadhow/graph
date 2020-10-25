@@ -20,7 +20,8 @@ public class TestGraphs {
           .add(6, 4,  9)
           .add(8, 1,  9)
           .add(8, 20, 10)
-          .add(9, 2,  10));
+          .add(9, 2,  10)
+          .build());
 
   public static UndirectedGraph<String, Integer> basicGraph2 = new UndirectedGraph<>(
       new VertexMap<String, Integer>()
@@ -37,7 +38,7 @@ public class TestGraphs {
           .add("v4", 14,  "v6")
           .add("v6", 2,   "v7")
           .add("v7", 1,   "v8")
-  );
+          .build());
 
   public static UndirectedGraph<String, Integer> romaniaCities = new UndirectedGraph<>(
       new VertexMap<String, Integer>()
@@ -63,7 +64,8 @@ public class TestGraphs {
           .add("Urziceni",       142, "Vaslui")
           .add("Vaslui",         92,  "Iasi")
           .add("Iasi",           87,  "Neamt")
-          .add("Hirsova",        86,  "Eforie"));
+          .add("Hirsova",        86,  "Eforie")
+          .build());
 
   public static Map<String, Integer> distanceToBucharest = Maps.of(
       T2.of("Arad",           366),

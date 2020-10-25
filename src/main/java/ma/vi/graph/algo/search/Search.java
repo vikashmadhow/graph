@@ -34,7 +34,7 @@ import ma.vi.graph.path.Path;
  *
  * @author Vikash Madhow (vikash.madhow@gmail.com)
  */
-public class Search<V, W, E extends Edge<V, W>> implements Algorithm<V, W, E, Path<V, W, E>> {
+public class Search<V, W> implements Algorithm<V, W, Path<V, W>> {
   /**
    * Create a new instance of the algorithm.
    * @param startVertex The vertex to start the search at.
@@ -50,7 +50,7 @@ public class Search<V, W, E extends Edge<V, W>> implements Algorithm<V, W, E, Pa
    * {@link #goalVertex} method to set a specific vertex as a goal
    * of the search.
    */
-  public Search<V, W, E> goalOp(GoalOp<V, W, E> goalOp) {
+  public Search<V, W> goalOp(GoalOp<V, W> goalOp) {
     this.goalOp = goalOp;
     return this;
   }
@@ -60,7 +60,7 @@ public class Search<V, W, E extends Edge<V, W>> implements Algorithm<V, W, E, Pa
    * method to instead search for vertices which possess certain
    * properties.
    */
-  public Search<V, W, E> goalVertex(V goalVertex) {
+  public Search<V, W> goalVertex(V goalVertex) {
     this.goalOp = new GoalOp.MatchVertex<>(goalVertex);
     return this;
   }
@@ -71,7 +71,7 @@ public class Search<V, W, E extends Edge<V, W>> implements Algorithm<V, W, E, Pa
    * {@link LifoPathQueue} will result in depth-first while {@link PriorityPathQueue}
    * will search path in order of costs.
    */
-  public Search<V, W, E> pathQueue(PathQueue<V, W, E> pathQueue) {
+  public Search<V, W> pathQueue(PathQueue<V, W> pathQueue) {
     this.pathQueue = pathQueue;
     return this;
   }
@@ -81,7 +81,7 @@ public class Search<V, W, E extends Edge<V, W>> implements Algorithm<V, W, E, Pa
    * returning the successor edges to explore. The default function returns
    * all outgoing edges of the current path.
    */
-  public Search<V, W, E> expandOp(ExpandOp<V, W, E> expandOp) {
+  public Search<V, W> expandOp(ExpandOp<V, W> expandOp) {
     this.expandOp = expandOp;
     return this;
   }
@@ -91,14 +91,14 @@ public class Search<V, W, E extends Edge<V, W>> implements Algorithm<V, W, E, Pa
    * to be extended, the edge with which the path is being extended and, optionally,
    * a goal vertex.
    */
-  public Search<V, W, E> pathCostOp(PathCostOp<V, W, E> pathCostOp) {
+  public Search<V, W> pathCostOp(PathCostOp<V, W> pathCostOp) {
     this.pathCostOp = pathCostOp;
     return this;
   }
 
   @Override
-  public Path<V, W, E> execute(Graph<V, W, E> graph) {
-    return new Explore<V, W, E, Path<V, W, E>>(startVertex)
+  public Path<V, W> execute(Graph<V, W> graph) {
+    return new Explore<V, W, Path<V, W>>(startVertex)
                 .pathQueue(pathQueue)
                 .exploreOp(new SearchExploreOp<>(goalOp))
                 .expandOp(expandOp)
@@ -107,8 +107,8 @@ public class Search<V, W, E extends Edge<V, W>> implements Algorithm<V, W, E, Pa
   }
 
   protected final V startVertex;
-  protected GoalOp<V, W, E> goalOp;
-  protected PathQueue<V, W, E> pathQueue;
-  protected ExpandOp<V, W, E> expandOp = ExpandOp::outgoingEdges;
-  protected PathCostOp<V, W, E> pathCostOp = PathCostOp::byWeight;
+  protected GoalOp<V, W> goalOp;
+  protected PathQueue<V, W> pathQueue;
+  protected ExpandOp<V, W> expandOp = ExpandOp::outgoingEdges;
+  protected PathCostOp<V, W> pathCostOp = PathCostOp::byWeight;
 }

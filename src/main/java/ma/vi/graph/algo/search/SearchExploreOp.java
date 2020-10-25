@@ -1,6 +1,5 @@
 package ma.vi.graph.algo.search;
 
-import ma.vi.graph.Edge;
 import ma.vi.graph.Graph;
 import ma.vi.graph.algo.ExploreOp;
 import ma.vi.graph.algo.GoalOp;
@@ -13,16 +12,15 @@ import java.util.Optional;
  *
  * @author Vikash Madhow (vikash.madhow@gmail.com)
  */
-public class SearchExploreOp<V, W, E extends Edge<V, W>> implements ExploreOp<V, W, E, Path<V, W, E>> {
-  public SearchExploreOp(GoalOp<V, W, E> goalOp) {
+public class SearchExploreOp<V, W> implements ExploreOp<V, W, Path<V, W>> {
+  public SearchExploreOp(GoalOp<V, W> goalOp) {
     this.goalOp = goalOp;
   }
 
   @Override
-  public Optional<Path<V, W, E>> op(Graph<V, W, E> graph,
-                                    Path<V, W, E> path) {
+  public Optional<Path<V, W>> op(Graph<V, W> graph, Path<V, W> path) {
     return goalOp.op(graph, path) ? Optional.of(path) : Optional.empty();
   }
 
-  private final GoalOp<V, W, E> goalOp;
+  private final GoalOp<V, W> goalOp;
 }

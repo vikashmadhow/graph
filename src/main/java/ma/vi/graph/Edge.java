@@ -21,30 +21,44 @@ import java.util.Objects;
  * @param <W> The weight type of the edge.
  * @author vikash.madhow@gmail.com
  */
-public interface Edge<V, W> {
+public class Edge<V, W> {
+  public Edge(V endPoint1, W weight, V endPoint2) {
+    this.endPoint1 = endPoint1;
+    this.endPoint2 = endPoint2;
+    this.weight = weight;
+  }
+
+  public static <V, W> Edge<V, W> of (V endPoint1, W weight, V endPoint2) {
+    return new Edge<>(endPoint1, weight, endPoint2);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Edge<?, ?> edge = (Edge<?, ?>)o;
+    return endPoint1.equals(edge.endPoint1) &&
+        endPoint2.equals(edge.endPoint2) &&
+        Objects.equals(weight, edge.weight);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(endPoint1, endPoint2, weight);
+  }
+
   /**
    * The first endpoint (vertex) of the edge.
    */
-  V endPoint1();
+  public final V endPoint1;
 
   /**
    * The second endpoint (vertex) of the edge.
    */
-  V endPoint2();
+  public final V endPoint2;
 
   /**
    * The weight of the edge.
    */
-  W weight();
-
-//  /**
-//   * Equality of edges through the {@link #equals(Object)} method only compares
-//   * the endpoints, ignoring the weight. Thus two edges between the same endpoints
-//   * but with different weights would still be considered equal. This is
-//   * True if this edge is equal to the other edge and they have the same weight.
-//   */
-//  default boolean sameEndPoint(Edge<V, W> other) {
-//    return equals(other)
-//        && Objects.equals(weight(), other.weight());
-//  }
+  public final W weight;
 }

@@ -13,8 +13,8 @@ import static java.util.Collections.emptySet;
  * by which the path should be expanded.
  */
 @FunctionalInterface
-public interface ExpandOp<V, W, E extends Edge<V, W>> {
-  Set<E> op(Graph<V, W, E> graph, Path<V, W, E> path);
+public interface ExpandOp<V, W> {
+  Set<Edge<V, W>> op(Graph<V, W> graph, Path<V, W> path);
 
   /**
    * The default path expansion function returns all outgoing edges of the last
@@ -24,8 +24,7 @@ public interface ExpandOp<V, W, E extends Edge<V, W>> {
    * @param path  The path to expand.
    * @return All outgoing edges of the path to expand.
    */
-  static <V, W, E extends Edge<V, W>> Set<E> outgoingEdges(Graph<V, W, E> graph,
-                                                           Path<V, W, E> path) {
+  static <V, W> Set<Edge<V, W>> outgoingEdges(Graph<V, W> graph, Path<V, W> path) {
     V pathEnd = path.lastVertex().orElse(null);
     return pathEnd == null ? emptySet() : graph.outgoing(pathEnd);
   }

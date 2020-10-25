@@ -11,40 +11,40 @@ import java.util.Set;
 /**
  * @author Vikash Madhow (vikash.madhow@gmail.com)
  */
-public interface Path<V, W, E extends Edge<V, W>> extends Graph<V, W, E>,
-                                                          Comparable<Path<V, W, E>>,
-                                                          Iterable<E> {
+public interface Path<V, W> extends Graph<V, W>,
+                                    Comparable<Path<V, W>>,
+                                    Iterable<Edge<V, W>> {
   Optional<V> firstVertex();
 
   Optional<V> lastVertex();
 
-  default Optional<E> firstEdge() {
+  default Optional<Edge<V, W>> firstEdge() {
     return firstVertex().map(v -> {
-      Set<E> outgoing = outgoing(v);
+      Set<Edge<V, W>> outgoing = outgoing(v);
       return outgoing == null || outgoing.isEmpty()
              ? null
              : outgoing.iterator().next();
     });
   }
 
-  default Optional<E> lastEdge() {
+  default Optional<Edge<V, W>> lastEdge() {
     return lastVertex().map(v -> {
-      Set<E> incoming = incoming(v);
+      Set<Edge<V, W>> incoming = incoming(v);
       return incoming == null || incoming.isEmpty()
              ? null
              : incoming.iterator().next();
     });
   }
 
-  default Optional<E> nextEdge(V from) {
-    Set<E> outgoing = outgoing(from);
+  default Optional<Edge<V, W>> nextEdge(V from) {
+    Set<Edge<V, W>> outgoing = outgoing(from);
     return outgoing == null || outgoing.isEmpty()
               ? Optional.empty()
               : Optional.of(outgoing.iterator().next());
   }
 
-  default Optional<E> previousEdge(V from) {
-    Set<E> incoming = incoming(from);
+  default Optional<Edge<V, W>> previousEdge(V from) {
+    Set<Edge<V, W>> incoming = incoming(from);
     return incoming == null || incoming.isEmpty()
               ? Optional.empty()
               : Optional.of(incoming.iterator().next());
@@ -62,8 +62,8 @@ public interface Path<V, W, E extends Edge<V, W>> extends Graph<V, W, E>,
    */
   default long weight() {
     long weight = 0;
-    for (E edge: edges()) {
-      W w = edge.weight();
+    for (Edge<V, W> edge: edges()) {
+      W w = edge.weight;
       if (w instanceof Number) {
         weight += ((Number)w).longValue();
       }
@@ -71,16 +71,16 @@ public interface Path<V, W, E extends Edge<V, W>> extends Graph<V, W, E>,
     return weight;
   }
 
-  Path<V, W, E> extend(V vertex, W weight, Long newPathCost);
+  Path<V, W> extend(V vertex, W weight, Long newPathCost);
 
   @Override
-  default int compareTo(Path<V, W, E> path) {
+  default int compareTo(Path<V, W> path) {
     return (int)((this.cost() == null ? 0 : this.cost())
                - (path.cost() == null ? 0 : path.cost()));
   }
 
   @Override
-  default Iterator<E> iterator() {
+  default Iterator<Edge<V, W>> iterator() {
     return new Iterator<>() {
       @Override
       public boolean hasNext() {
@@ -88,10 +88,10 @@ public interface Path<V, W, E extends Edge<V, W>> extends Graph<V, W, E>,
       }
 
       @Override
-      public E next() {
+      public Edge<V, W> next() {
         if (last != null) {
-          E next = outgoing(last).iterator().next();
-          last = next.endPoint2();
+          Edge<V, W> next = outgoing(last).iterator().next();
+          last = next.endPoint2;
           return next;
         }
         throw new NoSuchElementException("No more edges");

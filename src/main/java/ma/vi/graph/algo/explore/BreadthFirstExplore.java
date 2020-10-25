@@ -9,14 +9,14 @@ import ma.vi.graph.algo.*;
  *
  * @author Vikash Madhow (vikash.madhow@gmail.com)
  */
-public class BreadthFirstExplore<V, W, E extends Edge<V, W>, R> implements Algorithm<V, W, E, R> {
+public class BreadthFirstExplore<V, W, R> implements Algorithm<V, W, R> {
   public BreadthFirstExplore(V startVertex) {
     this.startVertex = startVertex;
   }
 
   @Override
-  public R execute(Graph<V, W, E> graph) {
-    return new Explore<V, W, E, R>(startVertex)
+  public R execute(Graph<V, W> graph) {
+    return new Explore<V, W, R>(startVertex)
                 .pathQueue(new FifoPathQueue<>())
                 .exploreOp(exploreOp)
                 .expandOp(expandOp)
@@ -30,7 +30,7 @@ public class BreadthFirstExplore<V, W, E extends Edge<V, W>, R> implements Algor
    * and can be used to accumulate certain information during the exploration. It could
    * be used, for instance, to construct a spanning subgraph of this graph.
    */
-  public BreadthFirstExplore<V, W, E, R> exploreOp(ExploreOp<V, W, E, R> exploreOp) {
+  public BreadthFirstExplore<V, W, R> exploreOp(ExploreOp<V, W, R> exploreOp) {
     this.exploreOp = exploreOp;
     return this;
   }
@@ -40,7 +40,7 @@ public class BreadthFirstExplore<V, W, E extends Edge<V, W>, R> implements Algor
    * returning the successor edges to explore. The default function returns
    * all outgoing edges of the current path.
    */
-  public BreadthFirstExplore<V, W, E, R> expandOp(ExpandOp<V, W, E> expandOp) {
+  public BreadthFirstExplore<V, W, R> expandOp(ExpandOp<V, W> expandOp) {
     this.expandOp = expandOp;
     return this;
   }
@@ -50,14 +50,14 @@ public class BreadthFirstExplore<V, W, E extends Edge<V, W>, R> implements Algor
    * to be extended, the edge with which the path is being extended and, optionally,
    * a goal vertex.
    */
-  public BreadthFirstExplore<V, W, E, R> pathCostOp(PathCostOp<V, W, E> pathCostOp) {
+  public BreadthFirstExplore<V, W, R> pathCostOp(PathCostOp<V, W> pathCostOp) {
     this.pathCostOp = pathCostOp;
     return this;
   }
 
 
   protected final V startVertex;
-  protected ExpandOp<V, W, E> expandOp = ExpandOp::outgoingEdges;
-  protected ExploreOp<V, W, E, R> exploreOp;
-  protected PathCostOp<V, W, E> pathCostOp;
+  protected ExpandOp<V, W> expandOp = ExpandOp::outgoingEdges;
+  protected ExploreOp<V, W, R> exploreOp;
+  protected PathCostOp<V, W> pathCostOp;
 }

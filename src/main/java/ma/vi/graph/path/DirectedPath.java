@@ -2,6 +2,7 @@ package ma.vi.graph.path;
 
 import ma.vi.graph.DirectedEdge;
 import ma.vi.graph.DirectedGraph;
+import ma.vi.graph.Edge;
 import ma.vi.graph.VertexMap;
 
 import java.util.*;
@@ -9,7 +10,7 @@ import java.util.*;
 /**
  * @author Vikash Madhow (vikash.madhow@gmail.com)
  */
-public class DirectedPath<V, W> extends DirectedGraph<V, W> implements Path<V, W, DirectedEdge<V, W>> {
+public class DirectedPath<V, W> extends DirectedGraph<V, W> implements Path<V, W> {
   public DirectedPath(V vertex) {
     this(0L, vertex);
   }
@@ -21,38 +22,38 @@ public class DirectedPath<V, W> extends DirectedGraph<V, W> implements Path<V, W
     this.cost = cost;
   }
 
-  public DirectedPath(Long cost, LinkedHashSet<DirectedEdge<V, W>> directedEdges) {
+  public DirectedPath(Long cost, LinkedHashSet<Edge<V, W>> directedEdges) {
     super(directedEdges);
-    List<DirectedEdge<V, W>> e = new ArrayList<>(directedEdges);
-    this.firstVertex = e.isEmpty() ? null : e.get(0).endPoint1();
-    this.lastVertex = e.isEmpty() ? null : e.get(e.size() - 1).endPoint2();
+    List<Edge<V, W>> e = new ArrayList<>(directedEdges);
+    this.firstVertex = e.isEmpty() ? null : e.get(0).endPoint1;
+    this.lastVertex = e.isEmpty() ? null : e.get(e.size() - 1).endPoint2;
     this.firstEdge = e.isEmpty() ? null : e.get(0);
     this.lastEdge = e.isEmpty() ? null : e.get(e.size() - 1);
     this.cost = cost;
   }
 
-  public DirectedPath(VertexMap<V, W> vertexMap, Long cost) {
-    super(vertexMap);
-    this.firstVertex = vertexMap.firstVertex();
-    this.lastVertex = vertexMap.lastVertex();
-    if (this.firstVertex != null) {
-        Set<DirectedEdge<V, W>> outgoing = outgoing(this.firstVertex);
-        this.firstEdge = outgoing == null || outgoing.isEmpty()
-                           ? null
-                           : outgoing.iterator().next();
-    } else {
-      this.firstEdge = null;
-    }
-    if (this.lastVertex != null) {
-        Set<DirectedEdge<V, W>> incoming = incoming(this.lastVertex);
-        this.lastEdge = incoming == null || incoming.isEmpty()
-                           ? null
-                           : incoming.iterator().next();
-    } else {
-      this.lastEdge = null;
-    }
-    this.cost = cost;
-  }
+//  public DirectedPath(VertexMap<V, W> vertexMap, Long cost) {
+//    super(vertexMap);
+//    this.firstVertex = vertexMap.firstVertex();
+//    this.lastVertex = vertexMap.lastVertex();
+//    if (this.firstVertex != null) {
+//        Set<Edge<V, W>> outgoing = outgoing(this.firstVertex);
+//        this.firstEdge = outgoing == null || outgoing.isEmpty()
+//                           ? null
+//                           : outgoing.iterator().next();
+//    } else {
+//      this.firstEdge = null;
+//    }
+//    if (this.lastVertex != null) {
+//        Set<Edge<V, W>> incoming = incoming(this.lastVertex);
+//        this.lastEdge = incoming == null || incoming.isEmpty()
+//                           ? null
+//                           : incoming.iterator().next();
+//    } else {
+//      this.lastEdge = null;
+//    }
+//    this.cost = cost;
+//  }
 
   @Override
   public Optional<V> firstVertex() {
@@ -65,12 +66,12 @@ public class DirectedPath<V, W> extends DirectedGraph<V, W> implements Path<V, W
   }
 
   @Override
-  public Optional<DirectedEdge<V, W>> firstEdge() {
+  public Optional<Edge<V, W>> firstEdge() {
     return Optional.ofNullable(firstEdge);
   }
 
   @Override
-  public Optional<DirectedEdge<V, W>> lastEdge() {
+  public Optional<Edge<V, W>> lastEdge() {
     return Optional.ofNullable(lastEdge);
   }
 
@@ -80,8 +81,8 @@ public class DirectedPath<V, W> extends DirectedGraph<V, W> implements Path<V, W
   }
 
   @Override
-  public Path<V, W, DirectedEdge<V, W>> extend(V vertex, W weight, Long newPathCost) {
-    LinkedHashSet<DirectedEdge<V, W>> es = new LinkedHashSet<>(edges());
+  public Path<V, W> extend(V vertex, W weight, Long newPathCost) {
+    LinkedHashSet<Edge<V, W>> es = new LinkedHashSet<>(edges());
     es.add(newEdge(lastVertex, weight, vertex));
     return new DirectedPath<>(newPathCost, es);
   }
@@ -93,7 +94,7 @@ public class DirectedPath<V, W> extends DirectedGraph<V, W> implements Path<V, W
 
   protected final V firstVertex;
   protected final V lastVertex;
-  protected final DirectedEdge<V, W> firstEdge;
-  protected final DirectedEdge<V, W> lastEdge;
+  protected final Edge<V, W> firstEdge;
+  protected final Edge<V, W> lastEdge;
   protected final Long cost;
 }

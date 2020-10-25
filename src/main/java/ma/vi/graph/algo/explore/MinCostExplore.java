@@ -1,6 +1,5 @@
 package ma.vi.graph.algo.explore;
 
-import ma.vi.graph.Edge;
 import ma.vi.graph.Graph;
 import ma.vi.graph.algo.*;
 
@@ -9,14 +8,14 @@ import ma.vi.graph.algo.*;
  *
  * @author Vikash Madhow (vikash.madhow@gmail.com)
  */
-public class MinCostExplore<V, W, E extends Edge<V, W>, R> implements Algorithm<V, W, E, R> {
+public class MinCostExplore<V, W, R> implements Algorithm<V, W, R> {
   public MinCostExplore(V startVertex) {
     this.startVertex = startVertex;
   }
 
   @Override
-  public R execute(Graph<V, W, E> graph) {
-    return new Explore<V, W, E, R>(startVertex)
+  public R execute(Graph<V, W> graph) {
+    return new Explore<V, W, R>(startVertex)
                 .pathQueue(new PriorityPathQueue<>())
                 .exploreOp(exploreOp)
                 .expandOp(expandOp)
@@ -30,7 +29,7 @@ public class MinCostExplore<V, W, E extends Edge<V, W>, R> implements Algorithm<
    * and can be used to accumulate certain information during the exploration. It could
    * be used, for instance, to construct a spanning subgraph of this graph.
    */
-  public MinCostExplore<V, W, E, R> exploreOp(ExploreOp<V, W, E, R> exploreOp) {
+  public MinCostExplore<V, W, R> exploreOp(ExploreOp<V, W, R> exploreOp) {
     this.exploreOp = exploreOp;
     return this;
   }
@@ -40,7 +39,7 @@ public class MinCostExplore<V, W, E extends Edge<V, W>, R> implements Algorithm<
    * returning the successor edges to explore. The default function returns
    * all outgoing edges of the current path.
    */
-  public MinCostExplore<V, W, E, R> expandOp(ExpandOp<V, W, E> expandOp) {
+  public MinCostExplore<V, W, R> expandOp(ExpandOp<V, W> expandOp) {
     this.expandOp = expandOp;
     return this;
   }
@@ -50,13 +49,13 @@ public class MinCostExplore<V, W, E extends Edge<V, W>, R> implements Algorithm<
    * to be extended, the edge with which the path is being extended and, optionally,
    * a goal vertex.
    */
-  public MinCostExplore<V, W, E, R> pathCostOp(PathCostOp<V, W, E> pathCostOp) {
+  public MinCostExplore<V, W, R> pathCostOp(PathCostOp<V, W> pathCostOp) {
     this.pathCostOp = pathCostOp;
     return this;
   }
 
   protected final V startVertex;
-  protected ExpandOp<V, W, E> expandOp = ExpandOp::outgoingEdges;
-  protected ExploreOp<V, W, E, R> exploreOp;
-  protected PathCostOp<V, W, E> pathCostOp = PathCostOp::byWeight;
+  protected ExpandOp<V, W> expandOp = ExpandOp::outgoingEdges;
+  protected ExploreOp<V, W, R> exploreOp;
+  protected PathCostOp<V, W> pathCostOp = PathCostOp::byWeight;
 }

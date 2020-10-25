@@ -24,37 +24,41 @@ import java.util.Set;
  * @param <W> The weight type on the edges of the graph.
  * @author vikash.madhow@gmail.com
  */
-public interface Graph<V, W, E extends Edge<V, W>> {
+public interface Graph<V, W> {
   /**
    * The set of vertices of the graph.
    */
   Set<V> vertices();
 
+  Set<Edge<V, W>> incoming();
+
+  Set<Edge<V, W>> outgoing();
+
   /**
    * The set of edges in the graph.
    */
-  Set<E> edges();
+  Set<Edge<V, W>> edges();
 
   /**
    * Returns the set of incoming edges into a given vertex. For undirected
    * graphs this is the same as the {@link #outgoing(Object)} edges from the
    * vertex.
    */
-  Set<E> incoming(V vertex);
+  Set<Edge<V, W>> incoming(V vertex);
 
   /**
    * Returns the set of outgoing edges from a given vertex. For undirected
    * graphs this is the same as the {@link #incoming(Object)} edges into the
    * vertex.
    */
-  Set<E> outgoing(V vertex);
+  Set<Edge<V, W>> outgoing(V vertex);
 
   /**
    * Returns the set of incoming and outgoing edges for the vertex. For directed
    * graphs edges(Object) = {@link #incoming(Object)} + {@link #outgoing(Object)},
    * while for undirected graphs, edges(Object) == {@link #incoming(Object)} == {@link #outgoing(Object)}
    */
-  Set<E> edges(V vertex);
+  Set<Edge<V, W>> edges(V vertex);
 
   /**
    * Returns whether the graph is directed or not.
@@ -65,9 +69,9 @@ public interface Graph<V, W, E extends Edge<V, W>> {
    * Returns the edge between v1 and v2 in the graph or
    * empty if not found.
    */
-  default Optional<E> edge(V v1, V v2) {
-    for (E edge: edges(v1)) {
-      if (edge.endPoint2().equals(v2)) {
+  default Optional<Edge<V, W>> edge(V v1, V v2) {
+    for (Edge<V, W> edge: edges(v1)) {
+      if (edge.endPoint2.equals(v2)) {
         return Optional.of(edge);
       }
     }
@@ -96,16 +100,16 @@ public interface Graph<V, W, E extends Edge<V, W>> {
     return outgoing(vertex).size();
   }
 
-  /**
-   * Creates a new edge connecting the two specified nodes appropriate for
-   * the current type of graph.
-   */
-  E newEdge(V endPoint1, W weight, V endPoint2);
+//  /**
+//   * Creates a new edge connecting the two specified nodes appropriate for
+//   * the current type of graph.
+//   */
+//  Edge<V, W> newEdge(V endPoint1, W weight, V endPoint2);
 
   /**
    * Creates a new graph of the current type.
    */
-  Graph<V, W, E> newGraph(Set<E> edges);
+  Graph<V, W> newGraph(Set<Edge<V, W>> edges);
 
   /**
    * Construct a path with the same edge type as this graph.
@@ -114,15 +118,15 @@ public interface Graph<V, W, E extends Edge<V, W>> {
    * @param edges The edges of the path in the right order as the first and last
    *              edges will be used to set the start and end  the path.
    */
-  Path<V, W, E> path(Long cost, LinkedHashSet<E> edges);
+  Path<V, W> path(Long cost, LinkedHashSet<Edge<V, W>> edges);
 
-  default Path<V, W, E> path(Long cost, E... edges) {
+  default Path<V, W> path(Long cost, Edge<V, W>... edges) {
     return path(cost, new LinkedHashSet<>(Arrays.asList(edges)));
   }
 
-  default Path<V, W, E> path(Long cost, Optional<E>... edges) {
-    LinkedHashSet<E> edgesSet = new LinkedHashSet<>();
-    for (Optional<E> e: edges) {
+  default Path<V, W> path(Long cost, Optional<Edge<V, W>>... edges) {
+    LinkedHashSet<Edge<V, W>> edgesSet = new LinkedHashSet<>();
+    for (Optional<Edge<V, W>> e: edges) {
       e.ifPresent(edgesSet::add);
     }
     return path(cost, edgesSet);
@@ -131,13 +135,13 @@ public interface Graph<V, W, E extends Edge<V, W>> {
   /**
    * Construct a path with a single vertex and no edge.
    */
-  Path<V, W, E> path(Long cost, V vertex);
+  Path<V, W> path(Long cost, V vertex);
 
   /**
    * Construct a path with a single vertex and no edge. The
    * cost of the path is set to 0.
    */
-  default Path<V, W, E> path(V vertex) {
+  default Path<V, W> path(V vertex) {
     return path(0L, vertex);
   }
 
@@ -145,8 +149,8 @@ public interface Graph<V, W, E extends Edge<V, W>> {
    * Construct a path of the vertices in the given order. The
    * weight on the edges are set to null.
    */
-  default Path<V, W, E> path(Long cost, V... vertices) {
-    Path<V, W, E> path = path(vertices[0]);
+  default Path<V, W> path(Long cost, V... vertices) {
+    Path<V, W> path = path(vertices[0]);
     for (int i = 1; i < vertices.length; i++) {
       path = path.extend(vertices[i], null, cost);
     }
@@ -157,8 +161,8 @@ public interface Graph<V, W, E extends Edge<V, W>> {
    * Construct a path of the vertices, starting from the first vertex and
    * extended by adding an edge from the vertices array in the given order.
    */
-  default Path<V, W, E> path(Long cost, V first, T2<V, W>... vertices) {
-    Path<V, W, E> path = path(first);
+  default Path<V, W> path(Long cost, V first, T2<V, W>... vertices) {
+    Path<V, W> path = path(first);
     for (T2<V, W> v: vertices) {
       path = path.extend(v.a(), v.b(), cost);
     }
@@ -168,7 +172,7 @@ public interface Graph<V, W, E extends Edge<V, W>> {
   /**
    * Applies an algorithm to the graph and returns the value produced.
    */
-  default <R> R apply(Algorithm<V, W, E, R> algo) {
+  default <R> R apply(Algorithm<V, W, R> algo) {
     return algo.execute(this);
   }
 

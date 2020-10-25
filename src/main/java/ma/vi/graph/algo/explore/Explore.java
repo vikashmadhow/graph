@@ -50,7 +50,7 @@ import java.util.Set;
  *
  * @author Vikash Madhow (vikash.madhow@gmail.com)
  */
-public class Explore<V, W, E extends Edge<V, W>, R> implements Algorithm<V, W, E, R> {
+public class Explore<V, W, R> implements Algorithm<V, W, R> {
 
   /**
    * Create a new instance of the algorithm.
@@ -66,7 +66,7 @@ public class Explore<V, W, E extends Edge<V, W>, R> implements Algorithm<V, W, E
    * {@link LifoPathQueue} will result in depth-first while {@link PriorityPathQueue}
    * will explore path in order of costs.
    */
-  public Explore<V, W, E, R> pathQueue(PathQueue<V, W, E> pathQueue) {
+  public Explore<V, W, R> pathQueue(PathQueue<V, W> pathQueue) {
     this.pathQueue = pathQueue;
     return this;
   }
@@ -77,7 +77,7 @@ public class Explore<V, W, E extends Edge<V, W>, R> implements Algorithm<V, W, E
    * and can be used to accumulate certain information during the exploration. It could
    * be used, for instance, to construct a spanning subgraph of this graph.
    */
-  public Explore<V, W, E, R> exploreOp(ExploreOp<V, W, E, R> exploreOp) {
+  public Explore<V, W, R> exploreOp(ExploreOp<V, W, R> exploreOp) {
     this.exploreOp = exploreOp;
     return this;
   }
@@ -87,7 +87,7 @@ public class Explore<V, W, E extends Edge<V, W>, R> implements Algorithm<V, W, E
    * returning the successor edges to explore. The default function returns
    * all outgoing edges of the current path.
    */
-  public Explore<V, W, E, R> expandOp(ExpandOp<V, W, E> expandOp) {
+  public Explore<V, W, R> expandOp(ExpandOp<V, W> expandOp) {
     this.expandOp = expandOp;
     return this;
   }
@@ -97,13 +97,13 @@ public class Explore<V, W, E extends Edge<V, W>, R> implements Algorithm<V, W, E
    * to be extended, the edge with which the path is being extended and, optionally,
    * a goal vertex.
    */
-  public Explore<V, W, E, R> pathCostOp(PathCostOp<V, W, E> pathCostOp) {
+  public Explore<V, W, R> pathCostOp(PathCostOp<V, W> pathCostOp) {
     this.pathCostOp = pathCostOp;
     return this;
   }
 
   @Override
-  public R execute(Graph<V, W, E> graph) {
+  public R execute(Graph<V, W> graph) {
      if (pathQueue == null) {
       pathQueue = new FifoPathQueue<>();
     }
@@ -114,7 +114,7 @@ public class Explore<V, W, E extends Edge<V, W>, R> implements Algorithm<V, W, E
     }
     Set<V> explored = new HashSet<>();
     while (pathQueue.hasNext()) {
-      Path<V, W, E> path = pathQueue.next();
+      Path<V, W> path = pathQueue.next();
       System.out.println("# Exploring " + path + "; length: " + path.length());
       Optional<V> f = path.lastVertex();
       if (f.isPresent()) {
@@ -130,24 +130,24 @@ public class Explore<V, W, E extends Edge<V, W>, R> implements Algorithm<V, W, E
              * that exploration is completed and the value should be returned as its result.
              */
             if (result.isEmpty()) {
-              Set<E> successors = expandOp.op(graph, path);
+              Set<Edge<V, W>> successors = expandOp.op(graph, path);
               if (!successors.isEmpty()) {
-                for (E edge: successors) {
-                  V newVertex = edge.endPoint2();
+                for (Edge<V, W> edge: successors) {
+                  V newVertex = edge.endPoint2;
                   if (!explored.contains(newVertex)) {
                     if (pathCostOp == null) {
-                      pathQueue.add(path.extend(newVertex, edge.weight(), path.length() + 1L));
+                      pathQueue.add(path.extend(newVertex, edge.weight, path.length() + 1L));
                     } else {
                       long cost = pathCostOp.op(graph, path, edge);
                       if (pathQueue.hasPathEndingAt(newVertex)) {
-                        Path<V, W, E> existing = pathQueue.pathEndingAt(newVertex);
+                        Path<V, W> existing = pathQueue.pathEndingAt(newVertex);
                         if (existing.cost() > cost) {
                           pathQueue.remove(existing);
-                          Path<V, W, E> newPath = path.extend(newVertex, edge.weight(), cost);
+                          Path<V, W> newPath = path.extend(newVertex, edge.weight, cost);
                           pathQueue.add(newPath);
                         }
                       } else {
-                        Path<V, W, E> newPath = path.extend(newVertex, edge.weight(), cost);
+                        Path<V, W> newPath = path.extend(newVertex, edge.weight, cost);
                         pathQueue.add(newPath);
                       }
                     }
@@ -165,8 +165,8 @@ public class Explore<V, W, E extends Edge<V, W>, R> implements Algorithm<V, W, E
   }
 
   protected final V startVertex;
-  protected PathQueue<V, W, E> pathQueue;
-  protected ExpandOp<V, W, E> expandOp = ExpandOp::outgoingEdges;
-  protected ExploreOp<V, W, E, R> exploreOp;
-  protected PathCostOp<V, W, E> pathCostOp;
+  protected PathQueue<V, W> pathQueue;
+  protected ExpandOp<V, W> expandOp = ExpandOp::outgoingEdges;
+  protected ExploreOp<V, W, R> exploreOp;
+  protected PathCostOp<V, W> pathCostOp;
 }

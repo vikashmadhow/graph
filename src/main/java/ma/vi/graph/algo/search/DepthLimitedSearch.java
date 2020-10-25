@@ -1,6 +1,5 @@
 package ma.vi.graph.algo.search;
 
-import ma.vi.graph.Edge;
 import ma.vi.graph.Graph;
 import ma.vi.graph.algo.Algorithm;
 import ma.vi.graph.algo.GoalOp;
@@ -22,7 +21,7 @@ import static java.util.Collections.emptySet;
  *
  * @author Vikash Madhow (vikash.madhow@gmail.com)
  */
-public class DepthLimitedSearch<V, W, E extends Edge<V, W>> implements Algorithm<V, W, E, Path<V, W, E>> {
+public class DepthLimitedSearch<V, W> implements Algorithm<V, W, Path<V, W>> {
   /**
    * Create a new instance of the algorithm.
    * @param startVertex The vertex to start the search at.
@@ -39,7 +38,7 @@ public class DepthLimitedSearch<V, W, E extends Edge<V, W>> implements Algorithm
    * {@link #goalVertex} method to set a specific vertex as a goal
    * of the search.
    */
-  public DepthLimitedSearch<V, W, E> goalOp(GoalOp<V, W, E> goalOp) {
+  public DepthLimitedSearch<V, W> goalOp(GoalOp<V, W> goalOp) {
     this.goalOp = goalOp;
     return this;
   }
@@ -49,7 +48,7 @@ public class DepthLimitedSearch<V, W, E extends Edge<V, W>> implements Algorithm
    * method to instead search for vertices which possess certain
    * properties.
    */
-  public DepthLimitedSearch<V, W, E> goalVertex(V goalVertex) {
+  public DepthLimitedSearch<V, W> goalVertex(V goalVertex) {
     this.goalOp = new GoalOp.MatchVertex<>(goalVertex);
     return this;
   }
@@ -59,14 +58,14 @@ public class DepthLimitedSearch<V, W, E extends Edge<V, W>> implements Algorithm
    * to be extended, the edge with which the path is being extended and, optionally,
    * a goal vertex.
    */
-  public DepthLimitedSearch<V, W, E> pathCostOp(PathCostOp<V, W, E> pathCostOp) {
+  public DepthLimitedSearch<V, W> pathCostOp(PathCostOp<V, W> pathCostOp) {
     this.pathCostOp = pathCostOp;
     return this;
   }
 
   @Override
-  public Path<V, W, E> execute(Graph<V, W, E> graph) {
-    return new Explore<V, W, E, Path<V, W, E>>(startVertex)
+  public Path<V, W> execute(Graph<V, W> graph) {
+    return new Explore<V, W, Path<V, W>>(startVertex)
                   .pathQueue(new LifoPathQueue<>())
                   .exploreOp(new SearchExploreOp<>(goalOp))
                   .expandOp((g, p) -> {
@@ -84,6 +83,6 @@ public class DepthLimitedSearch<V, W, E extends Edge<V, W>> implements Algorithm
 
   protected final int maxDepth;
   protected final V startVertex;
-  protected GoalOp<V, W, E> goalOp;
-  protected PathCostOp<V, W, E> pathCostOp;
+  protected GoalOp<V, W> goalOp;
+  protected PathCostOp<V, W> pathCostOp;
 }

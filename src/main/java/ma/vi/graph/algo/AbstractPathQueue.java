@@ -9,14 +9,14 @@ import java.util.Map;
 /**
  * @author Vikash Madhow (vikash.madhow@gmail.com)
  */
-public abstract class AbstractPathQueue<V, W, E extends Edge<V, W>> implements PathQueue<V, W, E>  {
+public abstract class AbstractPathQueue<V, W> implements PathQueue<V, W>  {
   @Override
-  public final void add(Path<V, W, E> path) {
+  public final void add(Path<V, W> path) {
     endToPathMap.put(path.lastVertex().orElse(null), path);
     addToQueue(path);
   }
 
-  protected abstract void addToQueue(Path<V, W, E> path);
+  protected abstract void addToQueue(Path<V, W> path);
 
   @Override
   public boolean hasPathEndingAt(V vertex) {
@@ -24,12 +24,12 @@ public abstract class AbstractPathQueue<V, W, E extends Edge<V, W>> implements P
   }
 
   @Override
-  public Path<V, W, E> pathEndingAt(V vertex) {
+  public Path<V, W> pathEndingAt(V vertex) {
     return endToPathMap.get(vertex);
   }
 
   @Override
-  public final boolean remove(Path<V, W, E> path) {
+  public final boolean remove(Path<V, W> path) {
     V vertex = path.lastVertex().orElse(null);
     if (endToPathMap.containsKey(vertex)) {
       removeFromQueue(path);
@@ -39,12 +39,12 @@ public abstract class AbstractPathQueue<V, W, E extends Edge<V, W>> implements P
     return false;
   }
 
-  protected abstract boolean removeFromQueue(Path<V, W, E> path);
+  protected abstract boolean removeFromQueue(Path<V, W> path);
 
   @Override
   public int size() {
     return endToPathMap.size();
   }
 
-  private final Map<V, Path<V, W, E>> endToPathMap = new HashMap<>();
+  private final Map<V, Path<V, W>> endToPathMap = new HashMap<>();
 }

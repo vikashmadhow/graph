@@ -3,7 +3,8 @@ package ma.vi.graph;
 import ma.vi.graph.path.DirectedPath;
 import ma.vi.graph.path.Path;
 
-import java.util.*;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * A Directed graph.
@@ -12,44 +13,14 @@ import java.util.*;
  * @param <W> The weight type.
  * @author vikash.madhow@gmail.com
  */
-public class DirectedGraph<V, W> extends AbstractGraph<V, W, DirectedEdge<V, W>> {
-  public DirectedGraph(Set<DirectedEdge<V, W>> edges) {
+public class DirectedGraph<V, W> extends AbstractGraph<V, W> {
+  public DirectedGraph(Set<Edge<V, W>> edges) {
     super(edges);
-  }
-
-  public DirectedGraph(VertexMap<V, W> vertexMap) {
-    super(vertexMap);
   }
 
   @Override
   public boolean directed() {
     return true;
-  }
-
-  /**
-   * Given a node, returns the set of incoming edges.
-   */
-  public Set<DirectedEdge<V, W>> incoming(V node) {
-    Set<DirectedEdge<V, W>> set = nodesToIncomingEdges().get(node);
-    return set == null ? Collections.emptySet() : set;
-  }
-
-  /**
-   * Given a node, returns the set of outgoing edges.
-   */
-  public Set<DirectedEdge<V, W>> outgoing(V node) {
-    Set<DirectedEdge<V, W>> set = verticesToEdges().get(node);
-    return set == null ? Collections.emptySet() : set;
-  }
-
-  /**
-   * Given a node, returns the set of incoming and outgoing edges.
-   */
-  public Set<DirectedEdge<V, W>> edges(V node) {
-    Set<DirectedEdge<V, W>> set = new HashSet<>();
-    set.addAll(incoming(node));
-    set.addAll(outgoing(node));
-    return set;
   }
 
   @Override
@@ -61,49 +32,17 @@ public class DirectedGraph<V, W> extends AbstractGraph<V, W, DirectedEdge<V, W>>
     return DirectedEdge.from(endPoint1, weight, endPoint2);
   }
 
-  public DirectedGraph<V, W> newGraph(Set<DirectedEdge<V, W>> edges) {
+  public DirectedGraph<V, W> newGraph(Set<Edge<V, W>> edges) {
     return new DirectedGraph<>(edges);
   }
 
   @Override
-  public Path<V, W, DirectedEdge<V, W>> path(Long cost, V vertex) {
+  public Path<V, W> path(Long cost, V vertex) {
     return new DirectedPath<>(cost, vertex);
   }
 
   @Override
-  public Path<V, W, DirectedEdge<V, W>> path(Long cost, LinkedHashSet<DirectedEdge<V, W>> edges) {
+  public Path<V, W> path(Long cost, LinkedHashSet<Edge<V, W>> edges) {
     return new DirectedPath<>(cost, edges);
   }
-
-  private Map<V, Set<DirectedEdge<V, W>>> verticesToEdges() {
-    if (verticesToEdges == null) {
-      verticesToEdges = new HashMap<>();
-      for (DirectedEdge<V, W> e: edges) {
-        Set<DirectedEdge<V, W>> targets = verticesToEdges.computeIfAbsent(e.endPoint1(), k -> new HashSet<>());
-        targets.add(e);
-      }
-    }
-    return verticesToEdges;
-  }
-
-  private Map<V, Set<DirectedEdge<V, W>>> nodesToIncomingEdges() {
-    if (nodesToIncomingEdges == null) {
-      nodesToIncomingEdges = new HashMap<>();
-      for (DirectedEdge<V, W> e: edges) {
-        Set<DirectedEdge<V, W>> targets = nodesToIncomingEdges.computeIfAbsent(e.endPoint2(), k -> new HashSet<>());
-        targets.add(e);
-      }
-    }
-    return nodesToIncomingEdges;
-  }
-
-  /**
-   * Nodes to outgoing edges.
-   */
-  private Map<V, Set<DirectedEdge<V, W>>> verticesToEdges;
-
-  /**
-   * Nodes to incoming edges.
-   */
-  private Map<V, Set<DirectedEdge<V, W>>> nodesToIncomingEdges;
 }

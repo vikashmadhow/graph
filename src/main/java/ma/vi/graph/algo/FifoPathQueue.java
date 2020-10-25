@@ -13,14 +13,14 @@ import java.util.Deque;
  *
  * @author Vikash Madhow (vikash.madhow@gmail.com)
  */
-public class FifoPathQueue<V, W, E extends Edge<V, W>> extends AbstractPathQueue<V, W, E> {
+public class FifoPathQueue<V, W> extends AbstractPathQueue<V, W> {
   @Override
-  protected void addToQueue(Path<V, W, E> path) {
+  protected void addToQueue(Path<V, W> path) {
     paths.addFirst(path);
   }
 
   @Override
-  public boolean removeFromQueue(Path<V, W, E> path) {
+  public boolean removeFromQueue(Path<V, W> path) {
     return paths.remove(path);
   }
 
@@ -30,7 +30,7 @@ public class FifoPathQueue<V, W, E extends Edge<V, W>> extends AbstractPathQueue
   }
 
   @Override
-  public Path<V, W, E> next() {
+  public Path<V, W> next() {
     return paths.removeLast();
   }
 
@@ -39,5 +39,5 @@ public class FifoPathQueue<V, W, E extends Edge<V, W>> extends AbstractPathQueue
     return paths.size();
   }
 
-  private final Deque<Path<V, W, E>> paths = new ArrayDeque<>();
+  private final Deque<Path<V, W>> paths = new ArrayDeque<>();
 }

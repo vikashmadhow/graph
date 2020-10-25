@@ -15,20 +15,20 @@ import java.util.Iterator;
  *
  * @author Vikash Madhow (vikash.madhow@gmail.com)
  */
-public interface PathQueue<V, W, E extends Edge<V, W>> extends Iterator<Path<V, W, E>> {
-  void add(Path<V, W, E> path);
+public interface PathQueue<V, W> extends Iterator<Path<V, W>> {
+  void add(Path<V, W> path);
 
-  default void addAll(Collection<Path<V, W, E>> paths) {
-    for (Path<V, W, E> path: paths) {
+  default void addAll(Collection<Path<V, W>> paths) {
+    for (Path<V, W> path: paths) {
       add(path);
     }
   }
 
-  boolean remove(Path<V, W, E> path);
+  boolean remove(Path<V, W> path);
 
   boolean hasPathEndingAt(V vertex);
 
-  Path<V, W, E> pathEndingAt(V vertex);
+  Path<V, W> pathEndingAt(V vertex);
 
   int size();
 }

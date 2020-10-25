@@ -12,14 +12,14 @@ import java.util.PriorityQueue;
  *
  * @author Vikash Madhow (vikash.madhow@gmail.com)
  */
-public class PriorityPathQueue<V, W, E extends Edge<V, W>> extends AbstractPathQueue<V, W, E> {
+public class PriorityPathQueue<V, W> extends AbstractPathQueue<V, W> {
   @Override
-  protected void addToQueue(Path<V, W, E> path) {
+  protected void addToQueue(Path<V, W> path) {
     paths.add(path);
   }
 
   @Override
-  public boolean removeFromQueue(Path<V, W, E> path) {
+  public boolean removeFromQueue(Path<V, W> path) {
     return paths.remove(path);
   }
 
@@ -34,9 +34,9 @@ public class PriorityPathQueue<V, W, E extends Edge<V, W>> extends AbstractPathQ
   }
 
   @Override
-  public Path<V, W, E> next() {
+  public Path<V, W> next() {
     return paths.remove();
   }
 
-  private final PriorityQueue<Path<V, W, E>> paths = new PriorityQueue<>();
+  private final PriorityQueue<Path<V, W>> paths = new PriorityQueue<>();
 }

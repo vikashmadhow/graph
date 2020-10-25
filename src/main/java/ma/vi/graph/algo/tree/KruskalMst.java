@@ -17,22 +17,21 @@ import java.util.Set;
  *
  * @param <V> The vertex type of the graph to search.
  * @param <W> The weight type on the edges of the graph to search.
- * @param <E> The edge type of the graph to search.
  *
  * @author Vikash Madhow (vikash.madhow@gmail.com)
  */
-public class KruskalMst<V, W, E extends Edge<V, W>> implements Algorithm<V, W, E, Graph<V, W, E>> {
+public class KruskalMst<V, W> implements Algorithm<V, W, Graph<V, W>> {
   @Override
-  public Graph<V, W, E> execute(Graph<V, W, E> graph) {
+  public Graph<V, W> execute(Graph<V, W> graph) {
     UnionFind<V> vertexSet = new UnionFind<>();
-    List<E> edges = new ArrayList<>(graph.edges());
-    edges.sort((e1, e2) -> e1.weight() instanceof Comparable
-                                ? ((Comparable<W>)e1.weight()).compareTo(e2.weight())
+    List<Edge<V, W>> edges = new ArrayList<>(graph.edges());
+    edges.sort((e1, e2) -> e1.weight instanceof Comparable
+                                ? ((Comparable<W>)e1.weight).compareTo(e2.weight)
                                 : 0);
-    Set<E> treeEdges = new HashSet<>();
-    for (E edge: edges) {
-      if (!vertexSet.find(edge.endPoint1()).equals(vertexSet.find(edge.endPoint2()))) {
-        vertexSet.union(edge.endPoint1(), edge.endPoint2());
+    Set<Edge<V, W>> treeEdges = new HashSet<>();
+    for (Edge<V, W> edge: edges) {
+      if (!vertexSet.find(edge.endPoint1).equals(vertexSet.find(edge.endPoint2))) {
+        vertexSet.union(edge.endPoint1, edge.endPoint2);
         treeEdges.add(edge);
       }
     }

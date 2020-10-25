@@ -3,6 +3,7 @@ package ma.vi.graph;
 import ma.vi.graph.path.Path;
 import ma.vi.graph.path.UndirectedPath;
 
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -16,6 +17,23 @@ import java.util.Set;
 public class UndirectedGraph<V, W> extends AbstractGraph<V, W> {
   public UndirectedGraph(Set<Edge<V, W>> edges) {
     super(edges);
+    for (Edge<V, W> e: edges) {
+//      if (e.endPoint1.equals(e.endPoint2)) {
+//        /*
+//         * a - a : out = {a: a-a}  in = {a: a-a}
+//         */
+//        out.computeIfAbsent(e.endPoint1, k -> new HashSet<>()).add(e);
+//        in.computeIfAbsent(e.endPoint2, k -> new HashSet<>()).add(e);
+//      } else {
+        /*
+         * a - b : out = {a: a-b, b: a-b} in = {a: a-b, b:a-b}
+         */
+        out.computeIfAbsent(e.endPoint1, k -> new HashSet<>()).add(e);
+        out.computeIfAbsent(e.endPoint2, k -> new HashSet<>()).add(e);
+        in.computeIfAbsent(e.endPoint1, k -> new HashSet<>()).add(e);
+        in.computeIfAbsent(e.endPoint2, k -> new HashSet<>()).add(e);
+//      }
+    }
   }
 
   @Override
@@ -28,11 +46,6 @@ public class UndirectedGraph<V, W> extends AbstractGraph<V, W> {
    */
   public Set<Edge<V, W>> edges(V vertex) {
     return incoming(vertex);
-  }
-
-  @Override
-  public int degree(V vertex) {
-    return incoming(vertex).size();
   }
 
   public UndirectedGraph<V, W> newGraph(Set<Edge<V, W>> edges) {

@@ -1,16 +1,15 @@
 package ma.vi.graph.algo.explore;
 
-import ma.vi.graph.DirectedEdge;
-import ma.vi.graph.Edge;
 import ma.vi.graph.algo.TestGraphs;
-import ma.vi.graph.path.Path;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -28,7 +27,7 @@ class ExploreTest {
   void breadthFirst() {
     List<Integer> acc = new ArrayList<>();
     TestGraphs.basicGraph1.apply(
-        new BreadthFirstExplore<Integer, Integer, DirectedEdge<Integer, Integer>, Void>(1)
+        new BreadthFirstExplore<Integer, Integer, Void>(1)
           .exploreOp(
               (g, p) -> {
                 System.out.println(p);
@@ -56,7 +55,7 @@ class ExploreTest {
   void depthFirst() {
     List<Integer> acc = new ArrayList<>();
     TestGraphs.basicGraph1.apply(
-        new DepthFirstExplore<Integer, Integer, DirectedEdge<Integer, Integer>, Void>(1)
+        new DepthFirstExplore<Integer, Integer, Void>(1)
             .exploreOp(
                 (g, p) -> {
                   System.out.println(p);
@@ -78,7 +77,7 @@ class ExploreTest {
   void minCostFirst() {
     List<Integer> acc = new ArrayList<>();
     TestGraphs.basicGraph1.apply(
-        new MinCostExplore<Integer, Integer, DirectedEdge<Integer, Integer>, Void>(1)
+        new MinCostExplore<Integer, Integer, Void>(1)
             .exploreOp(
                 (g, p) -> {
                   System.out.println(p);

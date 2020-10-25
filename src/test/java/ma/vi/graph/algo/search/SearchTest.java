@@ -1,13 +1,13 @@
 package ma.vi.graph.algo.search;
 
-import ma.vi.graph.UndirectedEdge;
 import ma.vi.graph.path.Path;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import static ma.vi.graph.algo.TestGraphs.distanceToBucharest;
+import static ma.vi.graph.algo.TestGraphs.romaniaCities;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static ma.vi.graph.algo.TestGraphs.*;
 
 /**
  * @author Vikash Madhow (vikash.madhow@gmail.com)
@@ -20,8 +20,8 @@ class SearchTest {
 
   @Test
   void breadthFirst() {
-    Path<String, Integer, UndirectedEdge<String, Integer>> path =
-        romaniaCities.apply(new BreadthFirstSearch<String, Integer, UndirectedEdge<String, Integer>>("Arad").goalVertex("Bucharest"));
+    Path<String, Integer> path =
+        romaniaCities.apply(new BreadthFirstSearch<String, Integer>("Arad").goalVertex("Bucharest"));
 
     System.out.println(path);
     assertEquals(romaniaCities.path(450L,
@@ -32,8 +32,8 @@ class SearchTest {
 
   @Test
   void depthFirst() {
-    Path<String, Integer, UndirectedEdge<String, Integer>> path =
-        romaniaCities.apply(new DepthFirstSearch<String, Integer, UndirectedEdge<String, Integer>>("Arad").goalVertex("Bucharest"));
+    Path<String, Integer> path =
+        romaniaCities.apply(new DepthFirstSearch<String, Integer>("Arad").goalVertex("Bucharest"));
     System.out.println(path);
     assertEquals("Arad", path.firstVertex().get());
     assertEquals("Bucharest", path.lastVertex().get());
@@ -41,8 +41,8 @@ class SearchTest {
 
   @Test
   void minCost() {
-    Path<String, Integer, UndirectedEdge<String, Integer>> path =
-        romaniaCities.apply(new MinCostSearch<String, Integer, UndirectedEdge<String, Integer>>("Arad").goalVertex("Bucharest"));
+    Path<String, Integer> path =
+        romaniaCities.apply(new MinCostSearch<String, Integer>("Arad").goalVertex("Bucharest"));
     System.out.println(path);
     assertEquals( romaniaCities.path( 418L,
                                       romaniaCities.edge("Arad", "Sibiu"),
@@ -54,7 +54,7 @@ class SearchTest {
 
   @Test
   void aStar() {
-    Path<String, Integer, UndirectedEdge<String, Integer>> path =
+    Path<String, Integer> path =
         romaniaCities.apply(new AStarSearch<>(
           "Arad",
           "Bucharest",
@@ -69,8 +69,8 @@ class SearchTest {
 
   @Test
   void iterativeDeepening() {
-    Path<String, Integer, UndirectedEdge<String, Integer>> path =
-        romaniaCities.apply(new IterativeDeepeningSearch<String, Integer, UndirectedEdge<String, Integer>>("Arad").goalVertex("Bucharest"));
+    Path<String, Integer> path =
+        romaniaCities.apply(new IterativeDeepeningSearch<String, Integer>("Arad").goalVertex("Bucharest"));
     System.out.println(path);
     assertEquals(romaniaCities.path(3L,
                                     romaniaCities.edge("Arad", "Sibiu"),
@@ -80,16 +80,16 @@ class SearchTest {
 
   @Test
   void iterativeDeepeningNotFound() {
-    Path<String, Integer, UndirectedEdge<String, Integer>> path =
-        romaniaCities.apply(new IterativeDeepeningSearch<String, Integer, UndirectedEdge<String, Integer>>("Arad").goalVertex("Unknown"));
+    Path<String, Integer> path =
+        romaniaCities.apply(new IterativeDeepeningSearch<String, Integer>("Arad").goalVertex("Unknown"));
     System.out.println(path);
     assertNull(path);
   }
 
   @Test
   void depthLimited() {
-    Path<String, Integer, UndirectedEdge<String, Integer>> path =
-        romaniaCities.apply(new DepthLimitedSearch<String, Integer, UndirectedEdge<String, Integer>>("Arad", 5).goalVertex("Bucharest"));
+    Path<String, Integer> path =
+        romaniaCities.apply(new DepthLimitedSearch<String, Integer>("Arad", 5).goalVertex("Bucharest"));
     System.out.println(path);
     assertEquals(romaniaCities.path(3L,
                                     romaniaCities.edge("Arad", "Sibiu"),
@@ -99,8 +99,8 @@ class SearchTest {
 
   @Test
   void depthLimitedNotFound() {
-    Path<String, Integer, UndirectedEdge<String, Integer>> path =
-        romaniaCities.apply(new DepthLimitedSearch<String, Integer, UndirectedEdge<String, Integer>>("Arad", 2).goalVertex("Bucharest"));
+    Path<String, Integer> path =
+        romaniaCities.apply(new DepthLimitedSearch<String, Integer>("Arad", 2).goalVertex("Bucharest"));
     System.out.println(path);
     assertNull(path);
   }

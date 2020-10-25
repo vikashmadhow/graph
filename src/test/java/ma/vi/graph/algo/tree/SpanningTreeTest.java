@@ -1,7 +1,6 @@
 package ma.vi.graph.algo.tree;
 
 import ma.vi.graph.Graph;
-import ma.vi.graph.UndirectedEdge;
 import ma.vi.graph.UndirectedGraph;
 import ma.vi.graph.VertexMap;
 import ma.vi.graph.algo.TestGraphs;
@@ -20,7 +19,7 @@ class SpanningTreeTest {
 
   @Test
   void primMst() {
-    Graph<String, Integer, UndirectedEdge<String, Integer>> tree =
+    Graph<String, Integer> tree =
         TestGraphs.basicGraph2.apply(new PrimMst<>());
     System.out.println(tree.toGraphViz());
     Assertions.assertEquals(
@@ -34,13 +33,14 @@ class SpanningTreeTest {
                 .add("v4", 9,   "v5")
                 .add("v6", 2,   "v7")
                 .add("v7", 1,   "v8")
+                .build()
         ),
         tree);
   }
 
   @Test
   void kruskalMst() {
-    Graph<String, Integer, UndirectedEdge<String, Integer>> tree =
+    Graph<String, Integer> tree =
         TestGraphs.basicGraph2.apply(new KruskalMst<>());
     System.out.println(tree.toGraphViz());
     Assertions.assertEquals(
@@ -54,6 +54,7 @@ class SpanningTreeTest {
                 .add("v4", 9,   "v5")
                 .add("v6", 2,   "v7")
                 .add("v7", 1,   "v8")
+                .build()
         ),
         tree);
   }

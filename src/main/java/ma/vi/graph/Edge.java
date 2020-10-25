@@ -47,6 +47,11 @@ public class Edge<V, W> {
     return Objects.hash(endPoint1, endPoint2, weight);
   }
 
+  @Override
+  public String toString() {
+    return endPoint1 + "-<" + weight + ">-" + endPoint2;
+  }
+
   /**
    * The first endpoint (vertex) of the edge.
    */

@@ -71,7 +71,7 @@ public class UndirectedPath<V, W> extends UndirectedGraph<V, W> implements Path<
   @Override
   public Path<V, W> extend(V vertex, W weight, Long newPathCost) {
     LinkedHashSet<Edge<V, W>> es = new LinkedHashSet<>(edges());
-    es.add(newEdge(lastVertex, weight, vertex));
+    es.add(Edge.of(lastVertex, weight, vertex));
     return new UndirectedPath<>(newPathCost, es);
   }
 

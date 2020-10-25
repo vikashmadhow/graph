@@ -1,8 +1,10 @@
 package ma.vi.graph.algo.search;
 
-import ma.vi.graph.Edge;
 import ma.vi.graph.Graph;
-import ma.vi.graph.algo.*;
+import ma.vi.graph.algo.Algorithm;
+import ma.vi.graph.algo.ExpandOp;
+import ma.vi.graph.algo.GoalOp;
+import ma.vi.graph.algo.PriorityPathQueue;
 import ma.vi.graph.algo.explore.Explore;
 import ma.vi.graph.path.Path;
 
@@ -19,7 +21,7 @@ import ma.vi.graph.path.Path;
  *
  * @author Vikash Madhow (vikash.madhow@gmail.com)
  */
-public class AStarSearch<V, W, E extends Edge<V, W>> implements Algorithm<V, W, E, Path<V, W, E>> {
+public class AStarSearch<V, W> implements Algorithm<V, W, Path<V, W>> {
   /**
    * Create a new instance of the algorithm.
    * @param startVertex The vertex to start the search at.
@@ -39,20 +41,20 @@ public class AStarSearch<V, W, E extends Edge<V, W>> implements Algorithm<V, W, 
    * returning the successor edges to explore. The default function returns
    * all outgoing edges of the current path.
    */
-  public AStarSearch<V, W, E> expandOp(ExpandOp<V, W, E> expandOp) {
+  public AStarSearch<V, W> expandOp(ExpandOp<V, W> expandOp) {
     this.expandOp = expandOp;
     return this;
   }
 
   @Override
-  public Path<V, W, E> execute(Graph<V, W, E> graph) {
-    return new Explore<V, W, E, Path<V, W, E>>(startVertex)
+  public Path<V, W> execute(Graph<V, W> graph) {
+    return new Explore<V, W, Path<V, W>>(startVertex)
                 .pathQueue(new PriorityPathQueue<>())
                 .exploreOp(new SearchExploreOp<>(new GoalOp.MatchVertex<>(goalVertex)))
                 .pathCostOp((g, path, edge) ->
                                 path.weight()
-                                    + (edge.weight() instanceof Number ? ((Number)edge.weight()).longValue() : 0L)
-                                    + goalEstimate.op(edge.endPoint2(), goalVertex))
+                                    + (edge.weight instanceof Number ? ((Number)edge.weight).longValue() : 0L)
+                                    + goalEstimate.op(edge.endPoint2, goalVertex))
                 .expandOp(expandOp)
                 .execute(graph);
   }
@@ -60,5 +62,5 @@ public class AStarSearch<V, W, E extends Edge<V, W>> implements Algorithm<V, W, 
   protected final V startVertex;
   protected final V goalVertex;
   protected final GoalEstimate<V> goalEstimate;
-  protected ExpandOp<V, W, E> expandOp = ExpandOp::outgoingEdges;
+  protected ExpandOp<V, W> expandOp = ExpandOp::outgoingEdges;
 }

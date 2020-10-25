@@ -15,17 +15,17 @@ import java.util.Set;
  *
  * @author Vikash Madhow (vikash.madhow@gmail.com)
  */
-public class TreeExploreOp<V, W, E extends Edge<V, W>> implements ExploreOp<V, W, E, Path<V, W, E>> {
-  public TreeExploreOp(Set<E> edges) {
+public class TreeExploreOp<V, W> implements ExploreOp<V, W, Path<V, W>> {
+  public TreeExploreOp(Set<Edge<V, W>> edges) {
     this.edges = edges;
   }
 
   @Override
-  public Optional<Path<V, W, E>> op(Graph<V, W, E> graph,
-                                    Path<V, W, E> path) {
+  public Optional<Path<V, W>> op(Graph<V, W> graph,
+                                    Path<V, W> path) {
     path.lastEdge().ifPresent(edges::add);
     return Optional.empty();
   }
 
-  private final Set<E> edges;
+  private final Set<Edge<V, W>> edges;
 }

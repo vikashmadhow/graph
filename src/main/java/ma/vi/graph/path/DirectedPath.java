@@ -1,9 +1,7 @@
 package ma.vi.graph.path;
 
-import ma.vi.graph.DirectedEdge;
 import ma.vi.graph.DirectedGraph;
 import ma.vi.graph.Edge;
-import ma.vi.graph.VertexMap;
 
 import java.util.*;
 
@@ -83,7 +81,7 @@ public class DirectedPath<V, W> extends DirectedGraph<V, W> implements Path<V, W
   @Override
   public Path<V, W> extend(V vertex, W weight, Long newPathCost) {
     LinkedHashSet<Edge<V, W>> es = new LinkedHashSet<>(edges());
-    es.add(newEdge(lastVertex, weight, vertex));
+    es.add(Edge.of(lastVertex, weight, vertex));
     return new DirectedPath<>(newPathCost, es);
   }
 

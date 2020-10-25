@@ -20,15 +20,7 @@ public abstract class AbstractGraph<V, W> implements Graph<V, W> {
    * Creates a graph from the set of edges.
    */
   protected AbstractGraph(Set<Edge<V, W>> edges) {
-//    this.edges = edges;
-    for (Edge<V, W> e: edges) {
-      Set<Edge<V, W>> targets = out.computeIfAbsent(e.endPoint1, k -> new HashSet<>());
-      targets.add(e);
-    }
-    for (Edge<V, W> e: edges) {
-      Set<Edge<V, W>> targets = in.computeIfAbsent(e.endPoint2, k -> new HashSet<>());
-      targets.add(e);
-    }
+    this.edges = edges;
   }
 
   @Override public Set<Edge<V, W>> incoming() {
@@ -118,17 +110,10 @@ public abstract class AbstractGraph<V, W> implements Graph<V, W> {
    */
   public String toGraphViz() {
     StringBuilder spec = new StringBuilder(directed() ? "digraph" : "graph").append(" G {\n");
-
-//    // nodes
-//    for (N node: nodes()) {
-//      spec.append('\t').append('"').append(nodeToString(node)).append("\";\n");
-//    }
-
-    // edges
-    for (Edge<V, W> edge: edges) {
+    for (Edge<V, W> edge: edges()) {
       spec.append('\t')
           .append('"').append(vertexToString(edge.endPoint1)).append('"')
-          .append(edge instanceof DirectedEdge ? " -> " : " -- ")
+          .append(directed() ? " -> " : " -- ")
           .append('"').append(vertexToString(edge.endPoint2)).append('"')
           .append(" [label=\"").append(weightToString(edge.weight)).append("\"];\n");
     }
@@ -152,7 +137,7 @@ public abstract class AbstractGraph<V, W> implements Graph<V, W> {
   /**
    * Vertices to incoming edges.
    */
-  private final Map<V, Set<Edge<V, W>>> in = new HashMap<>();
+  protected final Map<V, Set<Edge<V, W>>> in = new HashMap<>();
 
   /**
    * Edges of the graph.

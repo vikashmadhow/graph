@@ -14,8 +14,9 @@ import java.util.Map;
 public class TestGraphs {
   public static DirectedGraph<Integer, Integer> basicGraph1 = new DirectedGraph<>(
       new VertexMap<Integer, Integer>()
+          .add(1, 20, 1)
           .add(1, 1,  2, 3, 4, 5)
-          .add(5, 2,  6, 7)
+          .add(5, 2,  1, 6, 7)
           .add(6, 1,  8)
           .add(6, 4,  9)
           .add(8, 1,  9)
@@ -25,6 +26,7 @@ public class TestGraphs {
 
   public static UndirectedGraph<String, Integer> basicGraph2 = new UndirectedGraph<>(
       new VertexMap<String, Integer>()
+          .add("v0", 100, "v0")
           .add("v0", 4,   "v1")
           .add("v0", 8,   "v8")
           .add("v1", 8,   "v3")

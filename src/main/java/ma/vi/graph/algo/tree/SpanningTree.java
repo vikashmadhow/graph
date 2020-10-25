@@ -18,11 +18,10 @@ import java.util.Set;
  *
  * @param <V> The vertex type of the graph to search.
  * @param <W> The weight type on the edges of the graph to search.
- * @param <E> The edge type of the graph to search.
  *
  * @author Vikash Madhow (vikash.madhow@gmail.com)
  */
-public class SpanningTree<V, W, E extends Edge<V, W>> implements Algorithm<V, W, E, Graph<V, W, E>> {
+public class SpanningTree<V, W> implements Algorithm<V, W, Graph<V, W>> {
   /**
    * Sets the path queue to use which controls the exploration behaviour.
    * For instance, {@link FifoPathQueue} will explore breadth-first,
@@ -30,7 +29,7 @@ public class SpanningTree<V, W, E extends Edge<V, W>> implements Algorithm<V, W,
    * will explore path in order of costs (which can then be used to implement
    * Prim's algorithm).
    */
-  public SpanningTree<V, W, E> pathQueue(PathQueue<V, W, E> pathQueue) {
+  public SpanningTree<V, W> pathQueue(PathQueue<V, W> pathQueue) {
     this.pathQueue = pathQueue;
     return this;
   }
@@ -40,7 +39,7 @@ public class SpanningTree<V, W, E extends Edge<V, W>> implements Algorithm<V, W,
    * returning the successor edges to explore. The default function returns
    * all outgoing edges of the current path.
    */
-  public SpanningTree<V, W, E> expandOp(ExpandOp<V, W, E> expandOp) {
+  public SpanningTree<V, W> expandOp(ExpandOp<V, W> expandOp) {
     this.expandOp = expandOp;
     return this;
   }
@@ -50,16 +49,16 @@ public class SpanningTree<V, W, E extends Edge<V, W>> implements Algorithm<V, W,
    * to be extended, the edge with which the path is being extended and, optionally,
    * a goal vertex.
    */
-  public SpanningTree<V, W, E> pathCostOp(PathCostOp<V, W, E> pathCostOp) {
+  public SpanningTree<V, W> pathCostOp(PathCostOp<V, W> pathCostOp) {
     this.pathCostOp = pathCostOp;
     return this;
   }
 
   @Override
-  public Graph<V, W, E> execute(Graph<V, W, E> graph) {
+  public Graph<V, W> execute(Graph<V, W> graph) {
     V startVertex = graph.vertices().iterator().next();
-    Set<E> edges = new HashSet<>();
-    new Explore<V, W, E, Path<V, W, E>>(startVertex)
+    Set<Edge<V, W>> edges = new HashSet<>();
+    new Explore<V, W, Path<V, W>>(startVertex)
                 .pathQueue(pathQueue)
                 .exploreOp(new TreeExploreOp<>(edges))
                 .expandOp(expandOp)
@@ -68,7 +67,7 @@ public class SpanningTree<V, W, E extends Edge<V, W>> implements Algorithm<V, W,
     return graph.newGraph(edges);
   }
 
-  protected PathQueue<V, W, E> pathQueue;
-  protected ExpandOp<V, W, E> expandOp = ExpandOp::outgoingEdges;
-  protected PathCostOp<V, W, E> pathCostOp = PathCostOp::byWeight;
+  protected PathQueue<V, W> pathQueue;
+  protected ExpandOp<V, W> expandOp = ExpandOp::outgoingEdges;
+  protected PathCostOp<V, W> pathCostOp = PathCostOp::byWeight;
 }

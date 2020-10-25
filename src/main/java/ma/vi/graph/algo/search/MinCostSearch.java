@@ -17,7 +17,7 @@ import ma.vi.graph.path.Path;
  *
  * @author Vikash Madhow (vikash.madhow@gmail.com)
  */
-public class MinCostSearch<V, W, E extends Edge<V, W>> implements Algorithm<V, W, E, Path<V, W, E>> {
+public class MinCostSearch<V, W> implements Algorithm<V, W, Path<V, W>> {
   /**
    * Create a new instance of the algorithm.
    * @param startVertex The vertex to start the search at.
@@ -33,7 +33,7 @@ public class MinCostSearch<V, W, E extends Edge<V, W>> implements Algorithm<V, W
    * {@link #goalVertex} method to set a specific vertex as a goal
    * of the search.
    */
-  public MinCostSearch<V, W, E> goalOp(GoalOp<V, W, E> goalOp) {
+  public MinCostSearch<V, W> goalOp(GoalOp<V, W> goalOp) {
     this.goalOp = goalOp;
     return this;
   }
@@ -43,7 +43,7 @@ public class MinCostSearch<V, W, E extends Edge<V, W>> implements Algorithm<V, W
    * method to instead search for vertices which possess certain
    * properties.
    */
-  public MinCostSearch<V, W, E> goalVertex(V goalVertex) {
+  public MinCostSearch<V, W> goalVertex(V goalVertex) {
     this.goalOp = new GoalOp.MatchVertex<>(goalVertex);
     return this;
   }
@@ -53,7 +53,7 @@ public class MinCostSearch<V, W, E extends Edge<V, W>> implements Algorithm<V, W
    * returning the successor edges to explore. The default function returns
    * all outgoing edges of the current path.
    */
-  public MinCostSearch<V, W, E> expandOp(ExpandOp<V, W, E> expandOp) {
+  public MinCostSearch<V, W> expandOp(ExpandOp<V, W> expandOp) {
     this.expandOp = expandOp;
     return this;
   }
@@ -63,14 +63,14 @@ public class MinCostSearch<V, W, E extends Edge<V, W>> implements Algorithm<V, W
    * to be extended, the edge with which the path is being extended and, optionally,
    * a goal vertex.
    */
-  public MinCostSearch<V, W, E> pathCostOp(PathCostOp<V, W, E> pathCostOp) {
+  public MinCostSearch<V, W> pathCostOp(PathCostOp<V, W> pathCostOp) {
     this.pathCostOp = pathCostOp;
     return this;
   }
 
   @Override
-  public Path<V, W, E> execute(Graph<V, W, E> graph) {
-    return new Explore<V, W, E, Path<V, W, E>>(startVertex)
+  public Path<V, W> execute(Graph<V, W> graph) {
+    return new Explore<V, W, Path<V, W>>(startVertex)
                 .pathQueue(new PriorityPathQueue<>())
                 .exploreOp(new SearchExploreOp<>(goalOp))
                 .expandOp(expandOp)
@@ -79,7 +79,7 @@ public class MinCostSearch<V, W, E extends Edge<V, W>> implements Algorithm<V, W
   }
 
   protected final V startVertex;
-  protected GoalOp<V, W, E> goalOp;
-  protected ExpandOp<V, W, E> expandOp = ExpandOp::outgoingEdges;
-  protected PathCostOp<V, W, E> pathCostOp = PathCostOp::byWeight;
+  protected GoalOp<V, W> goalOp;
+  protected ExpandOp<V, W> expandOp = ExpandOp::outgoingEdges;
+  protected PathCostOp<V, W> pathCostOp = PathCostOp::byWeight;
 }

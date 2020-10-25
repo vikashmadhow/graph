@@ -12,16 +12,13 @@ import java.util.Set;
 /**
  * <p>
  * Represents a graph consisting of a set of vertices of type V, connected
- * by edges of type E which can have a weight of type W. Graphs can be directed
- * in which case their edges are of type {@link DirectedEdge} or, undirected
- * with edge type {@link UndirectedEdge}.
+ * by edges of type {@link Edge} which can have a weight of type W. Graphs
+ * can be directed undirected.
  * </p>
  *
  * @param <V> The vertex type of the graph
- * @param <E> The edge type of the graph. This must be a subclass of
- *            {@link ma.vi.graph.Edge} specialised on current the node
- *            type of the graph.
  * @param <W> The weight type on the edges of the graph.
+ *
  * @author vikash.madhow@gmail.com
  */
 public interface Graph<V, W> {
@@ -82,7 +79,9 @@ public interface Graph<V, W> {
    * Returns the degree of a vertex (number of edges having the vertex
    * as an endpoint).
    */
-  int degree(V vertex);
+  default int degree(V vertex) {
+    return inDegree(vertex) + outDegree(vertex);
+  }
 
   /**
    * Returns the in-degree of a vertex (number of edges pointing to this vertex).
@@ -99,12 +98,6 @@ public interface Graph<V, W> {
   default int outDegree(V vertex) {
     return outgoing(vertex).size();
   }
-
-//  /**
-//   * Creates a new edge connecting the two specified nodes appropriate for
-//   * the current type of graph.
-//   */
-//  Edge<V, W> newEdge(V endPoint1, W weight, V endPoint2);
 
   /**
    * Creates a new graph of the current type.

@@ -16,12 +16,12 @@ import ma.vi.graph.algo.PriorityPathQueue;
  *
  * @author Vikash Madhow (vikash.madhow@gmail.com)
  */
-public class PrimMst<V, W, E extends Edge<V, W>> implements Algorithm<V, W, E, Graph<V, W, E>> {
+public class PrimMst<V, W> implements Algorithm<V, W, Graph<V, W>> {
   @Override
-  public Graph<V, W, E> execute(Graph<V, W, E> graph) {
-    return new SpanningTree<V, W, E>()
+  public Graph<V, W> execute(Graph<V, W> graph) {
+    return new SpanningTree<V, W>()
                 .pathQueue(new PriorityPathQueue<>())
-                .pathCostOp((g, p, e) -> e.weight() instanceof Number ? ((Number)e.weight()).longValue() : 0)
+                .pathCostOp((g, p, e) -> e.weight instanceof Number ? ((Number)e.weight).longValue() : 0)
                 .execute(graph);
   }
 }

@@ -1,9 +1,9 @@
 package ma.vi.graph.algo.search;
 
 import ma.vi.graph.Graph;
+import ma.vi.graph.Path;
 import ma.vi.graph.algo.*;
 import ma.vi.graph.algo.explore.Explore;
-import ma.vi.graph.Path;
 
 /**
  * <p>

@@ -5,7 +5,9 @@ import java.util.*;
 /**
  * @author Vikash Madhow (vikash.madhow@gmail.com)
  */
-public class Path<V, W> extends DirectedGraph<V, W> implements Comparable<Path<V, W>>, Iterable<Edge<V, W>> {
+public class Path<V, W>
+     extends DirectedGraph<V, W>
+  implements Comparable<Path<V, W>>, Iterable<Edge<V, W>> {
   /**
    * Creates an empty path
    */
@@ -138,7 +140,7 @@ public class Path<V, W> extends DirectedGraph<V, W> implements Comparable<Path<V
   @Override
   public int compareTo(Path<V, W> path) {
     return (int)((this.cost() == null ? 0 : this.cost())
-        - (path.cost() == null ? 0 : path.cost()));
+               - (path.cost() == null ? 0 : path.cost()));
   }
 
   @Override

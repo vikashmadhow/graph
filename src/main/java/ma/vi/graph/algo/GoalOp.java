@@ -20,7 +20,6 @@ import java.util.Optional;
  * </p>
  *
  * @param <V> The vertex type of the graph
- * @param <E> The edge type of the graph.
  * @param <W> The weight type on the edges of the graph.
  *
  * @author vikash.madhow@gmail.com

@@ -1,10 +1,9 @@
 package ma.vi.graph.algo.search;
 
-import ma.vi.graph.Edge;
 import ma.vi.graph.Graph;
 import ma.vi.graph.algo.*;
 import ma.vi.graph.algo.explore.Explore;
-import ma.vi.graph.path.Path;
+import ma.vi.graph.Path;
 
 /**
  * <p>
@@ -13,7 +12,6 @@ import ma.vi.graph.path.Path;
  *
  * @param <V> The vertex type of the graph to search.
  * @param <W> The weight type on the edges of the graph to search.
- * @param <E> The edge type of the graph to search.
  *
  * @author Vikash Madhow (vikash.madhow@gmail.com)
  */

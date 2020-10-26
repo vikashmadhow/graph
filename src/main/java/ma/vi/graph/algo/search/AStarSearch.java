@@ -6,7 +6,7 @@ import ma.vi.graph.algo.ExpandOp;
 import ma.vi.graph.algo.GoalOp;
 import ma.vi.graph.algo.PriorityPathQueue;
 import ma.vi.graph.algo.explore.Explore;
-import ma.vi.graph.path.Path;
+import ma.vi.graph.Path;
 
 /**
  * <p>
@@ -17,7 +17,6 @@ import ma.vi.graph.path.Path;
  *
  * @param <V> The vertex type of the graph to search.
  * @param <W> The weight type on the edges of the graph to search.
- * @param <E> The edge type of the graph to search.
  *
  * @author Vikash Madhow (vikash.madhow@gmail.com)
  */

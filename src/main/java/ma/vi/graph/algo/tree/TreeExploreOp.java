@@ -3,7 +3,7 @@ package ma.vi.graph.algo.tree;
 import ma.vi.graph.Edge;
 import ma.vi.graph.Graph;
 import ma.vi.graph.algo.ExploreOp;
-import ma.vi.graph.path.Path;
+import ma.vi.graph.Path;
 
 import java.util.Optional;
 import java.util.Set;

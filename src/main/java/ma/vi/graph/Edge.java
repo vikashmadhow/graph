@@ -37,9 +37,9 @@ public class Edge<V, W> {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     Edge<?, ?> edge = (Edge<?, ?>)o;
-    return endPoint1.equals(edge.endPoint1) &&
-        endPoint2.equals(edge.endPoint2) &&
-        Objects.equals(weight, edge.weight);
+    return endPoint1.equals(edge.endPoint1)
+        && endPoint2.equals(edge.endPoint2)
+        && Objects.equals(weight, edge.weight);
   }
 
   @Override

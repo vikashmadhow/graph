@@ -1,6 +1,6 @@
 package ma.vi.graph.algo.search;
 
-import ma.vi.graph.path.Path;
+import ma.vi.graph.Path;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -24,10 +24,10 @@ class SearchTest {
         romaniaCities.apply(new BreadthFirstSearch<String, Integer>("Arad").goalVertex("Bucharest"));
 
     System.out.println(path);
-    assertEquals(romaniaCities.path(3L,
-                                    romaniaCities.edge("Arad", "Sibiu"),
-                                    romaniaCities.edge("Sibiu", "Fagaras"),
-                                    romaniaCities.edge("Fagaras", "Bucharest")), path);
+    assertEquals(Path.of(3L,
+                         romaniaCities.edge("Arad", "Sibiu"),
+                         romaniaCities.edge("Sibiu", "Fagaras"),
+                         romaniaCities.edge("Fagaras", "Bucharest")), path);
   }
 
   @Test
@@ -44,11 +44,11 @@ class SearchTest {
     Path<String, Integer> path =
         romaniaCities.apply(new MinCostSearch<String, Integer>("Arad").goalVertex("Bucharest"));
     System.out.println(path);
-    assertEquals(romaniaCities.path(418L,
-                                    romaniaCities.edge("Arad", "Sibiu"),
-                                    romaniaCities.edge("Sibiu", "Rimnicu Vilcea"),
-                                    romaniaCities.edge("Rimnicu Vilcea", "Pitesti"),
-                                    romaniaCities.edge("Pitesti", "Bucharest")),
+    assertEquals(Path.of(418L,
+                         romaniaCities.edge("Arad", "Sibiu"),
+                         romaniaCities.edge("Sibiu", "Rimnicu Vilcea"),
+                         romaniaCities.edge("Rimnicu Vilcea", "Pitesti"),
+                         romaniaCities.edge("Pitesti", "Bucharest")),
                  path);
   }
 
@@ -61,7 +61,7 @@ class SearchTest {
           (v1, v2) -> distanceToBucharest.get(v1)
         ));
     System.out.println(path);
-    assertEquals(romaniaCities.path(418L, romaniaCities.edge("Arad", "Sibiu"),
+    assertEquals(Path.of(418L, romaniaCities.edge("Arad", "Sibiu"),
                                     romaniaCities.edge("Sibiu", "Rimnicu Vilcea"),
                                     romaniaCities.edge("Rimnicu Vilcea", "Pitesti"),
                                     romaniaCities.edge("Pitesti", "Bucharest")), path);
@@ -72,10 +72,10 @@ class SearchTest {
     Path<String, Integer> path =
         romaniaCities.apply(new IterativeDeepeningSearch<String, Integer>("Arad").goalVertex("Bucharest"));
     System.out.println(path);
-    assertEquals(romaniaCities.path(3L,
-                                    romaniaCities.edge("Arad", "Sibiu"),
-                                    romaniaCities.edge("Sibiu", "Fagaras"),
-                                    romaniaCities.edge("Fagaras", "Bucharest")), path);
+    assertEquals(Path.of(3L,
+                         romaniaCities.edge("Arad", "Sibiu"),
+                         romaniaCities.edge("Sibiu", "Fagaras"),
+                         romaniaCities.edge("Fagaras", "Bucharest")), path);
   }
 
   @Test
@@ -91,10 +91,10 @@ class SearchTest {
     Path<String, Integer> path =
         romaniaCities.apply(new DepthLimitedSearch<String, Integer>("Arad", 5).goalVertex("Bucharest"));
     System.out.println(path);
-    assertEquals(romaniaCities.path(3L,
-                                    romaniaCities.edge("Arad", "Sibiu"),
-                                    romaniaCities.edge("Sibiu", "Fagaras"),
-                                    romaniaCities.edge("Fagaras", "Bucharest")), path);
+    assertEquals(Path.of(3L,
+                         romaniaCities.edge("Arad", "Sibiu"),
+                         romaniaCities.edge("Sibiu", "Fagaras"),
+                         romaniaCities.edge("Fagaras", "Bucharest")), path);
   }
 
   @Test

@@ -1,11 +1,8 @@
 package ma.vi.graph;
 
-import ma.vi.graph.path.Path;
-import ma.vi.graph.path.UndirectedPath;
-
-import java.util.*;
-
-import static java.util.Collections.emptySet;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * An undirected graph.
@@ -97,13 +94,13 @@ public class UndirectedGraph<V, W> extends AbstractGraph<V, W> {
     return new UndirectedGraph<>(edges);
   }
 
-  @Override
-  public Path<V, W> path(Long cost, V vertex) {
-    return new UndirectedPath<>(cost, vertex);
-  }
-
-  @Override
-  public Path<V, W> path(Long cost, LinkedHashSet<Edge<V, W>> edges) {
-    return new UndirectedPath<>(cost, edges);
-  }
+//  @Override
+//  public Path<V, W> path(Long cost, V vertex) {
+//    return new UndirectedPath<>(cost, vertex);
+//  }
+//
+//  @Override
+//  public Path<V, W> path(Long cost, LinkedHashSet<Edge<V, W>> edges) {
+//    return new UndirectedPath<>(cost, edges);
+//  }
 }

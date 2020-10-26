@@ -1,10 +1,6 @@
 package ma.vi.graph;
 
-import ma.vi.graph.path.DirectedPath;
-import ma.vi.graph.path.Path;
-
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -60,14 +56,14 @@ public class DirectedGraph<V, W> extends AbstractGraph<V, W> {
   public DirectedGraph<V, W> newGraph(Set<Edge<V, W>> edges) {
     return new DirectedGraph<>(edges);
   }
-
-  @Override
-  public Path<V, W> path(Long cost, V vertex) {
-    return new DirectedPath<>(cost, vertex);
-  }
-
-  @Override
-  public Path<V, W> path(Long cost, LinkedHashSet<Edge<V, W>> edges) {
-    return new DirectedPath<>(cost, edges);
-  }
+//
+//  @Override
+//  public Path<V, W> path(Long cost, V vertex) {
+//    return new DirectedPath<>(cost, vertex);
+//  }
+//
+//  @Override
+//  public Path<V, W> path(Long cost, LinkedHashSet<Edge<V, W>> edges) {
+//    return new DirectedPath<>(cost, edges);
+//  }
 }

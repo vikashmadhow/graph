@@ -1,6 +1,5 @@
 package ma.vi.graph.algo.tree;
 
-import ma.vi.graph.Edge;
 import ma.vi.graph.Graph;
 import ma.vi.graph.algo.Algorithm;
 import ma.vi.graph.algo.PriorityPathQueue;
@@ -12,7 +11,6 @@ import ma.vi.graph.algo.PriorityPathQueue;
  *
  * @param <V> The vertex type of the graph to search.
  * @param <W> The weight type on the edges of the graph to search.
- * @param <E> The edge type of the graph to search.
  *
  * @author Vikash Madhow (vikash.madhow@gmail.com)
  */

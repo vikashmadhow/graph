@@ -1,11 +1,7 @@
 package ma.vi.graph;
 
-import ma.vi.base.tuple.T2;
 import ma.vi.graph.algo.Algorithm;
-import ma.vi.graph.path.Path;
 
-import java.util.Arrays;
-import java.util.LinkedHashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -27,8 +23,14 @@ public interface Graph<V, W> {
    */
   Set<V> vertices();
 
+  /**
+   * Returns the set of all incoming edges of the graph.
+   */
   Set<Edge<V, W>> incoming();
 
+  /**
+   * Returns the set of all outgoing edges of the graph.
+   */
   Set<Edge<V, W>> outgoing();
 
   /**
@@ -96,64 +98,6 @@ public interface Graph<V, W> {
    * Creates a new graph of the current type.
    */
   Graph<V, W> newGraph(Set<Edge<V, W>> edges);
-
-  /**
-   * Construct a path with the same edge type as this graph.
-   *
-   * @param cost  The cost of the path
-   * @param edges The edges of the path in the right order as the first and last
-   *              edges will be used to set the start and end  the path.
-   */
-  Path<V, W> path(Long cost, LinkedHashSet<Edge<V, W>> edges);
-
-  default Path<V, W> path(Long cost, Edge<V, W>... edges) {
-    return path(cost, new LinkedHashSet<>(Arrays.asList(edges)));
-  }
-
-  default Path<V, W> path(Long cost, Optional<Edge<V, W>>... edges) {
-    LinkedHashSet<Edge<V, W>> edgesSet = new LinkedHashSet<>();
-    for (Optional<Edge<V, W>> e: edges) {
-      e.ifPresent(edgesSet::add);
-    }
-    return path(cost, edgesSet);
-  }
-
-  /**
-   * Construct a path with a single vertex and no edge.
-   */
-  Path<V, W> path(Long cost, V vertex);
-
-  /**
-   * Construct a path with a single vertex and no edge. The
-   * cost of the path is set to 0.
-   */
-  default Path<V, W> path(V vertex) {
-    return path(0L, vertex);
-  }
-
-  /**
-   * Construct a path of the vertices in the given order. The
-   * weight on the edges are set to null.
-   */
-  default Path<V, W> path(Long cost, V... vertices) {
-    Path<V, W> path = path(vertices[0]);
-    for (int i = 1; i < vertices.length; i++) {
-      path = path.extend(vertices[i], null, cost);
-    }
-    return path;
-  }
-
-  /**
-   * Construct a path of the vertices, starting from the first vertex and
-   * extended by adding an edge from the vertices array in the given order.
-   */
-  default Path<V, W> path(Long cost, V first, T2<V, W>... vertices) {
-    Path<V, W> path = path(first);
-    for (T2<V, W> v: vertices) {
-      path = path.extend(v.a(), v.b(), cost);
-    }
-    return path;
-  }
 
   /**
    * Applies an algorithm to the graph and returns the value produced.

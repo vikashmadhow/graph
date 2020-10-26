@@ -3,7 +3,7 @@ package ma.vi.graph.algo.explore;
 import ma.vi.graph.Edge;
 import ma.vi.graph.Graph;
 import ma.vi.graph.algo.*;
-import ma.vi.graph.path.Path;
+import ma.vi.graph.Path;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -45,7 +45,6 @@ import java.util.Set;
  *
  * @param <V> The vertex type of the graph to explore.
  * @param <W> The weight type on the edges of the graph to explore.
- * @param <E> The edge type of the graph to explore.
  * @param <R> The result of the exploration which is the result returned by the exploreOp function.
  *
  * @author Vikash Madhow (vikash.madhow@gmail.com)
@@ -108,7 +107,7 @@ public class Explore<V, W, R> implements Algorithm<V, W, R> {
       pathQueue = new FifoPathQueue<>();
     }
     if (startVertex != null) {
-      pathQueue.add(graph.path(startVertex));
+      pathQueue.add(new Path<>(0L, startVertex));
     } else {
       throw new IllegalArgumentException("Start vertex to explore from not provided");
     }

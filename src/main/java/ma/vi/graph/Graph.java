@@ -66,14 +66,7 @@ public interface Graph<V, W> {
    * Returns the edge between v1 and v2 in the graph or
    * empty if not found.
    */
-  default Optional<Edge<V, W>> edge(V v1, V v2) {
-    for (Edge<V, W> edge: edges(v1)) {
-      if (edge.endPoint2.equals(v2)) {
-        return Optional.of(edge);
-      }
-    }
-    return Optional.empty();
-  }
+  Optional<Edge<V, W>> edge(V v1, V v2);
 
   /**
    * Returns the degree of a vertex (number of edges having the vertex

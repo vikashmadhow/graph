@@ -5,6 +5,7 @@ import ma.vi.graph.path.Path;
 
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -26,6 +27,16 @@ public class DirectedGraph<V, W> extends AbstractGraph<V, W> {
   @Override
   public boolean directed() {
     return true;
+  }
+
+  @Override
+  public Optional<Edge<V, W>> edge(V v1, V v2) {
+    for (Edge<V, W> edge: outgoing(v1)) {
+      if (edge.endPoint2.equals(v2)) {
+        return Optional.of(edge);
+      }
+    }
+    return Optional.empty();
   }
 
   public DirectedGraph<V, W> newGraph(Set<Edge<V, W>> edges) {

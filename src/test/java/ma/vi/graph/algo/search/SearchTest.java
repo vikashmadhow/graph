@@ -24,7 +24,7 @@ class SearchTest {
         romaniaCities.apply(new BreadthFirstSearch<String, Integer>("Arad").goalVertex("Bucharest"));
 
     System.out.println(path);
-    assertEquals(romaniaCities.path(450L,
+    assertEquals(romaniaCities.path(3L,
                                     romaniaCities.edge("Arad", "Sibiu"),
                                     romaniaCities.edge("Sibiu", "Fagaras"),
                                     romaniaCities.edge("Fagaras", "Bucharest")), path);
@@ -44,12 +44,12 @@ class SearchTest {
     Path<String, Integer> path =
         romaniaCities.apply(new MinCostSearch<String, Integer>("Arad").goalVertex("Bucharest"));
     System.out.println(path);
-    assertEquals( romaniaCities.path( 418L,
-                                      romaniaCities.edge("Arad", "Sibiu"),
-                                      romaniaCities.edge("Sibiu", "Rimnicu Vilcea"),
-                                      romaniaCities.edge("Rimnicu Vilcea", "Pitesti"),
-                                      romaniaCities.edge("Pitesti", "Bucharest")),
-                  path);
+    assertEquals(romaniaCities.path(418L,
+                                    romaniaCities.edge("Arad", "Sibiu"),
+                                    romaniaCities.edge("Sibiu", "Rimnicu Vilcea"),
+                                    romaniaCities.edge("Rimnicu Vilcea", "Pitesti"),
+                                    romaniaCities.edge("Pitesti", "Bucharest")),
+                 path);
   }
 
   @Test

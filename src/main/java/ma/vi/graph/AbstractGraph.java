@@ -9,10 +9,8 @@ import static java.util.Collections.unmodifiableSet;
  * A partial implementation of the generic methods of the {@link Graph} interface.
  *
  * @param <V> The vertex type of the graph
- * @param <E> The edge type of the graph. This must be a subclass of
- *            {@link ma.vi.graph.Edge} specialised on current the node
- *            type of the graph.
  * @param <W> The weight type on the edges of the graph.
+ *
  * @author vikash.madhow@gmail.com
  */
 public abstract class AbstractGraph<V, W> implements Graph<V, W> {
@@ -84,10 +82,10 @@ public abstract class AbstractGraph<V, W> implements Graph<V, W> {
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
-    if (o instanceof Graph) {
-      Graph<V, W> that = (Graph<V, W>)o;
-      return in.equals(that.incoming()) &&
-             out.equals(that.outgoing());
+    if (o instanceof AbstractGraph) {
+      AbstractGraph<V, W> that = (AbstractGraph<V, W>)o;
+      return in.equals(that.in) &&
+             out.equals(that.out);
     }
     return false;
   }

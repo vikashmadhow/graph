@@ -5,6 +5,7 @@ import ma.vi.graph.path.UndirectedPath;
 
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -18,27 +19,53 @@ public class UndirectedGraph<V, W> extends AbstractGraph<V, W> {
   public UndirectedGraph(Set<Edge<V, W>> edges) {
     super(edges);
     for (Edge<V, W> e: edges) {
-//      if (e.endPoint1.equals(e.endPoint2)) {
-//        /*
-//         * a - a : out = {a: a-a}  in = {a: a-a}
-//         */
-//        out.computeIfAbsent(e.endPoint1, k -> new HashSet<>()).add(e);
-//        in.computeIfAbsent(e.endPoint2, k -> new HashSet<>()).add(e);
-//      } else {
-        /*
-         * a - b : out = {a: a-b, b: a-b} in = {a: a-b, b:a-b}
-         */
-        out.computeIfAbsent(e.endPoint1, k -> new HashSet<>()).add(e);
-        out.computeIfAbsent(e.endPoint2, k -> new HashSet<>()).add(e);
-        in.computeIfAbsent(e.endPoint1, k -> new HashSet<>()).add(e);
-        in.computeIfAbsent(e.endPoint2, k -> new HashSet<>()).add(e);
-//      }
+      out.computeIfAbsent(e.endPoint1, k -> new HashSet<>()).add(e);
+      out.computeIfAbsent(e.endPoint2, k -> new HashSet<>()).add(e);
+      in.computeIfAbsent(e.endPoint1, k -> new HashSet<>()).add(e);
+      in.computeIfAbsent(e.endPoint2, k -> new HashSet<>()).add(e);
     }
   }
 
   @Override
   public boolean directed() {
     return false;
+  }
+
+  @Override
+  public Optional<Edge<V, W>> edge(V v1, V v2) {
+    for (Edge<V, W> edge: incoming(v1)) {
+      if ((edge.endPoint1.equals(v1) && edge.endPoint2.equals(v2))
+       || (edge.endPoint1.equals(v2) && edge.endPoint2.equals(v1))) {
+        return Optional.of(edge);
+      }
+    }
+    for (Edge<V, W> edge: outgoing(v1)) {
+      if ((edge.endPoint1.equals(v1) && edge.endPoint2.equals(v2))
+       || (edge.endPoint1.equals(v2) && edge.endPoint2.equals(v1))) {
+        return Optional.of(edge);
+      }
+    }
+    return Optional.empty();
+  }
+
+  @Override
+  public int degree(V vertex) {
+    return inDegree(vertex);
+  }
+
+  @Override
+  public int inDegree(V vertex) {
+    int degree = incoming(vertex).size();
+    if (edge(vertex, vertex).isPresent()) {
+      // self-loop contribute 2 to degree in undirected graphs
+      degree += 1;
+    }
+    return degree;
+  }
+
+  @Override
+  public int outDegree(V vertex) {
+    return inDegree(vertex);
   }
 
   /**

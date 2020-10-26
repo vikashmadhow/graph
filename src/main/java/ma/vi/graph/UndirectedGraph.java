@@ -3,10 +3,9 @@ package ma.vi.graph;
 import ma.vi.graph.path.Path;
 import ma.vi.graph.path.UndirectedPath;
 
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+
+import static java.util.Collections.emptySet;
 
 /**
  * An undirected graph.
@@ -16,13 +15,32 @@ import java.util.Set;
  * @author vikash.madhow@gmail.com
  */
 public class UndirectedGraph<V, W> extends AbstractGraph<V, W> {
+  /**
+   * Creates an empty graph.
+   */
+  public UndirectedGraph() {
+    super();
+  }
+
+  /**
+   * Creates a graph with a single vertex.
+   */
+  public UndirectedGraph(V vertex) {
+    super(vertex);
+  }
+
+  /**
+   * Creates a graph from a set of edges with its vertices obtained
+   * from the endpoints of the edges.
+   */
   public UndirectedGraph(Set<Edge<V, W>> edges) {
     super(edges);
     for (Edge<V, W> e: edges) {
+      Edge<V, W> reversed = Edge.of(e.endPoint2, e.weight, e.endPoint1);
       out.computeIfAbsent(e.endPoint1, k -> new HashSet<>()).add(e);
-      out.computeIfAbsent(e.endPoint2, k -> new HashSet<>()).add(e);
+      out.computeIfAbsent(e.endPoint2, k -> new HashSet<>()).add(reversed);
       in.computeIfAbsent(e.endPoint1, k -> new HashSet<>()).add(e);
-      in.computeIfAbsent(e.endPoint2, k -> new HashSet<>()).add(e);
+      in.computeIfAbsent(e.endPoint2, k -> new HashSet<>()).add(reversed);
     }
   }
 

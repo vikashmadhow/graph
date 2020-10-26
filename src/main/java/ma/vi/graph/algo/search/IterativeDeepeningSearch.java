@@ -2,10 +2,7 @@ package ma.vi.graph.algo.search;
 
 import ma.vi.base.tuple.T1;
 import ma.vi.graph.Graph;
-import ma.vi.graph.algo.Algorithm;
-import ma.vi.graph.algo.GoalOp;
-import ma.vi.graph.algo.LifoPathQueue;
-import ma.vi.graph.algo.PathCostOp;
+import ma.vi.graph.algo.*;
 import ma.vi.graph.algo.explore.Explore;
 import ma.vi.graph.path.Path;
 
@@ -79,7 +76,7 @@ public class IterativeDeepeningSearch<V, W> implements Algorithm<V, W, Path<V, W
         && !maxDepthInCurrentIteration.a.equals(maxDepthInPreviousIteration.a)) {
       maxDepthInPreviousIteration.a = maxDepthInCurrentIteration.a;
       path = new Explore<V, W, Path<V, W>>(startVertex)
-                  .pathQueue(new LifoPathQueue<>())
+                  .pathQueue(new PriorityPathQueue<>())
                   .exploreOp(new SearchExploreOp<>(goalOp))
                   .expandOp((g, p) -> {
                     int pathLength = p.length();

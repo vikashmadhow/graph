@@ -5,53 +5,44 @@ import ma.vi.graph.UndirectedGraph;
 
 import java.util.*;
 
+import static java.util.Collections.emptySet;
+
 /**
  * @author Vikash Madhow (vikash.madhow@gmail.com)
  */
 public class UndirectedPath<V, W> extends UndirectedGraph<V, W> implements Path<V, W> {
-  public UndirectedPath(V vertex) {
-    this(0L, vertex);
+  /**
+   * Creates an empty path
+   */
+  public UndirectedPath() {
+    super();
+    this.firstVertex = this.lastVertex = null;
+    this.firstEdge = this.lastEdge = null;
+    this.cost = 0L;
   }
 
+  /**
+   * Creates a single-vertex path.
+   */
   public UndirectedPath(Long cost, V vertex) {
-    super(Collections.emptySet());
+    super(vertex);
     this.firstVertex = this.lastVertex = vertex;
     this.firstEdge = this.lastEdge = null;
     this.cost = cost;
   }
 
-  public UndirectedPath(Long cost, LinkedHashSet<Edge<V, W>> undirectedEdges) {
-    super(undirectedEdges);
-    List<Edge<V, W>> e = new ArrayList<>(undirectedEdges);
+  /**
+   * Creates a path from an ordered set of edges.
+   */
+  public UndirectedPath(Long cost, LinkedHashSet<Edge<V, W>> edges) {
+    super(edges);
+    List<Edge<V, W>> e = new ArrayList<>(edges);
     this.firstVertex = e.isEmpty() ? null : e.get(0).endPoint1;
     this.lastVertex = e.isEmpty() ? null : e.get(e.size() - 1).endPoint2;
     this.firstEdge = e.isEmpty() ? null : e.get(0);
     this.lastEdge = e.isEmpty() ? null : e.get(e.size() - 1);
     this.cost = cost;
   }
-
-//  public UndirectedPath(Long cost, VertexMap<V, W> vertexMap) {
-//    super(vertexMap);
-//    this.firstVertex = vertexMap.firstVertex();
-//    this.lastVertex = vertexMap.lastVertex();
-//    if (this.firstVertex != null) {
-//      Set<Edge<V, W>> outgoing = outgoing(this.firstVertex);
-//      this.firstEdge = outgoing == null || outgoing.isEmpty()
-//                       ? null
-//                       : outgoing.iterator().next();
-//    } else {
-//      this.firstEdge = null;
-//    }
-//    if (this.lastVertex != null) {
-//      Set<Edge<V, W>> incoming = incoming(this.lastVertex);
-//      this.lastEdge = incoming == null || incoming.isEmpty()
-//                      ? null
-//                      : incoming.iterator().next();
-//    } else {
-//      this.lastEdge = null;
-//    }
-//    this.cost = cost;
-//  }
 
   @Override
   public Optional<V> firstVertex() {

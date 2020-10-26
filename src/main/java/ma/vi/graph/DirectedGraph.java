@@ -16,6 +16,24 @@ import java.util.Set;
  * @author vikash.madhow@gmail.com
  */
 public class DirectedGraph<V, W> extends AbstractGraph<V, W> {
+  /**
+   * Creates an empty graph.
+   */
+  public DirectedGraph() {
+    super();
+  }
+
+  /**
+   * Creates a graph with a single vertex.
+   */
+  public DirectedGraph(V vertex) {
+    super(vertex);
+  }
+
+  /**
+   * Creates a graph from a set of edges with its vertices obtained
+   * from the endpoints of the edges.
+   */
   public DirectedGraph(Set<Edge<V, W>> edges) {
     super(edges);
     for (Edge<V, W> e: edges) {

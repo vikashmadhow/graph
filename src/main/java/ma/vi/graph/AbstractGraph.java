@@ -15,7 +15,24 @@ import static java.util.Collections.unmodifiableSet;
  */
 public abstract class AbstractGraph<V, W> implements Graph<V, W> {
   /**
-   * Creates a graph from the set of edges.
+   * Creates an empty graph.
+   */
+  protected AbstractGraph() {
+    this.edges = emptySet();
+  }
+
+  /**
+   * Creates a graph with a single vertex.
+   */
+  protected AbstractGraph(V vertex) {
+    this.edges = emptySet();
+    in.put(vertex, emptySet());
+    out.put(vertex, emptySet());
+  }
+
+  /**
+   * Creates a graph from a set of edges with its vertices obtained
+   * from the endpoints of the edges.
    */
   protected AbstractGraph(Set<Edge<V, W>> edges) {
     this.edges = edges;
@@ -43,21 +60,21 @@ public abstract class AbstractGraph<V, W> implements Graph<V, W> {
       out.values().forEach(edges::addAll);
       in.values().forEach(edges::addAll);
     }
-    return edges;
+    return unmodifiableSet(edges);
   }
 
   /**
    * Returns the set of incoming edges to the vertex.
    */
   public Set<Edge<V, W>> incoming(V vertex) {
-    return in.getOrDefault(vertex, emptySet());
+    return unmodifiableSet(in.getOrDefault(vertex, emptySet()));
   }
 
   /**
    * Returns the set of outgoing edges from the vertex.
    */
   public Set<Edge<V, W>> outgoing(V vertex) {
-    return out.getOrDefault(vertex, emptySet());
+    return unmodifiableSet(out.getOrDefault(vertex, emptySet()));
   }
 
   @Override
@@ -100,7 +117,8 @@ public abstract class AbstractGraph<V, W> implements Graph<V, W> {
 
   @Override
   public String toString() {
-    return edges().toString();
+    return !edges().isEmpty()    ? edges().toString()    :
+           !vertices().isEmpty() ? vertices().toString() : "";
   }
 
   /**

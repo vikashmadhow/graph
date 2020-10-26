@@ -9,10 +9,6 @@ import java.util.*;
  * @author Vikash Madhow (vikash.madhow@gmail.com)
  */
 public class DirectedPath<V, W> extends DirectedGraph<V, W> implements Path<V, W> {
-  public DirectedPath(V vertex) {
-    this(0L, vertex);
-  }
-
   public DirectedPath(Long cost, V vertex) {
     super(Collections.emptySet());
     this.firstVertex = this.lastVertex = vertex;
@@ -29,29 +25,6 @@ public class DirectedPath<V, W> extends DirectedGraph<V, W> implements Path<V, W
     this.lastEdge = e.isEmpty() ? null : e.get(e.size() - 1);
     this.cost = cost;
   }
-
-//  public DirectedPath(VertexMap<V, W> vertexMap, Long cost) {
-//    super(vertexMap);
-//    this.firstVertex = vertexMap.firstVertex();
-//    this.lastVertex = vertexMap.lastVertex();
-//    if (this.firstVertex != null) {
-//        Set<Edge<V, W>> outgoing = outgoing(this.firstVertex);
-//        this.firstEdge = outgoing == null || outgoing.isEmpty()
-//                           ? null
-//                           : outgoing.iterator().next();
-//    } else {
-//      this.firstEdge = null;
-//    }
-//    if (this.lastVertex != null) {
-//        Set<Edge<V, W>> incoming = incoming(this.lastVertex);
-//        this.lastEdge = incoming == null || incoming.isEmpty()
-//                           ? null
-//                           : incoming.iterator().next();
-//    } else {
-//      this.lastEdge = null;
-//    }
-//    this.cost = cost;
-//  }
 
   @Override
   public Optional<V> firstVertex() {

@@ -22,5 +22,5 @@ public class SearchExploreOp<V, W> implements ExploreOp<V, W, Path<V, W>> {
     return goalOp.op(graph, path) ? Optional.of(path) : Optional.empty();
   }
 
-  private final GoalOp<V, W> goalOp;
+  protected final GoalOp<V, W> goalOp;
 }

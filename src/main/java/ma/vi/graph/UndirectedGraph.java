@@ -93,14 +93,4 @@ public class UndirectedGraph<V, W> extends AbstractGraph<V, W> {
   public UndirectedGraph<V, W> newGraph(Set<Edge<V, W>> edges) {
     return new UndirectedGraph<>(edges);
   }
-
-//  @Override
-//  public Path<V, W> path(Long cost, V vertex) {
-//    return new UndirectedPath<>(cost, vertex);
-//  }
-//
-//  @Override
-//  public Path<V, W> path(Long cost, LinkedHashSet<Edge<V, W>> edges) {
-//    return new UndirectedPath<>(cost, edges);
-//  }
 }

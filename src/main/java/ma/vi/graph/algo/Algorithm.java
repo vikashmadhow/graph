@@ -12,5 +12,9 @@ import ma.vi.graph.Graph;
  * @author Vikash Madhow (vikash.madhow@gmail.com)
  */
 public interface Algorithm<V, W, R> {
+  /**
+   * Executes the algorithm on the given graph and returns
+   * a result of type R.
+   */
   R execute(Graph<V, W> graph);
 }

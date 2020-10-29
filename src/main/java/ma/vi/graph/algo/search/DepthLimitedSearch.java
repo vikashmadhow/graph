@@ -1,12 +1,12 @@
 package ma.vi.graph.algo.search;
 
 import ma.vi.graph.Graph;
+import ma.vi.graph.Path;
 import ma.vi.graph.algo.Algorithm;
 import ma.vi.graph.algo.GoalOp;
 import ma.vi.graph.algo.PathCostOp;
 import ma.vi.graph.algo.PriorityPathQueue;
 import ma.vi.graph.algo.explore.Explore;
-import ma.vi.graph.Path;
 
 import static java.util.Collections.emptySet;
 
@@ -17,12 +17,12 @@ import static java.util.Collections.emptySet;
  *
  * @param <V> The vertex type of the graph to search.
  * @param <W> The weight type on the edges of the graph to search.
- *
  * @author Vikash Madhow (vikash.madhow@gmail.com)
  */
 public class DepthLimitedSearch<V, W> implements Algorithm<V, W, Path<V, W>> {
   /**
    * Create a new instance of the algorithm.
+   *
    * @param startVertex The vertex to start the search at.
    */
   public DepthLimitedSearch(V startVertex, int maxDepth) {
@@ -65,19 +65,19 @@ public class DepthLimitedSearch<V, W> implements Algorithm<V, W, Path<V, W>> {
   @Override
   public Path<V, W> execute(Graph<V, W> graph) {
     return new Explore<V, W, Path<V, W>>(startVertex)
-                  .pathQueue(new PriorityPathQueue<>())
-                  .exploreOp(new SearchExploreOp<>(goalOp))
-                  .expandOp((g, p) -> {
-                    int pathLength = p.length();
-                    if (pathLength < maxDepth) {
-                      V pathEnd = p.lastVertex().orElse(null);
-                      return pathEnd == null ? emptySet() : graph.outgoing(pathEnd);
-                    } else {
-                      return emptySet();
-                    }
-                  })
-                  .pathCostOp(pathCostOp)
-                  .execute(graph);
+        .pathQueue(new PriorityPathQueue<>())
+        .exploreOp(new SearchExploreOp<>(goalOp))
+        .expandOp((g, p) -> {
+          int pathLength = p.length();
+          if (pathLength < maxDepth) {
+            V pathEnd = p.lastVertex().orElse(null);
+            return pathEnd == null ? emptySet() : graph.outgoing(pathEnd);
+          } else {
+            return emptySet();
+          }
+        })
+        .pathCostOp(pathCostOp)
+        .execute(graph);
   }
 
   protected final int maxDepth;

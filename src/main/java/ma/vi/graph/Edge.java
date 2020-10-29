@@ -28,7 +28,7 @@ public class Edge<V, W> {
     this.weight = weight;
   }
 
-  public static <V, W> Edge<V, W> of (V endPoint1, W weight, V endPoint2) {
+  public static <V, W> Edge<V, W> of(V endPoint1, W weight, V endPoint2) {
     return new Edge<>(endPoint1, weight, endPoint2);
   }
 

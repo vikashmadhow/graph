@@ -1,8 +1,8 @@
 package ma.vi.graph.algo;
 
 import ma.vi.graph.Graph;
-import ma.vi.graph.algo.explore.Explore;
 import ma.vi.graph.Path;
+import ma.vi.graph.algo.explore.Explore;
 
 import java.util.Optional;
 
@@ -17,6 +17,8 @@ import java.util.Optional;
  * <li>finally a non-empty set means that the exploration is completed and the set
  *     should be returned as its result.</li>
  * </ul>
+ * 
+ * @author Vikash Madhow (vikash.madhow@gmail.com)
  */
 @FunctionalInterface
 public interface ExploreOp<V, W, R> {

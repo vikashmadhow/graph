@@ -2,9 +2,12 @@ package ma.vi.graph.algo.search;
 
 import ma.vi.base.tuple.T1;
 import ma.vi.graph.Graph;
-import ma.vi.graph.algo.*;
-import ma.vi.graph.algo.explore.Explore;
 import ma.vi.graph.Path;
+import ma.vi.graph.algo.Algorithm;
+import ma.vi.graph.algo.GoalOp;
+import ma.vi.graph.algo.PathCostOp;
+import ma.vi.graph.algo.PriorityPathQueue;
+import ma.vi.graph.algo.explore.Explore;
 
 import static java.util.Collections.emptySet;
 

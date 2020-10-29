@@ -50,13 +50,13 @@ public class UndirectedGraph<V, W> extends AbstractGraph<V, W> {
   public Optional<Edge<V, W>> edge(V v1, V v2) {
     for (Edge<V, W> edge: incoming(v1)) {
       if ((edge.endPoint1.equals(v1) && edge.endPoint2.equals(v2))
-       || (edge.endPoint1.equals(v2) && edge.endPoint2.equals(v1))) {
+          || (edge.endPoint1.equals(v2) && edge.endPoint2.equals(v1))) {
         return Optional.of(edge);
       }
     }
     for (Edge<V, W> edge: outgoing(v1)) {
       if ((edge.endPoint1.equals(v1) && edge.endPoint2.equals(v2))
-       || (edge.endPoint1.equals(v2) && edge.endPoint2.equals(v1))) {
+          || (edge.endPoint1.equals(v2) && edge.endPoint2.equals(v1))) {
         return Optional.of(edge);
       }
     }

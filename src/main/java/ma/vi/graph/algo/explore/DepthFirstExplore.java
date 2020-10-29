@@ -16,11 +16,11 @@ public class DepthFirstExplore<V, W, R> implements Algorithm<V, W, R> {
   @Override
   public R execute(Graph<V, W> graph) {
     return new Explore<V, W, R>(startVertex)
-                .pathQueue(new LifoPathQueue<>())
-                .exploreOp(exploreOp)
-                .expandOp(expandOp)
-                .pathCostOp(pathCostOp)
-                .execute(graph);
+        .pathQueue(new LifoPathQueue<>())
+        .exploreOp(exploreOp)
+        .expandOp(expandOp)
+        .pathCostOp(pathCostOp)
+        .execute(graph);
   }
 
   /**

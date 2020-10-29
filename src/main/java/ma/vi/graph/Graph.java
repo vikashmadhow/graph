@@ -14,7 +14,6 @@ import java.util.Set;
  *
  * @param <V> The vertex type of the graph
  * @param <W> The weight type on the edges of the graph.
- *
  * @author vikash.madhow@gmail.com
  */
 public interface Graph<V, W> {

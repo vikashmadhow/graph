@@ -29,12 +29,12 @@ import ma.vi.graph.algo.explore.Explore;
  *
  * @param <V> The vertex type of the graph to search.
  * @param <W> The weight type on the edges of the graph to search.
- *
  * @author Vikash Madhow (vikash.madhow@gmail.com)
  */
 public class Search<V, W> implements Algorithm<V, W, Path<V, W>> {
   /**
    * Create a new instance of the algorithm.
+   *
    * @param startVertex The vertex to start the search at.
    */
   public Search(V startVertex) {
@@ -97,11 +97,11 @@ public class Search<V, W> implements Algorithm<V, W, Path<V, W>> {
   @Override
   public Path<V, W> execute(Graph<V, W> graph) {
     return new Explore<V, W, Path<V, W>>(startVertex)
-                .pathQueue(pathQueue)
-                .exploreOp(new SearchExploreOp<>(goalOp))
-                .expandOp(expandOp)
-                .pathCostOp(pathCostOp)
-                .execute(graph);
+        .pathQueue(pathQueue)
+        .exploreOp(new SearchExploreOp<>(goalOp))
+        .expandOp(expandOp)
+        .pathCostOp(pathCostOp)
+        .execute(graph);
   }
 
   protected final V startVertex;

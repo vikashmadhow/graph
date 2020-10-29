@@ -16,11 +16,11 @@ public class MinCostExplore<V, W, R> implements Algorithm<V, W, R> {
   @Override
   public R execute(Graph<V, W> graph) {
     return new Explore<V, W, R>(startVertex)
-                .pathQueue(new PriorityPathQueue<>())
-                .exploreOp(exploreOp)
-                .expandOp(expandOp)
-                .pathCostOp(pathCostOp)
-                .execute(graph);
+        .pathQueue(new PriorityPathQueue<>())
+        .exploreOp(exploreOp)
+        .expandOp(expandOp)
+        .pathCostOp(pathCostOp)
+        .execute(graph);
   }
 
   /**

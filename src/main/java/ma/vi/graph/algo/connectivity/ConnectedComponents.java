@@ -9,7 +9,13 @@ import java.util.*;
 /**
  * <p>
  * Find connected components in undirected graphs and strongly connected components
- * in directed graphs.
+ * in directed graphs. For undirected graphs connected components is searched for by
+ * running depth-search on the graph from non-explored vertices.
+ * </p>
+ *
+ * <p>
+ * This algorithm returns each connected components as a set of vertices. If you need
+ * the connected components as a full subgraph, use the {@link ConnectedGraphs} algorithm.
  * </p>
  *
  * @param <V> The vertex type of the graph to explore.

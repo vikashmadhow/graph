@@ -6,13 +6,14 @@ import ma.vi.graph.Graph;
 import ma.vi.graph.algo.Algorithm;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * <p>
- * Construct a minimum spanning tree (MST) using Kruskal's algorithm.
+ * Returns a list of connected subgraphs from a graph. This algorithm uses
+ * the union-find structure to identify the set of edges which belong to the
+ * same connected component; it then constructs an returns a list of graphs
+ * with the edges for each connected component
  * </p>
  *
  * @param <V> The vertex type of the graph to search.
@@ -23,19 +24,15 @@ import java.util.Set;
 public class ConnectedGraphs<V, W> implements Algorithm<V, W, List<Graph<V, W>>> {
   @Override
   public List<Graph<V, W>> execute(Graph<V, W> graph) {
-    List<Edge<V, W>> edges = new ArrayList<>(graph.edges());
-    UnionFind<Edge<V, W>> edgeSet = new UnionFind<>();
-    UnionFind<V> vertexSet = new UnionFind<>();
-
-    Set<Edge<V, W>> subgraphEdges = new HashSet<>();
-    for (Edge<V, W> edge: edges) {
-
-      if (!vertexSet.find(edge.endPoint1).equals(vertexSet.find(edge.endPoint2))) {
-        vertexSet.union(edge.endPoint1, edge.endPoint2);
-
-        subgraphEdges.add(edge);
-      }
+    UnionFind<V, Edge<V, W>> vertexSet = new UnionFind<>();
+    for (Edge<V, W> edge: graph.edges()) {
+      V component = vertexSet.union(edge.endPoint1, edge.endPoint2);
+      vertexSet.add(component, edge);
     }
-    return graph.newGraph(subgraphEdges);
+    List<Graph<V, W>> graphs = new ArrayList<>();
+    for (V component: vertexSet.components()) {
+      graphs.add(graph.newGraph(vertexSet.elements(component)));
+    }
+    return graphs;
   }
 }

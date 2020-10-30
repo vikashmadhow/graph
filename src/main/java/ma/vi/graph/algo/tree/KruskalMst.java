@@ -23,7 +23,7 @@ import java.util.Set;
 public class KruskalMst<V, W> implements Algorithm<V, W, Graph<V, W>> {
   @Override
   public Graph<V, W> execute(Graph<V, W> graph) {
-    UnionFind<V> vertexSet = new UnionFind<>();
+    UnionFind<V, ?> vertexSet = new UnionFind<>();
     List<Edge<V, W>> edges = new ArrayList<>(graph.edges());
     edges.sort((e1, e2) -> e1.weight instanceof Comparable
                                 ? ((Comparable<W>)e1.weight).compareTo(e2.weight)

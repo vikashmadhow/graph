@@ -23,12 +23,16 @@ import java.util.Set;
 public class ConnectedGraphs<V, W> implements Algorithm<V, W, List<Graph<V, W>>> {
   @Override
   public List<Graph<V, W>> execute(Graph<V, W> graph) {
-    UnionFind<V> vertexSet = new UnionFind<>();
     List<Edge<V, W>> edges = new ArrayList<>(graph.edges());
+    UnionFind<Edge<V, W>> edgeSet = new UnionFind<>();
+    UnionFind<V> vertexSet = new UnionFind<>();
+
     Set<Edge<V, W>> subgraphEdges = new HashSet<>();
     for (Edge<V, W> edge: edges) {
+
       if (!vertexSet.find(edge.endPoint1).equals(vertexSet.find(edge.endPoint2))) {
         vertexSet.union(edge.endPoint1, edge.endPoint2);
+
         subgraphEdges.add(edge);
       }
     }

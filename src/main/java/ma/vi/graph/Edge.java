@@ -19,6 +19,7 @@ import java.util.Objects;
  *
  * @param <V> The type of vertex that this edge connects.
  * @param <W> The weight type of the edge.
+ *
  * @author vikash.madhow@gmail.com
  */
 public class Edge<V, W> {

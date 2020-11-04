@@ -46,6 +46,7 @@ import java.util.Set;
  * @param <V> The vertex type of the graph to explore.
  * @param <W> The weight type on the edges of the graph to explore.
  * @param <R> The result of the exploration which is the result returned by the exploreOp function.
+ *
  * @author Vikash Madhow (vikash.madhow@gmail.com)
  */
 public class Explore<V, W, R> implements Algorithm<V, W, R> {

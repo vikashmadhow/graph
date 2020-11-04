@@ -17,7 +17,11 @@ import java.util.Optional;
  * <li>finally a non-empty set means that the exploration is completed and the set
  *     should be returned as its result.</li>
  * </ul>
- * 
+ *
+ * @param <V> The type of vertex of graphs being explored.
+ * @param <W> The type of weight of graphs being explored.
+ * @param <R> The result type of exploring.
+ *
  * @author Vikash Madhow (vikash.madhow@gmail.com)
  */
 @FunctionalInterface

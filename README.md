@@ -9,12 +9,12 @@ To use through Maven, include the following dependency in your pom.xml file:
     <dependency>
       <groupId>com.vikmad</groupId>
       <artifactId>graph</artifactId>
-      <version>0.2.1</version>
+      <version>0.2.2</version>
     </dependency>
     
 or in Gradle, add the following line to your dependencies list in your build.gradle file:
 
-    compile "com.vikmad:graph:0.2.1"
+    compile "com.vikmad:graph:0.2.2"
     
 ## Example usage
 ### Creating graphs

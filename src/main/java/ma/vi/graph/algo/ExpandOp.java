@@ -11,6 +11,11 @@ import static java.util.Collections.emptySet;
 /**
  * This function is called during exploration to expand a path. It returns the set of edges
  * by which the path should be expanded.
+ *
+ * @param <V> The type of vertex of graphs that this algorithm can be applied to.
+ * @param <W> The type of weight of graphs that this algorithm can be applied to.
+ *
+ * @author Vikash Madhow (vikash.madhow@gmail.com)
  */
 @FunctionalInterface
 public interface ExpandOp<V, W> {

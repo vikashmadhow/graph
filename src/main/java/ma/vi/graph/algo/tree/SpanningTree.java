@@ -59,11 +59,11 @@ public class SpanningTree<V, W> implements Algorithm<V, W, Graph<V, W>> {
     V startVertex = graph.vertices().iterator().next();
     Set<Edge<V, W>> edges = new HashSet<>();
     new Explore<V, W, Path<V, W>>(startVertex)
-                .pathQueue(pathQueue)
-                .exploreOp(new TreeExploreOp<>(edges))
-                .expandOp(expandOp)
-                .pathCostOp(pathCostOp)
-                .execute(graph);
+          .pathQueue(pathQueue)
+          .exploreOp(new TreeExploreOp<>(edges))
+          .expandOp(expandOp)
+          .pathCostOp(pathCostOp)
+          .execute(graph);
     return graph.newGraph(edges);
   }
 
